@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>سامانه جامع لجستیک صنعت ساختمان</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-dark: #0a0f1a;
+      --card-bg: #10192b;
+      --card-bg-hover: #142239;
+      --border-color: #1e2c45;
+      --border-active: rgba(56, 132, 255, 0.55);
+      --text-main: #eef2f8;
+      --text-muted: #93a1b8;
+      --brand-blue: #3884ff;
+      --brand-blue-deep: #1d5fd6;
+      --brand-blue-glow: rgba(56, 132, 255, 0.28);
+      --font-family: 'Vazirmatn', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    @media (max-width: 600px) {
+      html {
+        font-size: 14px;
+      }
+    }
+
+    body {
+      background:
+        radial-gradient(circle at 15% 0%, rgba(56,132,255,0.10), transparent 45%),
+        radial-gradient(circle at 100% 100%, rgba(56,132,255,0.06), transparent 40%),
+        var(--bg-dark);
+      color: var(--text-main);
+      font-family: var(--font-family);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 3rem 1.25rem;
+    }
+
+    .container {
+      max-width: 1280px;
+      width: 100%;
+    }
+
+    /* Header */
+    .header {
+      margin-bottom: 2.5rem;
+      max-width: 760px;
+    }
+    .header .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--brand-blue);
+      font-weight: 600;
+      font-size: 0.85rem;
+      margin-bottom: 0.85rem;
+    }
+    .header .eyebrow .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--brand-blue);
+      box-shadow: 0 0 10px var(--brand-blue);
+    }
+    .header h1 {
+      font-size: 2.15rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: #fff;
+      line-height: 1.35;
+    }
+    .header p {
+      color: var(--text-muted);
+      margin-top: 0.75rem;
+      font-size: 1rem;
+      line-height: 1.8;
+    }
+
+    /* Accordion Container */
+    .accordion {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      width: 100%;
+    }
+
+    @media (min-width: 992px) {
+      .accordion {
+        flex-direction: row;
+        height: 576px;
+      }
+    }
+
+    /* Card / Panel */
+    .panel {
+      position: relative;
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      cursor: pointer;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: flex 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                  background 0.3s ease,
+                  border-color 0.3s ease;
+    }
+
+    @media (min-width: 992px) {
+      .panel {
+        flex: 1;
+      }
+      .panel.active {
+        flex: 4.5;
+        cursor: default;
+        border-color: var(--border-active);
+        box-shadow: 0 20px 45px rgba(0,0,0,0.45);
+      }
+    }
+
+    /* Background image layer for active card */
+    .panel-bg {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+      z-index: 1;
+    }
+    .panel-bg::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(10,15,26,0.55) 0%, rgba(10,15,26,0.92) 78%);
+    }
+    .panel.active .panel-bg {
+      opacity: 1;
+    }
+
+    /* Panel Content Container */
+    .panel-content {
+      position: relative;
+      z-index: 2;
+      padding: 1.6rem 1.6rem 1.6rem 2rem;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow-y: auto;
+    }
+
+    /* Collapsed Header & Logo */
+    .panel-header {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+    }
+
+    .panel:not(.active) .panel-header {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 0.65rem;
+    }
+
+    .panel:not(.active) .category-tag {
+      display: none;
+    }
+
+    .service-icon-badge {
+      width: 46px;
+      height: 46px;
+      border-radius: 12px;
+      background: rgba(56, 132, 255, 0.12);
+      border: 1px solid rgba(56, 132, 255, 0.35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--brand-blue);
+      flex-shrink: 0;
+    }
+
+    .project-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .category-tag {
+      font-size: 0.75rem;
+      color: var(--brand-blue);
+      background: rgba(56, 132, 255, 0.12);
+      padding: 3px 10px;
+      border-radius: 20px;
+      margin-left: auto;
+      font-weight: 600;
+    }
+
+    /* Expanded Details View */
+    .details-view {
+      display: none;
+      flex-direction: column;
+      gap: 1.3rem;
+      margin-top: 1.3rem;
+    }
+
+    .panel.active .details-view {
+      display: flex;
+    }
+
+    .goal-strip {
+      display: flex;
+      align-items: baseline;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      font-size: 0.85rem;
+      color: var(--brand-blue);
+      font-weight: 600;
+    }
+    .goal-strip span.goal-label {
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .description {
+      font-size: 0.92rem;
+      line-height: 1.85;
+      color: #d5dced;
+      width: 100%;
+      max-width: 100%;
+      text-align: justify;
+      text-align-last: right;
+    }
+
+    /* CTA Buttons Row */
+    .cta-row {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    @media (min-width: 640px) {
+      .cta-row {
+        flex-direction: row;
+      }
+    }
+    .cta-btn {
+      flex: 1;
+      text-align: center;
+      padding: 0.95rem 1.1rem;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 0.92rem;
+      cursor: pointer;
+      border: none;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.45rem;
+      transition: transform 0.15s ease, box-shadow 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+      font-family: inherit;
+    }
+    .cta-btn:hover {
+      transform: translateY(-2px);
+    }
+    .cta-primary {
+      background: linear-gradient(135deg, var(--brand-blue), var(--brand-blue-deep));
+      color: #fff;
+      box-shadow: 0 10px 26px rgba(29, 95, 214, 0.45);
+    }
+    .cta-primary:hover {
+      box-shadow: 0 14px 32px rgba(29, 95, 214, 0.6);
+    }
+    .cta-secondary {
+      background: rgba(56, 132, 255, 0.08);
+      border: 1px solid rgba(56, 132, 255, 0.45);
+      color: #fff;
+    }
+    .cta-secondary:hover {
+      background: rgba(56, 132, 255, 0.16);
+    }
+    .cta-tertiary {
+      background: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+    }
+    .cta-tertiary:hover {
+      border-color: var(--brand-blue);
+      color: var(--brand-blue);
+    }
+
+    /* Bottom Link: Training & Articles */
+    .articles-link-container {
+      margin-top: 0.4rem;
+      padding-top: 1.1rem;
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      justify-content: flex-end;
+    }
+    .articles-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(56, 132, 255, 0.10);
+      border: 1px solid rgba(56, 132, 255, 0.5);
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.88rem;
+      padding: 0.7rem 1.2rem;
+      border-radius: 10px;
+      text-decoration: none;
+      transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
+    }
+    .articles-btn:hover {
+      background: var(--brand-blue);
+      box-shadow: 0 10px 24px rgba(56, 132, 255, 0.4);
+      transform: translateX(-3px);
+    }
+
+    /* Modal for Collaboration Request */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(4, 8, 16, 0.75);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      padding: 1rem;
+    }
+    .modal-overlay.open {
+      display: flex;
+    }
+    .modal {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 1.75rem;
+      width: 100%;
+      max-width: 480px;
+      display: flex;
+      flex-direction: column;
+      gap: 1.1rem;
+    }
+    .modal h3 {
+      font-size: 1.2rem;
+      color: #fff;
+      font-weight: 700;
+    }
+    .modal p.modal-sub {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: -0.6rem;
+      line-height: 1.7;
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .form-group label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+    .form-group input, .form-group textarea {
+      background: #0a1120;
+      border: 1px solid var(--border-color);
+      color: #fff;
+      padding: 0.6rem 0.7rem;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-family: inherit;
+    }
+    .form-group input:focus, .form-group textarea:focus {
+      outline: none;
+      border-color: var(--brand-blue);
+      box-shadow: 0 0 0 3px var(--brand-blue-glow);
+    }
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.6rem;
+      margin-top: 0.2rem;
+    }
+    .btn-secondary {
+      background: transparent;
+      border: 1px solid var(--border-color);
+      color: #fff;
+      padding: 0.55rem 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 0.9rem;
+    }
+    .btn-submit {
+      background: linear-gradient(135deg, var(--brand-blue), var(--brand-blue-deep));
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.9rem;
+      border: none;
+      padding: 0.6rem 1.2rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-family: inherit;
+      box-shadow: 0 8px 20px rgba(29, 95, 214, 0.4);
+    }
+    .btn-submit:hover {
+      opacity: 0.92;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="header">
+      <div class="eyebrow"><span class="dot"></span>گروه خدمات مهندسی</div>
+      <h1>سامانه جامع لجستیک صنعت ساختمان</h1>
+      <p>ارائه‌دهنده خدمات تخصصی در سه حوزه: تأمین مصالح و ابزار، بهینه‌سازی مصرف انرژی ساختمان و صنعت، و کنترل کیفیت اجرا از طریق خدمات آزمایشگاهی. برای آشنایی بیشتر، هر بخش را باز کنید.</p>
+    </div>
+
+    <div class="accordion" id="serviceAccordion">
+
+      <!-- SERVICE 1: MATERIALS & TOOLS -->
+      <div class="panel active">
+        <div class="panel-bg" style="background-image: url('https://images.unsplash.com/photo-1541976590-713941681591?auto=format&fit=crop&w=1200&q=80');"></div>
+        <div class="panel-content">
+          <div class="panel-header">
+            <div class="service-icon-badge">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M3 7.5L12 3l9 4.5M3 7.5v9L12 21m-9-4.5L12 12m0 9l9-4.5v-9M12 12l9-4.5M12 12V3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div>
+              <h2 class="project-title">تأمین مصالح و ابزار</h2>
+            </div>
+            <span class="category-tag">تأمین و اجرا</span>
+          </div>
+
+          <div class="details-view">
+            <div class="goal-strip"><span class="goal-label">هدف اصلی:</span> کاهش هزینه‌های ساختمان و صنعت</div>
+            <p class="description">
+              تأمین مستقیم مصالح، تجهیزات و ابزار مورد نیاز پروژه‌های ساختمانی و صنعتی با هدف کاهش هزینه تمام‌شده. هر مشاوره فنی و هر محصولی که در حوزه صنعت ساختمان نیاز داشته باشید، از طریق این مجموعه قابل تأمین است.
+            </p>
+
+            <div class="cta-row">
+              <button class="cta-btn cta-primary" onclick="openCollabModal('تأمین مصالح و ابزار')">
+                دریافت مشاوره سریع و رایگان
+              </button>
+              <a href="https://materials.yourdomain.com" target="_blank" class="cta-btn cta-secondary">
+                ورود به وب‌سایت تخصصی
+              </a>
+              <button class="cta-btn cta-tertiary" onclick="openCollabModal('تأمین مصالح و ابزار')">
+                همکاری با ما
+              </button>
+            </div>
+
+            <div class="articles-link-container">
+              <a href="https://materials.yourdomain.com/articles" target="_blank" class="articles-btn">
+                آموزش‌ها و مقالات &larr;
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SERVICE 2: ENERGY -->
+      <div class="panel">
+        <div class="panel-bg" style="background-image: url('https://images.unsplash.com/photo-1509391366360-2e959784a276?auto=format&fit=crop&w=1200&q=80');"></div>
+        <div class="panel-content">
+          <div class="panel-header">
+            <div class="service-icon-badge">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.6"/>
+                <path d="M12 2v2.2M12 19.8V22M4.9 4.9l1.55 1.55M17.55 17.55l1.55 1.55M2 12h2.2M19.8 12H22M4.9 19.1l1.55-1.55M17.55 6.45l1.55-1.55" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div>
+              <h2 class="project-title">بهینه‌سازی مصرف انرژی</h2>
+            </div>
+            <span class="category-tag">مشاوره و بهینه‌سازی</span>
+          </div>
+
+          <div class="details-view">
+            <div class="goal-strip"><span class="goal-label">هدف اصلی:</span> کاهش مصرف انرژی ساختمان و صنعت</div>
+            <p class="description">
+              خدمات مشاوره و تأمین در حوزه انرژی؛ از مصرف بهینه انرژی و انطباق با الزامات مبحث ۱۹ مقررات ملی ساختمان، تا تأمین تجهیزات انرژی مانند پنل‌های خورشیدی برای پروژه‌های ساختمانی و صنعتی.
+            </p>
+
+            <div class="cta-row">
+              <button class="cta-btn cta-primary" onclick="openCollabModal('بهینه‌سازی مصرف انرژی')">
+                دریافت مشاوره سریع و رایگان
+              </button>
+              <a href="https://energy.yourdomain.com" target="_blank" class="cta-btn cta-secondary">
+                ورود به وب‌سایت تخصصی
+              </a>
+              <button class="cta-btn cta-tertiary" onclick="openCollabModal('بهینه‌سازی مصرف انرژی')">
+                همکاری با ما
+              </button>
+            </div>
+
+            <div class="articles-link-container">
+              <a href="https://energy.yourdomain.com/articles" target="_blank" class="articles-btn">
+                آموزش‌ها و مقالات &larr;
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SERVICE 3: QUALITY CONTROL / LAB -->
+      <div class="panel">
+        <div class="panel-bg" style="background-image: url('https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=1200&q=80');"></div>
+        <div class="panel-content">
+          <div class="panel-header">
+            <div class="service-icon-badge">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9 2h6M10 2v5.2L4.8 17.3A2 2 0 0 0 6.6 20h10.8a2 2 0 0 0 1.8-2.7L14 7.2V2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M6.5 14.5h11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div>
+              <h2 class="project-title">کنترل کیفیت اجرا</h2>
+            </div>
+            <span class="category-tag">خدمات آزمایشگاهی</span>
+          </div>
+
+          <div class="details-view">
+            <div class="goal-strip"><span class="goal-label">هدف اصلی:</span> تضمین کیفیت اجرا</div>
+            <p class="description">
+              خدمات آزمایشگاهی تخصصی حوزه ساختمان و صنعت شامل آزمایش بتن، آزمایش مکانیک خاک، تست کشش میلگرد کاشته‌شده و تست جوش، به همراه هر نوع کنترل کیفیتی که پروژه‌های صنعت ساختمان به آن نیاز دارند.
+            </p>
+
+            <div class="cta-row">
+              <button class="cta-btn cta-primary" onclick="openCollabModal('کنترل کیفیت اجرا')">
+                دریافت مشاوره سریع و رایگان
+              </button>
+              <a href="https://qc-lab.yourdomain.com" target="_blank" class="cta-btn cta-secondary">
+                ورود به وب‌سایت تخصصی
+              </a>
+              <button class="cta-btn cta-tertiary" onclick="openCollabModal('کنترل کیفیت اجرا')">
+                همکاری با ما
+              </button>
+            </div>
+
+            <div class="articles-link-container">
+              <a href="https://qc-lab.yourdomain.com/articles" target="_blank" class="articles-btn">
+                آموزش‌ها و مقالات &larr;
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Collaboration Request Modal -->
+  <div class="modal-overlay" id="collabModal">
+    <div class="modal">
+      <h3>همکاری با ما</h3>
+      <p class="modal-sub">اطلاعات خود را وارد کنید تا کارشناسان ما در اسرع وقت با شما تماس بگیرند.</p>
+      <div class="form-group">
+        <label>نام و نام خانوادگی</label>
+        <input type="text" id="collabName" placeholder="نام شما" />
+      </div>
+      <div class="form-group">
+        <label>ایمیل</label>
+        <input type="email" id="collabEmail" placeholder="example@email.com" />
+      </div>
+      <div class="form-group">
+        <label>زمینه همکاری</label>
+        <textarea rows="3" id="collabField" placeholder="زمینه همکاری یا درخواست خود را شرح دهید..."></textarea>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-secondary" onclick="closeCollabModal()">انصراف</button>
+        <button class="btn-submit" onclick="submitCollab()">ارسال درخواست</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Accordion interaction
+    const panels = document.querySelectorAll('.panel');
+    panels.forEach(panel => {
+      panel.addEventListener('click', (e) => {
+        if (e.target.closest('button') || e.target.closest('a') || e.target.closest('input') || e.target.closest('textarea')) return;
+        panels.forEach(p => p.classList.remove('active'));
+        panel.classList.add('active');
+      });
+    });
+
+    // Modal Handling
+    const modal = document.getElementById('collabModal');
+    function openCollabModal(serviceName) {
+      const fieldInput = document.getElementById('collabField');
+      if (serviceName && !fieldInput.value) {
+        fieldInput.placeholder = 'زمینه همکاری یا درخواست خود را شرح دهید... (مثلاً: ' + serviceName + ')';
+      }
+      modal.classList.add('open');
+    }
+    function closeCollabModal() {
+      modal.classList.remove('open');
+    }
+
+    function submitCollab() {
+      const name = document.getElementById('collabName').value;
+      const email = document.getElementById('collabEmail').value;
+      const field = document.getElementById('collabField').value;
+
+      if (!name || !email || !field) {
+        alert("لطفاً همه فیلدها را پر کنید.");
+        return;
+      }
+
+      alert("متشکریم! درخواست همکاری شما ثبت شد و کارشناسان ما به‌زودی با شما تماس خواهند گرفت.");
+      closeCollabModal();
+      document.getElementById('collabName').value = '';
+      document.getElementById('collabEmail').value = '';
+      document.getElementById('collabField').value = '';
+    }
+  </script>
+</body>
+</html>
