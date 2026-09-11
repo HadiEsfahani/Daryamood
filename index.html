@@ -48,7 +48,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 3rem 1.25rem;
+      padding: 1.25rem 1.25rem 2rem;
     }
 
     .container {
@@ -58,11 +58,12 @@
 
     /* Header */
     .header {
-      margin-bottom: 2.5rem;
-      max-width: 760px;
+      margin: 0 auto 1.6rem;
+      max-width: 900px;
+      text-align: center;
     }
     .header .eyebrow {
-      display: inline-flex;
+      display: none;
       align-items: center;
       gap: 0.5rem;
       color: var(--brand-blue);
@@ -78,16 +79,17 @@
       box-shadow: 0 0 10px var(--brand-blue);
     }
     .header h1 {
-      font-size: 2.15rem;
-      font-weight: 800;
+      font-size: 2.25rem;
+      font-family: Georgia, "Times New Roman", serif;
+      font-weight: 700;
       letter-spacing: -0.02em;
       color: #fff;
       line-height: 1.35;
     }
     .header p {
       color: var(--text-muted);
-      margin-top: 0.75rem;
-      font-size: 1rem;
+      margin-top: 0.35rem;
+      font-size: 0.95rem;
       line-height: 1.8;
     }
 
@@ -424,15 +426,45 @@
     .btn-submit:hover {
       opacity: 0.92;
     }
+
+    .quick-options {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.65rem;
+    }
+    .quick-option {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 52px;
+      padding: 0.7rem;
+      border-radius: 10px;
+      background: rgba(56,132,255,0.08);
+      border: 1px solid var(--border-color);
+      color: #fff;
+      text-decoration: none;
+      font: 600 0.88rem var(--font-family);
+      transition: 0.2s ease;
+    }
+    .quick-option:hover {
+      border-color: var(--brand-blue);
+      background: rgba(56,132,255,0.16);
+      transform: translateY(-1px);
+    }
+    .modal.is-compact { max-width: 420px; }
+    @media (max-width: 600px) {
+      .quick-options { grid-template-columns: 1fr; }
+      .header h1 { font-size: 1.75rem; }
+    }
+
   </style>
 </head>
 <body>
 
   <div class="container">
     <div class="header">
-      <div class="eyebrow"><span class="dot"></span>گروه خدمات مهندسی</div>
-      <h1>سامانه جامع لجستیک صنعت ساختمان</h1>
-      <p>ارائه‌دهنده خدمات تخصصی در سه حوزه: تأمین مصالح و ابزار، بهینه‌سازی مصرف انرژی ساختمان و صنعت، و کنترل کیفیت اجرا از طریق خدمات آزمایشگاهی. برای آشنایی بیشتر، هر بخش را باز کنید.</p>
+      <h1>دریامود</h1>
+      <p>بستر جامع لجستیک صنعت و ساختمان</p>
     </div>
 
     <div class="accordion" id="serviceAccordion">
@@ -460,14 +492,17 @@
             </p>
 
             <div class="cta-row">
-              <button class="cta-btn cta-primary" onclick="openCollabModal('تأمین مصالح و ابزار')">
+              <button class="cta-btn cta-primary" onclick="openQuickConsultModal('تأمین مصالح و ابزار')">
                 دریافت مشاوره سریع و رایگان
               </button>
               <a href="https://materials.yourdomain.com" target="_blank" class="cta-btn cta-secondary">
-                ورود به وب‌سایت تخصصی
+                ورود به فروشگاه
               </a>
-              <button class="cta-btn cta-tertiary" onclick="openCollabModal('تأمین مصالح و ابزار')">
-                همکاری با ما
+              <a href="https://logistics.yourdomain.com" target="_blank" class="cta-btn cta-secondary">
+                ورود به ابزار لجستیک
+              </a>
+              <button class="cta-btn cta-tertiary" onclick="openRepresentationModal('تأمین مصالح و ابزار')">
+                اعطای نمایندگی
               </button>
             </div>
 
@@ -504,7 +539,7 @@
             </p>
 
             <div class="cta-row">
-              <button class="cta-btn cta-primary" onclick="openCollabModal('بهینه‌سازی مصرف انرژی')">
+              <button class="cta-btn cta-primary" onclick="openQuickConsultModal('بهینه‌سازی مصرف انرژی')">
                 دریافت مشاوره سریع و رایگان
               </button>
               <a href="https://energy.yourdomain.com" target="_blank" class="cta-btn cta-secondary">
@@ -548,7 +583,7 @@
             </p>
 
             <div class="cta-row">
-              <button class="cta-btn cta-primary" onclick="openCollabModal('کنترل کیفیت اجرا')">
+              <button class="cta-btn cta-primary" onclick="openQuickConsultModal('کنترل کیفیت اجرا')">
                 دریافت مشاوره سریع و رایگان
               </button>
               <a href="https://qc-lab.yourdomain.com" target="_blank" class="cta-btn cta-secondary">
@@ -571,6 +606,56 @@
     </div>
   </div>
 
+  <!-- Quick Consultation Modal -->
+  <div class="modal-overlay" id="quickConsultModal">
+    <div class="modal is-compact">
+      <h3>مشاوره سریع و رایگان</h3>
+      <p class="modal-sub">روش ارتباطی موردنظر خود را انتخاب کنید.</p>
+      <div class="quick-options">
+        <a class="quick-option" id="quickInstagram" href="#" target="_blank" rel="noopener">اینستاگرام</a>
+        <a class="quick-option" id="quickTelegram" href="#" target="_blank" rel="noopener">تلگرام</a>
+        <a class="quick-option" id="quickWhatsApp" href="#" target="_blank" rel="noopener">واتساپ</a>
+        <a class="quick-option" id="quickLinkedIn" href="#" target="_blank" rel="noopener">لینکدین</a>
+        <a class="quick-option" id="quickPhone" href="tel:+00000000000">تماس مستقیم</a>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-secondary" onclick="closeQuickConsultModal()">بستن</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Representation Request Modal -->
+  <div class="modal-overlay" id="representationModal">
+    <div class="modal">
+      <h3>درخواست اعطای نمایندگی</h3>
+      <p class="modal-sub">اطلاعات خود را وارد کنید تا کارشناسان ما درخواست نمایندگی شما را بررسی کنند.</p>
+      <div class="form-group">
+        <label>نام و نام خانوادگی</label>
+        <input type="text" id="repName" placeholder="نام شما" />
+      </div>
+      <div class="form-group">
+        <label>ایمیل</label>
+        <input type="email" id="repEmail" placeholder="example@email.com" />
+      </div>
+      <div class="form-group">
+        <label>شماره تماس</label>
+        <input type="tel" id="repPhone" placeholder="09xxxxxxxxx" />
+      </div>
+      <div class="form-group">
+        <label>شهر / منطقه فعالیت</label>
+        <input type="text" id="repLocation" placeholder="شهر یا منطقه" />
+      </div>
+      <div class="form-group">
+        <label>توضیحات درخواست نمایندگی</label>
+        <textarea rows="3" id="repField" placeholder="سابقه فعالیت، ظرفیت و توضیحات خود را بنویسید..."></textarea>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-secondary" onclick="closeRepresentationModal()">انصراف</button>
+        <button class="btn-submit" onclick="submitRepresentation()">ارسال درخواست</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Collaboration Request Modal -->
   <div class="modal-overlay" id="collabModal">
     <div class="modal">
@@ -585,6 +670,10 @@
         <input type="email" id="collabEmail" placeholder="example@email.com" />
       </div>
       <div class="form-group">
+        <label>شماره تماس</label>
+        <input type="tel" id="collabPhone" placeholder="09xxxxxxxxx" />
+      </div>
+      <div class="form-group">
         <label>زمینه همکاری</label>
         <textarea rows="3" id="collabField" placeholder="زمینه همکاری یا درخواست خود را شرح دهید..."></textarea>
       </div>
@@ -596,45 +685,184 @@
   </div>
 
   <script>
-    // Accordion interaction
+    /*
+      Supabase configuration:
+      Replace these two placeholders with your Supabase project values.
+    */
+    const SUPABASE_URL = 'YOUR_SUPABASE_URL';
+    const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
+
+    let supabaseClient = null;
+    if (SUPABASE_URL !== 'YOUR_SUPABASE_URL' && SUPABASE_ANON_KEY !== 'YOUR_SUPABASE_ANON_KEY') {
+      const script = document.createElement('script');
+      script.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
+      script.onload = () => {
+        supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+      };
+      document.head.appendChild(script);
+    }
+
+    // Replace these placeholders with the final social-media URLs and phone number.
+    const CONTACT_LINKS = {
+      instagram: 'https://instagram.com/YOUR_ID',
+      telegram: 'https://t.me/YOUR_ID',
+      whatsapp: 'https://wa.me/YOUR_PHONE',
+      linkedin: 'https://linkedin.com/in/YOUR_ID',
+      phone: '+00000000000'
+    };
+
     const panels = document.querySelectorAll('.panel');
     panels.forEach(panel => {
       panel.addEventListener('click', (e) => {
-        if (e.target.closest('button') || e.target.closest('a') || e.target.closest('input') || e.target.closest('textarea')) return;
+        if (e.target.closest('button') || e.target.closest('a') ||
+            e.target.closest('input') || e.target.closest('textarea')) return;
         panels.forEach(p => p.classList.remove('active'));
         panel.classList.add('active');
       });
     });
 
-    // Modal Handling
+    const quickModal = document.getElementById('quickConsultModal');
+
+    function openQuickConsultModal(serviceName) {
+      quickModal.dataset.service = serviceName || '';
+      document.getElementById('quickInstagram').href = CONTACT_LINKS.instagram;
+      document.getElementById('quickTelegram').href = CONTACT_LINKS.telegram;
+      document.getElementById('quickWhatsApp').href = CONTACT_LINKS.whatsapp;
+      document.getElementById('quickLinkedIn').href = CONTACT_LINKS.linkedin;
+      document.getElementById('quickPhone').href = 'tel:' + CONTACT_LINKS.phone.replace(/[^\d+]/g, '');
+      quickModal.classList.add('open');
+    }
+
+    function closeQuickConsultModal() {
+      quickModal.classList.remove('open');
+    }
+
     const modal = document.getElementById('collabModal');
+
     function openCollabModal(serviceName) {
       const fieldInput = document.getElementById('collabField');
-      if (serviceName && !fieldInput.value) {
+      fieldInput.dataset.service = serviceName || '';
+      if (serviceName) {
         fieldInput.placeholder = 'زمینه همکاری یا درخواست خود را شرح دهید... (مثلاً: ' + serviceName + ')';
       }
       modal.classList.add('open');
     }
+
     function closeCollabModal() {
       modal.classList.remove('open');
     }
 
-    function submitCollab() {
-      const name = document.getElementById('collabName').value;
-      const email = document.getElementById('collabEmail').value;
-      const field = document.getElementById('collabField').value;
+    async function saveToSupabase(table, payload) {
+      if (!supabaseClient) {
+        throw new Error('Supabase هنوز تنظیم نشده است.');
+      }
+      const { error } = await supabaseClient.from(table).insert([payload]);
+      if (error) throw error;
+    }
 
-      if (!name || !email || !field) {
+    async function submitCollab() {
+      const name = document.getElementById('collabName').value.trim();
+      const email = document.getElementById('collabEmail').value.trim();
+      const phone = document.getElementById('collabPhone').value.trim();
+      const field = document.getElementById('collabField').value.trim();
+      const service = document.getElementById('collabField').dataset.service || '';
+
+      if (!name || !email || !phone || !field) {
         alert("لطفاً همه فیلدها را پر کنید.");
         return;
       }
 
-      alert("متشکریم! درخواست همکاری شما ثبت شد و کارشناسان ما به‌زودی با شما تماس خواهند گرفت.");
-      closeCollabModal();
-      document.getElementById('collabName').value = '';
-      document.getElementById('collabEmail').value = '';
-      document.getElementById('collabField').value = '';
+      try {
+        await saveToSupabase('collaboration_requests', { name, email, phone, field, service });
+        alert("متشکریم! درخواست همکاری شما با موفقیت ثبت شد.");
+        closeCollabModal();
+        ['collabName','collabEmail','collabPhone','collabField'].forEach(id => {
+          document.getElementById(id).value = '';
+        });
+      } catch (error) {
+        console.error(error);
+        alert("ثبت درخواست انجام نشد. تنظیمات Supabase را بررسی کنید.");
+      }
     }
+
+    const representationModal = document.getElementById('representationModal');
+
+    function openRepresentationModal(serviceName) {
+      representationModal.dataset.service = serviceName || 'تأمین مصالح و ابزار';
+      representationModal.classList.add('open');
+    }
+
+    function closeRepresentationModal() {
+      representationModal.classList.remove('open');
+    }
+
+    async function submitRepresentation() {
+      const name = document.getElementById('repName').value.trim();
+      const email = document.getElementById('repEmail').value.trim();
+      const phone = document.getElementById('repPhone').value.trim();
+      const location = document.getElementById('repLocation').value.trim();
+      const field = document.getElementById('repField').value.trim();
+      const service = representationModal.dataset.service || 'تأمین مصالح و ابزار';
+
+      if (!name || !email || !phone || !location || !field) {
+        alert("لطفاً همه فیلدها را پر کنید.");
+        return;
+      }
+
+      try {
+        await saveToSupabase('representation_requests', {
+          name, email, phone, location, field, service
+        });
+        alert("درخواست اعطای نمایندگی شما با موفقیت ثبت شد.");
+        closeRepresentationModal();
+        ['repName','repEmail','repPhone','repLocation','repField'].forEach(id => {
+          document.getElementById(id).value = '';
+        });
+      } catch (error) {
+        console.error(error);
+        alert("ثبت درخواست انجام نشد. تنظیمات Supabase را بررسی کنید.");
+      }
+    }
+
+    document.querySelectorAll('.modal-overlay').forEach(overlay => {
+      overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) overlay.classList.remove('open');
+      });
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('open'));
+      }
+    });
+
+    /*
+      Supabase SQL setup:
+
+      create table collaboration_requests (
+        id bigint generated by default as identity primary key,
+        created_at timestamptz default now(),
+        name text not null,
+        email text not null,
+        phone text not null,
+        field text not null,
+        service text
+      );
+
+      create table representation_requests (
+        id bigint generated by default as identity primary key,
+        created_at timestamptz default now(),
+        name text not null,
+        email text not null,
+        phone text not null,
+        location text not null,
+        field text not null,
+        service text
+      );
+
+      Enable RLS and create an INSERT policy suitable for your public form
+      before production deployment.
+    */
   </script>
 </body>
 </html>
