@@ -61,21 +61,12 @@ def fetch(url):
         return None
 
 
-def parse_ahanonline_category(url, source_name):
+def _parse_ahanonline_by_table(soup):
     """
-    آهن‌آنلاین قیمت‌ها را به‌صورت چند جدول (یک جدول برای هر برند) نمایش می‌دهد.
-    به‌جای وابسته‌شدن به نام کلاس‌های CSS (که ممکن است هر زمان تغییر کند)،
-    هر جدول را پیدا می‌کنیم و از روی متنِ سرستون‌ها (که شامل کلمه‌ی
-    "نام" و "قیمت" است) ستون نام و قیمت را تشخیص می‌دهیم. این روش در برابر
-    تغییرات ظاهری قالب سایت مقاوم‌تر است.
+    تلاش اول: اگر سایت واقعاً از تگ <table> استفاده کند، از روی سرستون‌ها
+    ("نام"، "قیمت") ستون‌های موردنیاز پیدا می‌شوند.
     """
-    html = fetch(url)
-    if not html:
-        return []
-
-    soup = BeautifulSoup(html, "html.parser")
     items = []
-
     for table in soup.find_all("table"):
         header_row = table.find("tr")
         if not header_row:
@@ -101,9 +92,68 @@ def parse_ahanonline_category(url, source_name):
             if not name or not price:
                 continue
 
-            items.append({"source": source_name, "name": name, "price": price})
+            items.append({"name": name, "price": price})
 
     return items
+
+
+# هر ردیف قیمت در آهن‌آنلاین همیشه با برچسب "فروش ویژه" مشخص شده و بلافاصله
+# بعدش نام کامل محصول می‌آید. این روش کاری به این ندارد که HTML زیرین
+# <table> است یا <div> — فقط به متنِ قابل‌مشاهده‌ی صفحه نگاه می‌کند، پس در
+# برابر تغییر قالب (جدول یا نه) مقاوم‌تر است.
+_ROW_SPLIT_RE = re.compile(r"\n\s*فروش ویژه\s*\n")
+_PRICE_RE = re.compile(r"\+\s*([\d,]+)\s*ریال")
+
+
+def _parse_ahanonline_by_text(soup):
+    text = soup.get_text("\n")
+    blocks = _ROW_SPLIT_RE.split(text)[1:]  # بلاک اول قبل از اولین "فروش ویژه" است
+
+    items = []
+    for block in blocks:
+        lines = [line.strip() for line in block.split("\n") if line.strip()]
+        if not lines:
+            continue
+
+        name = lines[0]
+
+        price_match = _PRICE_RE.search(block)
+        if price_match:
+            price = f"+ {price_match.group(1)} ریال"
+        elif "تماس بگیرید" in block:
+            price = "تماس بگیرید"
+        else:
+            continue
+
+        # فیلتر خطوط بی‌ربط (خیلی کوتاه یا خیلی بلند) که احتمالاً اسم محصول نیستند
+        if len(name) < 3 or len(name) > 120:
+            continue
+
+        items.append({"name": name, "price": price})
+
+    return items
+
+
+def parse_ahanonline_category(url, source_name):
+    html = fetch(url)
+    if not html:
+        return []
+
+    soup = BeautifulSoup(html, "html.parser")
+
+    raw_items = _parse_ahanonline_by_text(soup)
+    method = "text"
+
+    if not raw_items:
+        raw_items = _parse_ahanonline_by_table(soup)
+        method = "table"
+
+    if not raw_items:
+        print(f"[WARN] هیچ ردیفی برای {source_name} پیدا نشد؛ ساختار صفحه احتمالاً عوض شده.")
+        return []
+
+    print(f"[INFO] {source_name}: با روش «{method}» استخراج شد")
+    return [{"source": source_name, **item} for item in raw_items]
 
 
 def parse_looleh_product(url, source_name):
