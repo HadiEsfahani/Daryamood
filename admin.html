@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مدیریت منابع استخراج</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --border: #e2e8f0;
+            --text: #1e293b;
+            --danger: #ef4444;
+            --success: #10b981;
+        }
+        * { box-sizing: border-box; font-family: Tahoma, 'Vazirmatn', sans-serif; }
+        body { background-color: var(--bg); color: var(--text); padding: 25px 15px; margin: 0; }
+        .container { max-width: 900px; margin: 0 auto; }
+        .card { background: var(--card); border-radius: 12px; border: 1px solid var(--border); padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.04); }
+        h2, h3 { margin-top: 0; color: #0f172a; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 6px; font-weight: bold; font-size: 0.9rem; }
+        input[type="text"], input[type="password"] {
+            width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 0.95rem; outline: none;
+        }
+        input:focus { border-color: var(--primary); }
+        .btn {
+            background-color: var(--primary); color: white; border: none; padding: 10px 18px; border-radius: 8px;
+            cursor: pointer; font-size: 0.95rem; font-weight: bold; transition: background 0.2s;
+        }
+        .btn:hover { background-color: var(--primary-hover); }
+        .btn-success { background-color: var(--success); }
+        .btn-danger { background-color: var(--danger); padding: 5px 10px; font-size: 0.85rem; }
+        .table-responsive { overflow-x: auto; margin-top: 15px; }
+        table { width: 100%; border-collapse: collapse; text-align: right; }
+        th, td { padding: 12px; border-bottom: 1px solid var(--border); }
+        th { background-color: #f1f5f9; }
+        .alert { padding: 12px; border-radius: 8px; margin-bottom: 15px; display: none; }
+        .alert-success { background-color: #dcfce7; color: #15803d; border: 1px solid #bbf7d0; }
+        .alert-danger { background-color: #fee2e2; color: #b91c1c; border: 1px solid #fecaca; }
+        .status-badge { display: inline-block; padding: 3px 8px; border-radius: 6px; font-size: 0.8rem; background: #e2e8f0; }
+        .actions-row { display: flex; gap: 10px; align-items: center; justify-content: space-between; flex-wrap: wrap; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="card">
+        <h2>⚙️ تنظیمات اتصال به گیت‌هاب</h2>
+        <p style="font-size: 0.85rem; color: #64748b;">اطلاعات فقط در مرورگر شما ذخیره می‌شوند و جای دیگری ارسال نمی‌شوند.</p>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+            <div class="form-group">
+                <label>نام کاربری و ریپازیتوری (مثال: username/repo):</label>
+                <input type="text" id="repoPath" placeholder="username/repo">
+            </div>
+            <div class="form-group">
+                <label>توکن گیت‌هاب (Personal Access Token):</label>
+                <input type="password" id="ghToken" placeholder="ghp_xxxx">
+            </div>
+        </div>
+        <button class="btn" onclick="saveConfig()">ذخیره و دریافت اطلاعات</button>
+    </div>
+
+    <div id="alertBox" class="alert"></div>
+
+    <div class="card">
+        <h3>➕ افزودن منبع جدید</h3>
+        <form id="addForm" onsubmit="addSource(event)">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                <div class="form-group">
+                    <label>عنوان دسته‌بندی (مثال: میلگرد ذوب آهن):</label>
+                    <input type="text" id="newTitle" required placeholder="قیمت میلگرد...">
+                </div>
+                <div class="form-group">
+                    <label>نام سایت (مثال: آهن آنلاین):</label>
+                    <input type="text" id="newSource" required placeholder="آهن آنلاین">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>آدرس صفحه هدف (URL):</label>
+                <input type="text" id="newUrl" required dir="ltr" placeholder="https://...">
+            </div>
+            <button type="submit" class="btn btn-success" id="submitBtn">ثبت و افزودن به لیست</button>
+        </form>
+    </div>
+
+    <div class="card">
+        <div class="actions-row">
+            <h3>📋 لیست سایت‌های تحت پوشش (<span id="sourceCount">0</span> منبع)</h3>
+            <button class="btn" onclick="triggerWorkflow()" id="runActionBtn">⚡ اجرای فوری ربات استخراج</button>
+        </div>
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>عنوان</th>
+                        <th>منبع</th>
+                        <th>آدرس لینک</th>
+                        <th>عملیات</th>
+                    </tr>
+                </thead>
+                <tbody id="sourcesTable">
+                    <tr><td colspan="4" style="text-align: center; color: #94a3b8;">در حال دریافت...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    let currentSha = "";
+    let sourcesList = [];
+
+    // بارگذاری تنظیمات از حافظه مرورگر
+    window.onload = function() {
+        document.getElementById('repoPath').value = localStorage.getItem('gh_repo') || '';
+        document.getElementById('ghToken').value = localStorage.getItem('gh_token') || '';
+        if (localStorage.getItem('gh_repo') && localStorage.getItem('gh_token')) {
+            fetchSources();
+        }
+    };
+
+    function showAlert(msg, isError = false) {
+        const box = document.getElementById('alertBox');
+        box.style.display = 'block';
+        box.className = 'alert ' + (isError ? 'alert-danger' : 'alert-success');
+        box.innerText = msg;
+        setTimeout(() => { box.style.display = 'none'; }, 5000);
+    }
+
+    function saveConfig() {
+        const repo = document.getElementById('repoPath').value.trim();
+        const token = document.getElementById('ghToken').value.trim();
+        if (!repo || !token) {
+            showAlert("لطفاً هر دو فیلد مخزن و توکن را پر کنید.", true);
+            return;
+        }
+        localStorage.setItem('gh_repo', repo);
+        localStorage.setItem('gh_token', token);
+        fetchSources();
+    }
+
+    // خواندن فایل sources.json از مخزن
+    async function fetchSources() {
+        const repo = localStorage.getItem('gh_repo');
+        const token = localStorage.getItem('gh_token');
+        if (!repo || !token) return;
+
+        try {
+            const res = await fetch(`https://api.github.com/repos/${repo}/contents/sources.json`, {
+                headers: { 'Authorization': `token ${token}` }
+            });
+            if (!res.ok) throw new Error("دسترسی رد شد یا فایل sources.json هنوز ساخته نشده است.");
+            
+            const data = await res.json();
+            currentSha = data.sha;
+            const decodedContent = decodeURIComponent(escape(atob(data.content)));
+            sourcesList = JSON.parse(decodedContent);
+            renderTable();
+        } catch (err) {
+            showAlert("خطا در ارتباط: " + err.message, true);
+        }
+    }
+
+    function renderTable() {
+        const tbody = document.getElementById('sourcesTable');
+        document.getElementById('sourceCount').innerText = sourcesList.length;
+        tbody.innerHTML = '';
+
+        if (sourcesList.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="4" style="text-align: center;">هیچ منبعی ثبت نشده است.</td></tr>';
+            return;
+        }
+
+        sourcesList.forEach((item, index) => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td><strong>${item.title}</strong></td>
+                <td><span class="status-badge">${item.source_name}</span></td>
+                <td dir="ltr" style="font-size: 0.85rem; max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                    <a href="${item.url}" target="_blank">${item.url}</a>
+                </td>
+                <td>
+                    <button class="btn btn-danger" onclick="deleteSource(${index})">حذف</button>
+                </td>
+            `;
+            tbody.appendChild(tr);
+        });
+    }
+
+    // ذخیره تغییرات روی گیت‌هاب
+    async function saveToGitHub(newList, commitMessage) {
+        const repo = localStorage.getItem('gh_repo');
+        const token = localStorage.getItem('gh_token');
+        const jsonStr = JSON.stringify(newList, null, 2);
+        const encodedContent = btoa(unescape(encodeURIComponent(jsonStr)));
+
+        const res = await fetch(`https://api.github.com/repos/${repo}/contents/sources.json`, {
+            method: 'PUT',
+            headers: {
+                'Authorization': `token ${token}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                message: commitMessage,
+                content: encodedContent,
+                sha: currentSha
+            })
+        });
+
+        if (!res.ok) throw new Error("ذخیره در گیت‌هاب با خطا مواجه شد.");
+        const data = await res.json();
+        currentSha = data.content.sha;
+        sourcesList = newList;
+        renderTable();
+    }
+
+    async function addSource(e) {
+        e.preventDefault();
+        const title = document.getElementById('newTitle').value.trim();
+        const source_name = document.getElementById('newSource').value.trim();
+        const url = document.getElementById('newUrl').value.trim();
+
+        const btn = document.getElementById('submitBtn');
+        btn.innerText = "در حال ذخیره...";
+        btn.disabled = true;
+
+        try {
+            const updated = [...sourcesList, { title, source_name, url }];
+            await saveToGitHub(updated, `Add source: ${title}`);
+            showAlert("✅ منبع جدید با موفقیت ذخیره شد.");
+            document.getElementById('addForm').reset();
+        } catch (err) {
+            showAlert(err.message, true);
+        } finally {
+            btn.innerText = "ثبت و افزودن به لیست";
+            btn.disabled = false;
+        }
+    }
+
+    async function deleteSource(index) {
+        if (!confirm(`آیا از حذف "${sourcesList[index].title}" مطمئن هستید؟`)) return;
+        try {
+            const updated = sourcesList.filter((_, i) => i !== index);
+            await saveToGitHub(updated, `Delete source: ${sourcesList[index].title}`);
+            showAlert("منبع با موفقیت حذف شد.");
+        } catch (err) {
+            showAlert(err.message, true);
+        }
+    }
+
+    // ارسال درخواست اجرای آنی اکشن
+    async function triggerWorkflow() {
+        const repo = localStorage.getItem('gh_repo');
+        const token = localStorage.getItem('gh_token');
+        const btn = document.getElementById('runActionBtn');
+        btn.innerText = "در حال ارسال دستور...";
+        btn.disabled = true;
+
+        try {
+            const res = await fetch(`https://api.github.com/repos/${repo}/actions/workflows/scraper.yml/dispatches`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `token ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ ref: 'main' })
+            });
+
+            if (res.ok) {
+                showAlert("🚀 دستور اجرای ربات با موفقیت صادر شد! صفحه تا ۲ دقیقه دیگر به‌روز می‌شود.");
+            } else {
+                throw new Error("خطا در اجرای Action. از فعال بودن تیک workflow در توکن مطمئن شوید.");
+            }
+        } catch (err) {
+            showAlert(err.message, true);
+        } finally {
+            btn.innerText = "⚡ اجرای فوری ربات استخراج";
+            btn.disabled = false;
+        }
+    }
+</script>
+</body>
+</html>
