@@ -48,7 +48,6 @@
 <div class="container">
     <div class="card">
         <h2>⚙️ تنظیمات اتصال به گیت‌هاب</h2>
-        <p style="font-size: 0.85rem; color: #64748b;">اطلاعات فقط در مرورگر شما ذخیره می‌شوند و جای دیگری ارسال نمی‌شوند.</p>
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
             <div class="form-group">
                 <label>نام کاربری و ریپازیتوری (مثال: username/repo):</label>
@@ -59,7 +58,7 @@
                 <input type="password" id="ghToken" placeholder="ghp_xxxx">
             </div>
         </div>
-        <button class="btn" onclick="saveConfig()">ذخیره و دریافت اطلاعات</button>
+        <button class="btn" id="saveConfigBtn" onclick="saveConfig()">ذخیره و دریافت اطلاعات</button>
     </div>
 
     <div id="alertBox" class="alert"></div>
@@ -69,25 +68,25 @@
         <form id="addForm" onsubmit="addSource(event)">
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
                 <div class="form-group">
-                    <label>عنوان دسته‌بندی (مثال: میلگرد ذوب آهن):</label>
-                    <input type="text" id="newTitle" required placeholder="قیمت میلگرد...">
+                    <label>عنوان دسته‌بندی:</label>
+                    <input type="text" id="newTitle" required placeholder="مثال: قیمت میلگرد">
                 </div>
                 <div class="form-group">
-                    <label>نام سایت (مثال: آهن آنلاین):</label>
-                    <input type="text" id="newSource" required placeholder="آهن آنلاین">
+                    <label>نام منبع / سایت:</label>
+                    <input type="text" id="newSource" required placeholder="مثال: آهن آنلاین">
                 </div>
             </div>
             <div class="form-group">
                 <label>آدرس صفحه هدف (URL):</label>
                 <input type="text" id="newUrl" required dir="ltr" placeholder="https://...">
             </div>
-            <button type="submit" class="btn btn-success" id="submitBtn">ثبت و افزودن به لیست</button>
+            <button type="submit" class="btn btn-success" id="submitBtn">ثبت و ذخیره در گیت‌هاب</button>
         </form>
     </div>
 
     <div class="card">
         <div class="actions-row">
-            <h3>📋 لیست سایت‌های تحت پوشش (<span id="sourceCount">0</span> منبع)</h3>
+            <h3>📋 لیست منابع فعال (<span id="sourceCount">0</span> منبع)</h3>
             <button class="btn" onclick="triggerWorkflow()" id="runActionBtn">⚡ اجرای فوری ربات استخراج</button>
         </div>
         <div class="table-responsive">
@@ -101,7 +100,7 @@
                     </tr>
                 </thead>
                 <tbody id="sourcesTable">
-                    <tr><td colspan="4" style="text-align: center; color: #94a3b8;">در حال دریافت...</td></tr>
+                    <tr><td colspan="4" style="text-align: center; color: #94a3b8;">هنوز تنظیمی انجام نشده است.</td></tr>
                 </tbody>
             </table>
         </div>
@@ -109,14 +108,25 @@
 </div>
 
 <script>
-    let currentSha = "";
+    let currentSha = null;
     let sourcesList = [];
 
-    // بارگذاری تنظیمات از حافظه مرورگر
+    // تابع کمکی برای کدگذاری صحیح UTF-8 به Base64
+    function utf8ToBase64(str) {
+        return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, (match, p1) => String.fromCharCode('0x' + p1)));
+    }
+
+    // تابع کمکی برای رمزگشایی Base64 به UTF-8
+    function base64ToUtf8(str) {
+        return decodeURIComponent(Array.prototype.map.call(atob(str), c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join(''));
+    }
+
     window.onload = function() {
-        document.getElementById('repoPath').value = localStorage.getItem('gh_repo') || '';
-        document.getElementById('ghToken').value = localStorage.getItem('gh_token') || '';
-        if (localStorage.getItem('gh_repo') && localStorage.getItem('gh_token')) {
+        const savedRepo = localStorage.getItem('gh_repo') || '';
+        const savedToken = localStorage.getItem('gh_token') || '';
+        document.getElementById('repoPath').value = savedRepo;
+        document.getElementById('ghToken').value = savedToken;
+        if (savedRepo && savedToken) {
             fetchSources();
         }
     };
@@ -126,40 +136,72 @@
         box.style.display = 'block';
         box.className = 'alert ' + (isError ? 'alert-danger' : 'alert-success');
         box.innerText = msg;
-        setTimeout(() => { box.style.display = 'none'; }, 5000);
+        setTimeout(() => { box.style.display = 'none'; }, 8000);
+    }
+
+    function cleanRepoInput(raw) {
+        return raw.replace(/^https?:\/\/github\.com\//, '').replace(/\/$/, '').trim();
     }
 
     function saveConfig() {
-        const repo = document.getElementById('repoPath').value.trim();
+        let repo = cleanRepoInput(document.getElementById('repoPath').value);
         const token = document.getElementById('ghToken').value.trim();
+
         if (!repo || !token) {
-            showAlert("لطفاً هر دو فیلد مخزن و توکن را پر کنید.", true);
+            showAlert("لطفاً هم نام ریپازیتوری و هم توکن گیت‌هاب را وارد کنید.", true);
             return;
         }
+
+        document.getElementById('repoPath').value = repo;
         localStorage.setItem('gh_repo', repo);
         localStorage.setItem('gh_token', token);
+        showAlert("تنظیمات ذخیره شد. در حال برقراری ارتباط با گیت‌هاب...");
         fetchSources();
     }
 
-    // خواندن فایل sources.json از مخزن
     async function fetchSources() {
-        const repo = localStorage.getItem('gh_repo');
+        let repo = localStorage.getItem('gh_repo');
         const token = localStorage.getItem('gh_token');
         if (!repo || !token) return;
 
+        repo = cleanRepoInput(repo);
+        const btn = document.getElementById('saveConfigBtn');
+        btn.disabled = true;
+        btn.innerText = "در حال بررسی...";
+
         try {
             const res = await fetch(`https://api.github.com/repos/${repo}/contents/sources.json`, {
-                headers: { 'Authorization': `token ${token}` }
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Accept': 'application/vnd.github.v3+json'
+                }
             });
-            if (!res.ok) throw new Error("دسترسی رد شد یا فایل sources.json هنوز ساخته نشده است.");
-            
+
+            if (res.status === 404) {
+                // فایل هنوز در گیت‌هاب نیست
+                currentSha = null;
+                sourcesList = [];
+                renderTable();
+                showAlert("اتصال با موفقیت برقرار شد. فایل sources.json هنوز وجود ندارد و با ثبت اولین منبع ایجاد خواهد شد.");
+                return;
+            }
+
+            if (!res.ok) {
+                const errData = await res.json().catch(() => ({}));
+                throw new Error(`خطای ${res.status}: ${errData.message || 'دسترسی غیرمجاز یا ریپازیتوری نامعتبر'}`);
+            }
+
             const data = await res.json();
             currentSha = data.sha;
-            const decodedContent = decodeURIComponent(escape(atob(data.content)));
-            sourcesList = JSON.parse(decodedContent);
+            const content = base64ToUtf8(data.content.replace(/\s/g, ''));
+            sourcesList = JSON.parse(content);
             renderTable();
+            showAlert("✅ ارتباط با موفقیت برقرار شد و منابع دریافت گردید.");
         } catch (err) {
-            showAlert("خطا در ارتباط: " + err.message, true);
+            showAlert("خطا در اتصال به گیت‌هاب: " + err.message, true);
+        } finally {
+            btn.disabled = false;
+            btn.innerText = "ذخیره و دریافت اطلاعات";
         }
     }
 
@@ -169,7 +211,7 @@
         tbody.innerHTML = '';
 
         if (sourcesList.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="4" style="text-align: center;">هیچ منبعی ثبت نشده است.</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; color: #64748b;">هیچ منبعی ثبت نشده است. از فرم بالا منبع جدید اضافه کنید.</td></tr>';
             return;
         }
 
@@ -189,27 +231,35 @@
         });
     }
 
-    // ذخیره تغییرات روی گیت‌هاب
     async function saveToGitHub(newList, commitMessage) {
-        const repo = localStorage.getItem('gh_repo');
+        let repo = cleanRepoInput(localStorage.getItem('gh_repo'));
         const token = localStorage.getItem('gh_token');
         const jsonStr = JSON.stringify(newList, null, 2);
-        const encodedContent = btoa(unescape(encodeURIComponent(jsonStr)));
+        const encodedContent = utf8ToBase64(jsonStr);
+
+        const bodyPayload = {
+            message: commitMessage,
+            content: encodedContent
+        };
+        if (currentSha) {
+            bodyPayload.sha = currentSha;
+        }
 
         const res = await fetch(`https://api.github.com/repos/${repo}/contents/sources.json`, {
             method: 'PUT',
             headers: {
-                'Authorization': `token ${token}`,
+                'Authorization': `Bearer ${token}`,
+                'Accept': 'application/vnd.github.v3+json',
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({
-                message: commitMessage,
-                content: encodedContent,
-                sha: currentSha
-            })
+            body: JSON.stringify(bodyPayload)
         });
 
-        if (!res.ok) throw new Error("ذخیره در گیت‌هاب با خطا مواجه شد.");
+        if (!res.ok) {
+            const errData = await res.json().catch(() => ({}));
+            throw new Error(`خطا در ذخیره (${res.status}): ${errData.message || 'مشکل در نوشتن فایل'}`);
+        }
+
         const data = await res.json();
         currentSha = data.content.sha;
         sourcesList = newList;
@@ -223,18 +273,18 @@
         const url = document.getElementById('newUrl').value.trim();
 
         const btn = document.getElementById('submitBtn');
-        btn.innerText = "در حال ذخیره...";
+        btn.innerText = "در حال ذخیره در مخزن...";
         btn.disabled = true;
 
         try {
             const updated = [...sourcesList, { title, source_name, url }];
             await saveToGitHub(updated, `Add source: ${title}`);
-            showAlert("✅ منبع جدید با موفقیت ذخیره شد.");
+            showAlert("✅ منبع جدید ذخیره شد.");
             document.getElementById('addForm').reset();
         } catch (err) {
             showAlert(err.message, true);
         } finally {
-            btn.innerText = "ثبت و افزودن به لیست";
+            btn.innerText = "ثبت و ذخیره در گیت‌هاب";
             btn.disabled = false;
         }
     }
@@ -250,9 +300,8 @@
         }
     }
 
-    // ارسال درخواست اجرای آنی اکشن
     async function triggerWorkflow() {
-        const repo = localStorage.getItem('gh_repo');
+        let repo = cleanRepoInput(localStorage.getItem('gh_repo'));
         const token = localStorage.getItem('gh_token');
         const btn = document.getElementById('runActionBtn');
         btn.innerText = "در حال ارسال دستور...";
@@ -262,19 +311,21 @@
             const res = await fetch(`https://api.github.com/repos/${repo}/actions/workflows/scraper.yml/dispatches`, {
                 method: 'POST',
                 headers: {
-                    'Authorization': `token ${token}`,
+                    'Authorization': `Bearer ${token}`,
+                    'Accept': 'application/vnd.github.v3+json',
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({ ref: 'main' })
             });
 
             if (res.ok) {
-                showAlert("🚀 دستور اجرای ربات با موفقیت صادر شد! صفحه تا ۲ دقیقه دیگر به‌روز می‌شود.");
+                showAlert("🚀 ربات با موفقیت فعال شد! داده‌ها تا ۱ الی ۲ دقیقه دیگر به‌روز می‌شوند.");
             } else {
-                throw new Error("خطا در اجرای Action. از فعال بودن تیک workflow در توکن مطمئن شوید.");
+                const errData = await res.json().catch(() => ({}));
+                throw new Error(errData.message || "اطمینان حاصل کنید که فایل scraper.yml در شاخه main وجود دارد و دسترسی workflow در توکن فعال است.");
             }
         } catch (err) {
-            showAlert(err.message, true);
+            showAlert("خطا در اجرای Action: " + err.message, true);
         } finally {
             btn.innerText = "⚡ اجرای فوری ربات استخراج";
             btn.disabled = false;
