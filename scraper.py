@@ -4,25 +4,20 @@ import requests
 import pandas as pd
 from bs4 import BeautifulSoup
 import jdatetime
+def load_sources():
+    """خواندن لیست لینک‌ها از فایل sources.json که توسط پنل ادمین آپدیت می‌شود"""
+    if os.path.exists("sources.json"):
+        with open("sources.json", "r", encoding="utf-8") as f:
+            try:
+                return json.load(f)
+            except json.JSONDecodeError:
+                print("خطا: فایل sources.json نامعتبر است.")
+                return []
+    print("خطا: فایل sources.json پیدا نشد.")
+    return []
 
-SOURCES = [
-    {
-        "title": "قیمت میلگرد",
-        "url": "https://ahanonline.com/product-category/%D9%85%DB%8C%D9%84%DA%AF%D8%B1%D8%AF/%D9%82%DB%8C%D9%85%D8%AA-%D9%85%DB%8C%D9%84%DA%AF%D8%B1%D8%AF/"
-    },
-    {
-        "title": "قیمت ورق سیاه",
-        "url": "https://ahanonline.com/product-category/%D8%A7%D9%86%D9%88%D8%A7%D8%B9-%D9%88%D8%B1%D9%82/%D9%88%D8%B1%D9%82-%D8%B3%DB%8C%D8%A7%D9%87/"
-    },
-    {
-        "title": "قیمت تیرآهن",
-        "url": "https://ahanonline.com/product-category/%D8%AA%DB%8C%D8%B1%D8%A2%D9%87%D9%86-%D9%88-%D9%87%D8%A7%D8%B4/%D8%AA%DB%8C%D8%B1%D8%A2%D9%87%D9%86/"
-    },
-    {
-        "title": "قیمت لوله پلی اتیلن",
-        "url": "https://loolehonline.com/product/2/%D9%84%D9%88%D9%84%D9%87-%D9%BE%D9%84%DB%8C-%D8%A7%D8%AA%DB%8C%D9%84%D9%86"
-    }
-]
+# جایگزینی لیست ثابت با لیستی که از فایل خوانده می‌شود
+SOURCES = load_sources()
 
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
