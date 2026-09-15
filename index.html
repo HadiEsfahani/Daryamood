@@ -13,10 +13,10 @@
             --text-main: #1e293b;
             --text-muted: #475569;
             --border-color: #cbd5e1;
-            --table-header: #334155; /* تیره کردن هدر جدول */
+            --table-header: #334155;
             --table-header-text: #ffffff;
             --row-hover: #f1f5f9;
-            --card-header-bg: #1e293b; /* تیره کردن هدر بخش‌ها */
+            --card-header-bg: #1e293b;
         }
         
         body {
@@ -25,7 +25,7 @@
             color: var(--text-main);
             margin: 0;
             padding: 20px;
-            line-height: 2; /* افزایش فاصله سطرها */
+            line-height: 2;
         }
         
         .container {
@@ -54,7 +54,6 @@
             margin-bottom: 20px;
         }
 
-        /* استایل مربوط به باکس جستجو */
         .search-box {
             width: 100%;
             max-width: 500px;
@@ -95,11 +94,11 @@
         .card-header h2 {
             margin: 0;
             font-size: 1.3rem;
-            color: #ffffff; /* سفید شدن متن هدر کادر */
+            color: #ffffff;
         }
         
         .source-link {
-            color: #93c5fd; /* آبی روشن برای دیده شدن روی پس‌زمینه تیره */
+            color: #93c5fd;
             text-decoration: none;
             font-size: 0.9rem;
             font-weight: 500;
@@ -134,7 +133,7 @@
         }
         
         th, td {
-            padding: 16px 18px; /* افزایش فاصله داخلی سلول‌های جدول */
+            padding: 16px 18px;
             border-bottom: 1px solid var(--border-color);
         }
         
@@ -161,10 +160,10 @@
     <div class="container">
         <header>
             <h1>📊 آخرین قیمت‌های استخراج شده</h1>
-            <div class="update-time">به‌روزرسانی: 1405/06/24 - 05:58</div>
+            <div class="update-time">به‌روزرسانی: 1405/06/24 - 06:09</div>
             <br>
-            <!-- کادر جستجو -->
-            <input type="text" id="searchInput" class="search-box" placeholder="جستجو در عناوین (مثلاً میلگرد)..." onkeyup="filterCards()">
+            <!-- فیلد جستجوی پیشرفته -->
+            <input type="text" id="searchInput" class="search-box" placeholder="جستجو در تمام اطلاعات جداول (سایز، برند و...)" onkeyup="filterCards()">
         </header>
         <main id="cardsContainer">
             
@@ -174,1248 +173,818 @@
                 <a href="https://ahanonline.com/product-category/%D9%85%DB%8C%D9%84%DA%AF%D8%B1%D8%AF/%D9%82%DB%8C%D9%85%D8%AA-%D9%85%DB%8C%D9%84%DA%AF%D8%B1%D8%AF/%D9%85%DB%8C%D9%84%DA%AF%D8%B1%D8%AF-14/" target="_blank" class="source-link">مشاهده صفحه اصلی ↗</a>
             </div>
             <div class="card-body">
-        <div class="table-wrapper"><table class="w-full text-[16px] rounded-[12px]" data-split="size" data-value="14">
-<thead class="text-center bg-[#F2ECE3] py-[16px] align-middle text-[#514E46]">
-<tr class="">
-<th class="py-[10px] w-[25.0%] !font-medium">نام کالا</th>
-<th class="py-[10px] w-[25.0%] !font-medium" key="">
-          واحد
-        </th>
-<!-- test for seo -->
-<th class="py-[10px] w-[25.0%] !font-medium">تاریخ بروزرسانی</th>
-<th class="py-[10px] w-[25.0%] text-textTitle !font-normal">
-          قیمت (تومان)
-        </th>
-<th class="py-[10px] w-[25.0%] !font-medium">نوسانات</th>
-<th class="py-[10px] w-[25.0%] !font-medium">نمودار</th>
-</tr>
-</thead>
-<tbody class="text-center text-[#464e5f] table_price">
-<tr class="even:bg-[#F8F6F3]">
-<td class="py-[16px] w-[25.0%]">
-<a href="/product/میلگرد-آجدار-نورد-کاسپین-14-a3-شاخه-12-متری-کارخانه/">
-            میلگرد 14 نورد کاسپین آجدار A3 کارخانه
-
-          </a>
-</td>
-<td class="py-[10px] w-[25.0%]">کیلوگرم</td>
-<td class="py-[10px] w-[25.0%]">
-          1405/6/23
-        </td>
-<td class="py-[10px] w-[25.0%]">
-<div class="text-[#35332E] font-Bold product-price text-[18px]" data-price="885454">
-            
-              88,550
-            
-          </div>
-</td>
-<td class="py-[10px]">
-<div class="flex items-center justify-center">
-<div class="text-[16px] w-[50%]">
-<div class="text-[#464e5f]" style="direction: ltr">
-                0.0%
-              </div>
-</div>
-</div>
-</td>
-<!-- chart -->
-<td class="py-[10px]">
-<div class="flex items-center justify-center">
-<div class="text-[18px] text-[#556a7a] table-chart cursor-pointer" data-code="11520" data-id="95548" data-name="میلگرد 14 نورد کاسپین آجدار A3 کارخانه">
-
-</div>
-</div>
-</td>
-</tr>
-<tr class="even:bg-[#F8F6F3]">
-<td class="py-[16px] w-[25.0%]">
-<a href="/product/میلگرد-آجدار-اروند-14-a3-شاخه-12-متری-کارخانه/">
-            میلگرد 14 اروند آجدار A3 کارخانه
-
-          </a>
-</td>
-<td class="py-[10px] w-[25.0%]">کیلوگرم</td>
-<td class="py-[10px] w-[25.0%]">
-          1405/6/23
-        </td>
-<td class="py-[10px] w-[25.0%]">
-<div class="text-[#35332E] font-Bold product-price text-[18px]" data-price="813636">
-            
-              81,360
-            
-          </div>
-</td>
-<td class="py-[10px]">
-<div class="flex items-center justify-center">
-<div class="text-[16px] w-[50%]">
-<div class="text-[#464e5f]" style="direction: ltr">
-                0.0%
-              </div>
-</div>
-</div>
-</td>
-<!-- chart -->
-<td class="py-[10px]">
-<div class="flex items-center justify-center">
-<div class="text-[18px] text-[#556a7a] table-chart cursor-pointer" data-code="11159" data-id="94086" data-name="میلگرد 14 اروند آجدار A3 کارخانه">
-
-</div>
-</div>
-</td>
-</tr>
-<tr class="even:bg-[#F8F6F3]">
-<td class="py-[16px] w-[25.0%]">
-<a href="/product/میلگرد-آجدار-فولاد-نگین-اردکان-یزد-14-a3-شاخه-12-متری-کارخانه/">
-            میلگرد 14 فولاد نگین اردکان یزد آجدار A3 کارخانه
-
-          </a>
-</td>
-<td class="py-[10px] w-[25.0%]">کیلوگرم</td>
-<td class="py-[10px] w-[25.0%]">
-          1405/6/23
-        </td>
-<td class="py-[10px] w-[25.0%]">
-<div class="text-[#35332E] font-Bold product-price text-[18px]" data-price="820909">
-            
-              82,090
-            
-          </div>
-</td>
-<td class="py-[10px]">
-<div class="flex items-center justify-center">
-<div class="text-[16px] w-[50%]">
-<div class="text-[#464e5f]" style="direction: ltr">
-                0.0%
-              </div>
-</div>
-</div>
-</td>
-<!-- chart -->
-<td class="py-[10px]">
-<div class="flex items-center justify-center">
-<div class="text-[18px] text-[#556a7a] table-chart cursor-pointer" data-code="11530" data-id="95558" data-name="میلگرد 14 فولاد نگین اردکان یزد آجدار A3 کارخانه">
-
-</div>
-</div>
-</td>
-</tr>
-<tr class="even:bg-[#F8F6F3]">
-<td class="py-[16px] w-[25.0%]">
-<a href="/product/میلگرد-آجدار-پردیس-14-a3-شاخه-12-متری-کارخانه/">
-            میلگرد 14 پردیس آجدار A3 کارخانه
-
-          </a>
-</td>
-<td class="py-[10px] w-[25.0%]">کیلوگرم</td>
-<td class="py-[10px] w-[25.0%]">
-          1405/6/23
-        </td>
-<td class="py-[10px] w-[25.0%]">
-<div class="text-[#35332E] font-Bold product-price text-[18px]" data-price="895454">
-            
-              89,550
-            
-          </div>
-</td>
-<td class="py-[10px]">
-<div class="flex items-center justify-center">
-<div class="text-[16px] w-[50%]">
-<div class="text-[#C91300]" style="direction: ltr">
-                -0.5%
-              </div>
-</div>
-</div>
-</td>
-<!-- chart -->
-<td class="py-[10px]">
-<div class="flex items-center justify-center">
-<div class="text-[18px] text-[#556a7a] table-chart cursor-pointer" data-code="10728" data-id="93407" data-name="میلگرد 14 پردیس آجدار A3 کارخانه">
-
-</div>
-</div>
-</td>
-</tr>
-<tr class="even:bg-[#F8F6F3]">
-<td class="py-[16px] w-[25.0%]">
-<a href="/product/میلگرد-آجدار-ابهر-14-a3-شاخه-12-متری-کارخانه/">
-            میلگرد 14 ابهر آجدار A3 کارخانه
-
-          </a>
-</td>
-<td class="py-[10px] w-[25.0%]">کیلوگرم</td>
-<td class="py-[10px] w-[25.0%]">
-          1405/6/23
-        </td>
-<td class="py-[10px] w-[25.0%]">
-<div class="text-[#35332E] font-Bold product-price text-[18px]" data-price="895454">
-            
-              89,550
-            
-          </div>
-</td>
-<td class="py-[10px]">
-<div class="flex items-center justify-center">
-<div class="text-[16px] w-[50%]">
-<div class="text-[#C91300]" style="direction: ltr">
-                -0.5%
-              </div>
-</div>
-</div>
-</td>
-<!-- chart -->
-<td class="py-[10px]">
-<div class="flex items-center justify-center">
-<div class="text-[18px] text-[#556a7a] table-chart cursor-pointer" data-code="0868" data-id="82253" data-name="میلگرد 14 ابهر آجدار A3 کارخانه">
-
-</div>
-</div>
-</td>
-</tr>
-<tr class="even:bg-[#F8F6F3]">
-<td class="py-[16px] w-[25.0%]">
-<a href="/product/میلگرد-آجدار-پرشین-فولاد-14-a3-شاخه-12-متری-ک/">
-            میلگرد 14 پرشین فولاد آجدار A3 کارخانه
-
-          </a>
-</td>
-<td class="py-[10px] w-[25.0%]">کیلوگرم</td>
-<td class="py-[10px] w-[25.0%]">
-          1405/6/23
-        </td>
-<td class="py-[10px] w-[25.0%]">
-<div class="text-[#35332E] font-Bold product-price text-[18px]" data-price="869090">
-            
-              86,910
-            
-          </div>
-</td>
-<td class="py-[10px]">
-<div class="flex items-center justify-center">
-<div class="text-[16px] w-[50%]">
-<div class="text-[#464e5f]" style="direction: ltr">
-                0.0%
-              </div>
-</div>
-</div>
-</td>
-<!-- chart -->
-<td class="py-[10px]">
-<div class="flex items-center justify-center">
-<div class="text-[18px] text-[#556a7a] table-chart cursor-pointer" data-code="1214" data-id="82596" data-name="میلگرد 14 پرشین فولاد آجدار A3 کارخانه">
-
-</div>
-</div>
-</td>
-</tr>
-<tr class="even:bg-[#F8F6F3]">
-<td class="py-[16px] w-[25.0%]">
-<a href="/product/میلگرد-آجدار-قائم-14-a3-شاخه-12-متری-کارخانه/">
-            میلگرد 14 قائم آجدار A3 کارخانه
-
-          </a>
-</td>
-<td class="py-[10px] w-[25.0%]">کیلوگرم</td>
-<td class="py-[10px] w-[25.0%]">
-          1405/6/23
-        </td>
-<td class="py-[10px] w-[25.0%]">
-<div class="text-[#35332E] font-Bold product-price text-[18px]" data-price="854545">
-            
-              85,450
-            
-          </div>
-</td>
-<td class="py-[10px]">
-<div class="flex items-center justify-center">
-<div class="text-[16px] w-[50%]">
-<div class="text-[#464e5f]" style="direction: ltr">
-                0.0%
-              </div>
-</div>
-</div>
-</td>
-<!-- chart -->
-<td class="py-[10px]">
-<div class="flex items-center justify-center">
-<div class="text-[18px] text-[#556a7a] table-chart cursor-pointer" data-code="9839" data-id="92006" data-name="میلگرد 14 قائم آجدار A3 کارخانه">
-
-</div>
-</div>
-</td>
-</tr>
-<tr class="even:bg-[#F8F6F3]">
-<td class="py-[16px] w-[25.0%]">
-<a href="/product/میلگرد-آجدار-کاوه-تیکمه-داش-14-a3-شاخه-12-متر/">
-            میلگرد 14 کاوه تیکمه داش آجدار A3 کارخانه
-
-          </a>
-</td>
-<td class="py-[10px] w-[25.0%]">کیلوگرم</td>
-<td class="py-[10px] w-[25.0%]">
-          1405/6/23
-        </td>
-<td class="py-[10px] w-[25.0%]">
-<div class="text-[#35332E] font-Bold product-price text-[18px]" data-price="895454">
-            
-              89,550
-            
-          </div>
-</td>
-<td class="py-[10px]">
-<div class="flex items-center justify-center">
-<div class="text-[16px] w-[50%]">
-<div class="text-[#1CA34E]" style="direction: ltr">
-                + 0.5%
-              </div>
-</div>
-</div>
-</td>
-<!-- chart -->
-<td class="py-[10px]">
-<div class="flex items-center justify-center">
-<div class="text-[18px] text-[#556a7a] table-chart cursor-pointer" data-code="1325" data-id="82707" data-name="میلگرد 14 کاوه تیکمه داش آجدار A3 کارخانه">
-
-</div>
-</div>
-</td>
-</tr>
-<tr class="even:bg-[#F8F6F3]">
-<td class="py-[16px] w-[25.0%]">
-<a href="/product/میلگرد-آجدار-کوثر-اهواز-14-a3-شاخه-12-متری-کا-2/">
-            میلگرد 14 کوثر اهواز آجدار A3 کارخانه
-
-          </a>
-</td>
-<td class="py-[10px] w-[25.0%]">کیلوگرم</td>
-<td class="py-[10px] w-[25.0%]">
-          1405/6/23
-        </td>
-<td class="py-[10px] w-[25.0%]">
-<div class="text-[#35332E] font-Bold product-price text-[18px]" data-price="840909">
-            
-              84,090
-            
-          </div>
-</td>
-<td class="py-[10px]">
-<div class="flex items-center justify-center">
-<div class="text-[16px] w-[50%]">
-<div class="text-[#1CA34E]" style="direction: ltr">
-                + 0.5%
-              </div>
-</div>
-</div>
-</td>
-<!-- chart -->
-<td class="py-[10px]">
-<div class="flex items-center justify-center">
-<div class="text-[18px] text-[#556a7a] table-chart cursor-pointer" data-code="9484" data-id="91477" data-name="میلگرد 14 کوثر اهواز آجدار A3 کارخانه">
-
-</div>
-</div>
-</td>
-</tr>
-<tr class="even:bg-[#F8F6F3]">
-<td class="py-[16px] w-[25.0%]">
-<a href="/product/میلگرد-آجدار-کاشان-14-a3-شاخه-12-متری-کارخانه/">
-            میلگرد 14 کاشان آجدار A3 کارخانه
-
-          </a>
-</td>
-<td class="py-[10px] w-[25.0%]">کیلوگرم</td>
-<td class="py-[10px] w-[25.0%]">
-          1405/6/23
-        </td>
-<td class="py-[10px] w-[25.0%]">
-<div class="text-[#35332E] font-Bold product-price text-[18px]" data-price="909090">
-            
-              90,910
-            
-          </div>
-</td>
-<td class="py-[10px]">
-<div class="flex items-center justify-center">
-<div class="text-[16px] w-[50%]">
-<div class="text-[#464e5f]" style="direction: ltr">
-                0.0%
-              </div>
-</div>
-</div>
-</td>
-<!-- chart -->
-<td class="py-[10px]">
-<div class="flex items-center justify-center">
-<div class="text-[18px] text-[#556a7a] table-chart cursor-pointer" data-code="0513" data-id="81898" data-name="میلگرد 14 کاشان آجدار A3 کارخانه">
-
-</div>
-</div>
-</td>
-</tr>
-<tr class="even:bg-[#F8F6F3]">
-<td class="py-[16px] w-[25.0%]">
-<a href="/product/میلگرد-آجدار-جهان-فولاد-سیرجان-14-a3-شاخه-12/">
-            میلگرد 14 جهان فولاد سیرجان آجدار A3 کارخانه
-
-          </a>
-</td>
-<td class="py-[10px] w-[25.0%]">کیلوگرم</td>
-<td class="py-[10px] w-[25.0%]">
-          1405/6/23
-        </td>
-<td class="py-[10px] w-[25.0%]">
-<div class="text-[#35332E] font-Bold product-price text-[18px]" data-price="851818">
-            
-              85,180
-            
-          </div>
-</td>
-<td class="py-[10px]">
-<div class="flex items-center justify-center">
-<div class="text-[16px] w-[50%]">
-<div class="text-[#464e5f]" style="direction: ltr">
-                0.0%
-              </div>
-</div>
-</div>
-</td>
-<!-- chart -->
-<td class="py-[10px]">
-<div class="flex items-center justify-center">
-<div class="text-[18px] text-[#556a7a] table-chart cursor-pointer" data-code="9207" data-id="91136" data-name="میلگرد 14 جهان فولاد سیرجان آجدار A3 کارخانه">
-
-</div>
-</div>
-</td>
-</tr>
-<tr class="even:bg-[#F8F6F3]">
-<td class="py-[16px] w-[25.0%]">
-<a href="/product/میلگرد-آجدار-هیربد-14-a3-شاخه-12-متری-کارخانه/">
-            میلگرد 14 هیربد آجدار A3 کارخانه
-
-          </a>
-</td>
-<td class="py-[10px] w-[25.0%]">کیلوگرم</td>
-<td class="py-[10px] w-[25.0%]">
-          1405/6/23
-        </td>
-<td class="py-[10px] w-[25.0%]">
-<div class="text-[#35332E] font-Bold product-price text-[18px]" data-price="861818">
-            
-              86,180
-            
-          </div>
-</td>
-<td class="py-[10px]">
-<div class="flex items-center justify-center">
-<div class="text-[16px] w-[50%]">
-<div class="text-[#464e5f]" style="direction: ltr">
-                0.0%
-              </div>
-</div>
-</div>
-</td>
-<!-- chart -->
-<td class="py-[10px]">
-<div class="flex items-center justify-center">
-<div class="text-[18px] text-[#556a7a] table-chart cursor-pointer" data-code="3674" data-id="86189" data-name="میلگرد 14 هیربد آجدار A3 کارخانه">
-
-</div>
-</div>
-</td>
-</tr>
-<tr class="even:bg-[#F8F6F3]">
-<td class="py-[16px] w-[25.0%]">
-<a href="/product/میلگرد-آجدار-نیشابور-14-a3-شاخه-12-متری-کارخا/">
-            میلگرد 14 نیشابور آجدار A3 کارخانه
-
-          </a>
-</td>
-<td class="py-[10px] w-[25.0%]">کیلوگرم</td>
-<td class="py-[10px] w-[25.0%]">
-          1405/6/23
-        </td>
-<td class="py-[10px] w-[25.0%]">
-<div class="text-[#35332E] font-Bold product-price text-[18px]" data-price="854545">
-            
-              85,450
-            
-          </div>
-</td>
-<td class="py-[10px]">
-<div class="flex items-center justify-center">
-<div class="text-[16px] w-[50%]">
-<div class="text-[#C91300]" style="direction: ltr">
-                -4.1%
-              </div>
-</div>
-</div>
-</td>
-<!-- chart -->
-<td class="py-[10px]">
-<div class="flex items-center justify-center">
-<div class="text-[18px] text-[#556a7a] table-chart cursor-pointer" data-code="0747" data-id="82132" data-name="میلگرد 14 نیشابور آجدار A3 کارخانه">
-
-</div>
-</div>
-</td>
-</tr>
-<tr class="even:bg-[#F8F6F3]">
-<td class="py-[16px] w-[25.0%]">
-<a href="/product/میلگرد-آجدار-میانه-14-a3-شاخه-12-متری-کارخانه/">
-            میلگرد 14 میانه آجدار A3 کارخانه
-
-          </a>
-</td>
-<td class="py-[10px] w-[25.0%]">کیلوگرم</td>
-<td class="py-[10px] w-[25.0%]">
-          1405/6/23
-        </td>
-<td class="py-[10px] w-[25.0%]">
-<div class="text-[#35332E] font-Bold product-price text-[18px]" data-price="881818">
-            
-              88,180
-            
-          </div>
-</td>
-<td class="py-[10px]">
-<div class="flex items-center justify-center">
-<div class="text-[16px] w-[50%]">
-<div class="text-[#464e5f]" style="direction: ltr">
-                0.0%
-              </div>
-</div>
-</div>
-</td>
-<!-- chart -->
-<td class="py-[10px]">
-<div class="flex items-center justify-center">
-<div class="text-[18px] text-[#556a7a] table-chart cursor-pointer" data-code="1065" data-id="82447" data-name="میلگرد 14 میانه آجدار A3 کارخانه">
-
-</div>
-</div>
-</td>
-</tr>
-<tr class="even:bg-[#F8F6F3]">
-<td class="py-[16px] w-[25.0%]">
-<a href="/product/میلگرد-آجدار-فایکو-14-a3-شاخه-12-متری-کارخانه/">
-            میلگرد 14 فایکو آجدار A3 کارخانه
-
-          </a>
-</td>
-<td class="py-[10px] w-[25.0%]">کیلوگرم</td>
-<td class="py-[10px] w-[25.0%]">
-          1405/6/23
-        </td>
-<td class="py-[10px] w-[25.0%]">
-<div class="text-[#35332E] font-Bold product-price text-[18px]" data-price="863636">
-            
-              86,360
-            
-          </div>
-</td>
-<td class="py-[10px]">
-<div class="flex items-center justify-center">
-<div class="text-[16px] w-[50%]">
-<div class="text-[#464e5f]" style="direction: ltr">
-                0.0%
-              </div>
-</div>
-</div>
-</td>
-<!-- chart -->
-<td class="py-[10px]">
-<div class="flex items-center justify-center">
-<div class="text-[18px] text-[#556a7a] table-chart cursor-pointer" data-code="8474" data-id="90121" data-name="میلگرد 14 فایکو آجدار A3 کارخانه">
-
-</div>
-</div>
-</td>
-</tr>
-<tr class="even:bg-[#F8F6F3]">
-<td class="py-[16px] w-[25.0%]">
-<a href="/product/میلگرد-آجدار-صبا-فولاد-زاگرس-14-a3-شاخه-12-مت/">
-            میلگرد 14 صبا فولاد زاگرس آجدار A3 کارخانه
-
-          </a>
-</td>
-<td class="py-[10px] w-[25.0%]">کیلوگرم</td>
-<td class="py-[10px] w-[25.0%]">
-          1405/6/23
-        </td>
-<td class="py-[10px] w-[25.0%]">
-<div class="text-[#35332E] font-Bold product-price text-[18px]" data-price="845454">
-            
-              84,550
-            
-          </div>
-</td>
-<td class="py-[10px]">
-<div class="flex items-center justify-center">
-<div class="text-[16px] w-[50%]">
-<div class="text-[#464e5f]" style="direction: ltr">
-                0.0%
-              </div>
-</div>
-</div>
-</td>
-<!-- chart -->
-<td class="py-[10px]">
-<div class="flex items-center justify-center">
-<div class="text-[18px] text-[#556a7a] table-chart cursor-pointer" data-code="3883" data-id="84941" data-name="میلگرد 14 صبا فولاد زاگرس آجدار A3 کارخانه">
-
-</div>
-</div>
-</td>
-</tr>
-<tr class="even:bg-[#F8F6F3]">
-<td class="py-[16px] w-[25.0%]">
-<a href="/product/میلگرد-آجدار-شاهرود-14-a3-شاخه-12-متری-کارخان/">
-            میلگرد 14 شاهرود آجدار A3 کارخانه
-
-          </a>
-</td>
-<td class="py-[10px] w-[25.0%]">کیلوگرم</td>
-<td class="py-[10px] w-[25.0%]">
-          1405/6/23
-        </td>
-<td class="py-[10px] w-[25.0%]">
-<div class="text-[#35332E] font-Bold product-price text-[18px]" data-price="890909">
-            
-              89,090
-            
-          </div>
-</td>
-<td class="py-[10px]">
-<div class="flex items-center justify-center">
-<div class="text-[16px] w-[50%]">
-<div class="text-[#464e5f]" style="direction: ltr">
-                0.0%
-              </div>
-</div>
-</div>
-</td>
-<!-- chart -->
-<td class="py-[10px]">
-<div class="flex items-center justify-center">
-<div class="text-[18px] text-[#556a7a] table-chart cursor-pointer" data-code="1321" data-id="82703" data-name="میلگرد 14 شاهرود آجدار A3 کارخانه">
-
-</div>
-</div>
-</td>
-</tr>
-<tr class="even:bg-[#F8F6F3]">
-<td class="py-[16px] w-[25.0%]">
-<a href="/product/میلگرد-آجدار-راد-همدان-14-a3-شاخه-12-متری-کار/">
-            میلگرد 14 راد همدان آجدار A3 کارخانه
-
-          </a>
-</td>
-<td class="py-[10px] w-[25.0%]">کیلوگرم</td>
-<td class="py-[10px] w-[25.0%]">
-          1405/6/23
-        </td>
-<td class="py-[10px] w-[25.0%]">
-<div class="text-[#35332E] font-Bold product-price text-[18px]" data-price="881772">
-            
-              88,180
-            
-          </div>
-</td>
-<td class="py-[10px]">
-<div class="flex items-center justify-center">
-<div class="text-[16px] w-[50%]">
-<div class="text-[#464e5f]" style="direction: ltr">
-                0.0%
-              </div>
-</div>
-</div>
-</td>
-<!-- chart -->
-<td class="py-[10px]">
-<div class="flex items-center justify-center">
-<div class="text-[18px] text-[#556a7a] table-chart cursor-pointer" data-code="7765" data-id="89048" data-name="میلگرد 14 راد همدان آجدار A3 کارخانه">
-
-</div>
-</div>
-</td>
-</tr>
-<tr class="even:bg-[#F8F6F3]">
-<td class="py-[16px] w-[25.0%]">
-<a href="/product/میلگرد-آجدار-ذوب-و-نورد-کرمان-14-a3-شاخه-12-متری-کارخانه/">
-            میلگرد 14 ذوب و نورد کرمان آجدار A3 کارخانه
-
-          </a>
-</td>
-<td class="py-[10px] w-[25.0%]">کیلوگرم</td>
-<td class="py-[10px] w-[25.0%]">
-          1405/6/23
-        </td>
-<td class="py-[10px] w-[25.0%]">
-<div class="text-[#35332E] font-Bold product-price text-[18px]" data-price="841818">
-            
-              84,180
-            
-          </div>
-</td>
-<td class="py-[10px]">
-<div class="flex items-center justify-center">
-<div class="text-[16px] w-[50%]">
-<div class="text-[#464e5f]" style="direction: ltr">
-                0.0%
-              </div>
-</div>
-</div>
-</td>
-<!-- chart -->
-<td class="py-[10px]">
-<div class="flex items-center justify-center">
-<div class="text-[18px] text-[#556a7a] table-chart cursor-pointer" data-code="9272" data-id="91207" data-name="میلگرد 14 ذوب و نورد کرمان آجدار A3 کارخانه">
-
-</div>
-</div>
-</td>
-</tr>
-<tr class="even:bg-[#F8F6F3]">
-<td class="py-[16px] w-[25.0%]">
-<a href="/product/میلگرد-آجدار-ذوب-آهن-اصفهان-14-a3-شاخه-12-متر/">
-            میلگرد 14 ذوب آهن اصفهان آجدار A3 کارخانه
-
-          </a>
-</td>
-<td class="py-[10px] w-[25.0%]">کیلوگرم</td>
-<td class="py-[10px] w-[25.0%]">
-          1405/6/23
-        </td>
-<td class="py-[10px] w-[25.0%]">
-<div class="text-[#35332E] font-Bold product-price text-[18px]" data-price="890909">
-            
-              89,090
-            
-          </div>
-</td>
-<td class="py-[10px]">
-<div class="flex items-center justify-center">
-<div class="text-[16px] w-[50%]">
-<div class="text-[#464e5f]" style="direction: ltr">
-                0.0%
-              </div>
-</div>
-</div>
-</td>
-<!-- chart -->
-<td class="py-[10px]">
-<div class="flex items-center justify-center">
-<div class="text-[18px] text-[#556a7a] table-chart cursor-pointer" data-code="0607" data-id="81992" data-name="میلگرد 14 ذوب آهن اصفهان آجدار A3 کارخانه">
-
-</div>
-</div>
-</td>
-</tr>
-<tr class="even:bg-[#F8F6F3]">
-<td class="py-[16px] w-[25.0%]">
-<a href="/product/میلگرد-آجدار-درپاد-تبریز-14-a3-شاخه-12-متری-ک/">
-            میلگرد 14 درپاد تبریز آجدار A3 کارخانه
-
-          </a>
-</td>
-<td class="py-[10px] w-[25.0%]">کیلوگرم</td>
-<td class="py-[10px] w-[25.0%]">
-          1405/6/23
-        </td>
-<td class="py-[10px] w-[25.0%]">
-<div class="text-[#35332E] font-Bold product-price text-[18px]" data-price="890909">
-            
-              89,090
-            
-          </div>
-</td>
-<td class="py-[10px]">
-<div class="flex items-center justify-center">
-<div class="text-[16px] w-[50%]">
-<div class="text-[#464e5f]" style="direction: ltr">
-                0.0%
-              </div>
-</div>
-</div>
-</td>
-<!-- chart -->
-<td class="py-[10px]">
-<div class="flex items-center justify-center">
-<div class="text-[18px] text-[#556a7a] table-chart cursor-pointer" data-code="1248" data-id="82630" data-name="میلگرد 14 درپاد تبریز آجدار A3 کارخانه">
-
-</div>
-</div>
-</td>
-</tr>
-<tr class="even:bg-[#F8F6F3]">
-<td class="py-[16px] w-[25.0%]">
-<a href="/product/میلگرد-آجدار-خلیج-فارس-14-a3-شاخه-12-متری-کار/">
-            میلگرد 14 خلیج فارس آجدار A3 کارخانه
-
-          </a>
-</td>
-<td class="py-[10px] w-[25.0%]">کیلوگرم</td>
-<td class="py-[10px] w-[25.0%]">
-          1405/6/23
-        </td>
-<td class="py-[10px] w-[25.0%]">
-<div class="text-[#35332E] font-Bold product-price text-[18px]" data-price="845454">
-            
-              84,550
-            
-          </div>
-</td>
-<td class="py-[10px]">
-<div class="flex items-center justify-center">
-<div class="text-[16px] w-[50%]">
-<div class="text-[#464e5f]" style="direction: ltr">
-                0.0%
-              </div>
-</div>
-</div>
-</td>
-<!-- chart -->
-<td class="py-[10px]">
-<div class="flex items-center justify-center">
-<div class="text-[18px] text-[#556a7a] table-chart cursor-pointer" data-code="9850" data-id="92027" data-name="میلگرد 14 خلیج فارس آجدار A3 کارخانه">
-
-</div>
-</div>
-</td>
-</tr>
-<tr class="even:bg-[#F8F6F3]">
-<td class="py-[16px] w-[25.0%]">
-<a href="/product/میلگرد-آجدار-حسن-رود-14-a3-شاخه-12-متری-کارخا/">
-            میلگرد 14 حسن رود آجدار A3 کارخانه
-
-          </a>
-</td>
-<td class="py-[10px] w-[25.0%]">کیلوگرم</td>
-<td class="py-[10px] w-[25.0%]">
-          1405/6/23
-        </td>
-<td class="py-[10px] w-[25.0%]">
-<div class="text-[#35332E] font-Bold product-price text-[18px]" data-price="890909">
-            
-              89,090
-            
-          </div>
-</td>
-<td class="py-[10px]">
-<div class="flex items-center justify-center">
-<div class="text-[16px] w-[50%]">
-<div class="text-[#C91300]" style="direction: ltr">
-                -0.2%
-              </div>
-</div>
-</div>
-</td>
-<!-- chart -->
-<td class="py-[10px]">
-<div class="flex items-center justify-center">
-<div class="text-[18px] text-[#556a7a] table-chart cursor-pointer" data-code="0888" data-id="82273" data-name="میلگرد 14 حسن رود آجدار A3 کارخانه">
-
-</div>
-</div>
-</td>
-</tr>
-<tr class="even:bg-[#F8F6F3]">
-<td class="py-[16px] w-[25.0%]">
-<a href="/product/میلگرد-آجدار-حدید-سیرجان-14-a3-شاخه-12-متری-ک/">
-            میلگرد 14 حدید سیرجان آجدار A3 کارخانه
-
-          </a>
-</td>
-<td class="py-[10px] w-[25.0%]">کیلوگرم</td>
-<td class="py-[10px] w-[25.0%]">
-          1405/6/23
-        </td>
-<td class="py-[10px] w-[25.0%]">
-<div class="text-[#35332E] font-Bold product-price text-[18px]" data-price="874545">
-            
-              87,450
-            
-          </div>
-</td>
-<td class="py-[10px]">
-<div class="flex items-center justify-center">
-<div class="text-[16px] w-[50%]">
-<div class="text-[#464e5f]" style="direction: ltr">
-                0.0%
-              </div>
-</div>
-</div>
-</td>
-<!-- chart -->
-<td class="py-[10px]">
-<div class="flex items-center justify-center">
-<div class="text-[18px] text-[#556a7a] table-chart cursor-pointer" data-code="1138" data-id="82520" data-name="میلگرد 14 حدید سیرجان آجدار A3 کارخانه">
-
-</div>
-</div>
-</td>
-</tr>
-<tr class="even:bg-[#F8F6F3]">
-<td class="py-[16px] w-[25.0%]">
-<a href="/product/میلگرد-آجدار-امیرکبیر-14-a3-شاخه-بنگاه-تهر/">
-            میلگرد 14 امیرکبیر آجدار A3 بنگاه تهران
-
-          </a>
-</td>
-<td class="py-[10px] w-[25.0%]">کیلوگرم</td>
-<td class="py-[10px] w-[25.0%]">
-          1405/6/23
-        </td>
-<td class="py-[10px] w-[25.0%]">
-<div class="text-[#35332E] font-Bold product-price text-[18px]" data-price="880000">
-            
-              88,000
-            
-          </div>
-</td>
-<td class="py-[10px]">
-<div class="flex items-center justify-center">
-<div class="text-[16px] w-[50%]">
-<div class="text-[#464e5f]" style="direction: ltr">
-                0.0%
-              </div>
-</div>
-</div>
-</td>
-<!-- chart -->
-<td class="py-[10px]">
-<div class="flex items-center justify-center">
-<div class="text-[18px] text-[#556a7a] table-chart cursor-pointer" data-code="1118" data-id="82500" data-name="میلگرد 14 امیرکبیر آجدار A3 بنگاه تهران">
-
-</div>
-</div>
-</td>
-</tr>
-<tr class="even:bg-[#F8F6F3]">
-<td class="py-[16px] w-[25.0%]">
-<a href="/product/میلگرد-آجدار-نیشابور-14-a3-شاخه-بنگاه-تهرا/">
-            میلگرد 14 نیشابور آجدار A3 بنگاه تهران
-
-          </a>
-</td>
-<td class="py-[10px] w-[25.0%]">کیلوگرم</td>
-<td class="py-[10px] w-[25.0%]">
-          1405/6/23
-        </td>
-<td class="py-[10px] w-[25.0%]">
-<div class="text-[#35332E] font-Bold product-price text-[18px]" data-price="880000">
-            
-              88,000
-            
-          </div>
-</td>
-<td class="py-[10px]">
-<div class="flex items-center justify-center">
-<div class="text-[16px] w-[50%]">
-<div class="text-[#464e5f]" style="direction: ltr">
-                0.0%
-              </div>
-</div>
-</div>
-</td>
-<!-- chart -->
-<td class="py-[10px]">
-<div class="flex items-center justify-center">
-<div class="text-[18px] text-[#556a7a] table-chart cursor-pointer" data-code="0628" data-id="82013" data-name="میلگرد 14 نیشابور آجدار A3 بنگاه تهران">
-
-</div>
-</div>
-</td>
-</tr>
-<tr class="even:bg-[#F8F6F3]">
-<td class="py-[16px] w-[25.0%]">
-<a href="/product/میلگرد-آجدار-بافق-یزد-14-a3-شاخه-12-متری-کارخ/">
-            میلگرد 14 بافق یزد آجدار A3 کارخانه
-
-          </a>
-</td>
-<td class="py-[10px] w-[25.0%]">کیلوگرم</td>
-<td class="py-[10px] w-[25.0%]">
-          1405/6/23
-        </td>
-<td class="py-[10px] w-[25.0%]">
-<div class="text-[#35332E] font-Bold product-price text-[18px]" data-price="892727">
-            
-              89,270
-            
-          </div>
-</td>
-<td class="py-[10px]">
-<div class="flex items-center justify-center">
-<div class="text-[16px] w-[50%]">
-<div class="text-[#464e5f]" style="direction: ltr">
-                0.0%
-              </div>
-</div>
-</div>
-</td>
-<!-- chart -->
-<td class="py-[10px]">
-<div class="flex items-center justify-center">
-<div class="text-[18px] text-[#556a7a] table-chart cursor-pointer" data-code="6610" data-id="87639" data-name="میلگرد 14 بافق یزد آجدار A3 کارخانه">
-
-</div>
-</div>
-</td>
-</tr>
-<tr class="even:bg-[#F8F6F3]">
-<td class="py-[16px] w-[25.0%]">
-<a href="/product/میلگرد-آجدار-ابرکوه-14-a3-شاخه-12-متری-کارخان/">
-            میلگرد 14 ابرکوه آجدار A3 کارخانه
-
-          </a>
-</td>
-<td class="py-[10px] w-[25.0%]">کیلوگرم</td>
-<td class="py-[10px] w-[25.0%]">
-          1405/6/23
-        </td>
-<td class="py-[10px] w-[25.0%]">
-<div class="text-[#35332E] font-Bold product-price text-[18px]" data-price="850909">
-            
-              85,090
-            
-          </div>
-</td>
-<td class="py-[10px]">
-<div class="flex items-center justify-center">
-<div class="text-[16px] w-[50%]">
-<div class="text-[#464e5f]" style="direction: ltr">
-                0.0%
-              </div>
-</div>
-</div>
-</td>
-<!-- chart -->
-<td class="py-[10px]">
-<div class="flex items-center justify-center">
-<div class="text-[18px] text-[#556a7a] table-chart cursor-pointer" data-code="5613" data-id="86660" data-name="میلگرد 14 ابرکوه آجدار A3 کارخانه">
-
-</div>
-</div>
-</td>
-</tr>
-<tr class="even:bg-[#F8F6F3]">
-<td class="py-[16px] w-[25.0%]">
-<a href="/product/میلگرد-آجدار-آناهیتا-گیلان-14-a3-شاخه-12-متری/">
-            میلگرد 14 آناهیتا گیلان آجدار A3 کارخانه
-
-          </a>
-</td>
-<td class="py-[10px] w-[25.0%]">کیلوگرم</td>
-<td class="py-[10px] w-[25.0%]">
-          1405/6/23
-        </td>
-<td class="py-[10px] w-[25.0%]">
-<div class="text-[#35332E] font-Bold product-price text-[18px]" data-price="890909">
-            
-              89,090
-            
-          </div>
-</td>
-<td class="py-[10px]">
-<div class="flex items-center justify-center">
-<div class="text-[16px] w-[50%]">
-<div class="text-[#464e5f]" style="direction: ltr">
-                0.0%
-              </div>
-</div>
-</div>
-</td>
-<!-- chart -->
-<td class="py-[10px]">
-<div class="flex items-center justify-center">
-<div class="text-[18px] text-[#556a7a] table-chart cursor-pointer" data-code="1454" data-id="82836" data-name="میلگرد 14 آناهیتا گیلان آجدار A3 کارخانه">
-
-</div>
-</div>
-</td>
-</tr>
-<tr class="even:bg-[#F8F6F3]">
-<td class="py-[16px] w-[25.0%]">
-<a href="/product/میلگرد-آجدار-شاهین-بناب-14-a3-شاخه-12-متری-کا/">
-            میلگرد 14 شاهین بناب آجدار A3 کارخانه
-
-          </a>
-</td>
-<td class="py-[10px] w-[25.0%]">کیلوگرم</td>
-<td class="py-[10px] w-[25.0%]">
-          1405/6/23
-        </td>
-<td class="py-[10px] w-[25.0%]">
-<div class="text-[#35332E] font-Bold product-price text-[18px]" data-price="890909">
-            
-              89,090
-            
-          </div>
-</td>
-<td class="py-[10px]">
-<div class="flex items-center justify-center">
-<div class="text-[16px] w-[50%]">
-<div class="text-[#464e5f]" style="direction: ltr">
-                0.0%
-              </div>
-</div>
-</div>
-</td>
-<!-- chart -->
-<td class="py-[10px]">
-<div class="flex items-center justify-center">
-<div class="text-[18px] text-[#556a7a] table-chart cursor-pointer" data-code="0573" data-id="81958" data-name="میلگرد 14 شاهین بناب آجدار A3 کارخانه">
-
-</div>
-</div>
-</td>
-</tr>
-<tr class="even:bg-[#F8F6F3]">
-<td class="py-[16px] w-[25.0%]">
-<a href="/product/میلگرد-آجدار-امیرکبیر-14-a3-شاخه-12-متری-کارخ/">
-            میلگرد 14 امیرکبیر آجدار A3 کارخانه
-
-          </a>
-</td>
-<td class="py-[10px] w-[25.0%]">کیلوگرم</td>
-<td class="py-[10px] w-[25.0%]">
-          1405/6/23
-        </td>
-<td class="py-[10px] w-[25.0%]">
-<div class="text-[#35332E] font-Bold product-price text-[18px]" data-price="867272">
-            
-              86,730
-            
-          </div>
-</td>
-<td class="py-[10px]">
-<div class="flex items-center justify-center">
-<div class="text-[16px] w-[50%]">
-<div class="text-[#C91300]" style="direction: ltr">
-                -0.3%
-              </div>
-</div>
-</div>
-</td>
-<!-- chart -->
-<td class="py-[10px]">
-<div class="flex items-center justify-center">
-<div class="text-[18px] text-[#556a7a] table-chart cursor-pointer" data-code="1227" data-id="82609" data-name="میلگرد 14 امیرکبیر آجدار A3 کارخانه">
-
-</div>
-</div>
-</td>
-</tr>
-<tr class="even:bg-[#F8F6F3]">
-<td class="py-[16px] w-[25.0%]">
-<a href="/product/میلگرد-آجدار-ظفر-بناب-14-a3-شاخه-12-متری-کارخ/">
-            میلگرد 14 ظفر بناب آجدار A3 کارخانه
-
-          </a>
-</td>
-<td class="py-[10px] w-[25.0%]">کیلوگرم</td>
-<td class="py-[10px] w-[25.0%]">
-          1405/6/23
-        </td>
-<td class="py-[10px] w-[25.0%]">
-<div class="text-[#35332E] font-Bold product-price text-[18px]" data-price="863636">
-            
-              86,360
-            
-          </div>
-</td>
-<td class="py-[10px]">
-<div class="flex items-center justify-center">
-<div class="text-[16px] w-[50%]">
-<div class="text-[#464e5f]" style="direction: ltr">
-                0.0%
-              </div>
-</div>
-</div>
-</td>
-<!-- chart -->
-<td class="py-[10px]">
-<div class="flex items-center justify-center">
-<div class="text-[18px] text-[#556a7a] table-chart cursor-pointer" data-code="1143" data-id="82525" data-name="میلگرد 14 ظفر بناب آجدار A3 کارخانه">
-
-</div>
-</div>
-</td>
-</tr>
-<tr class="even:bg-[#F8F6F3]">
-<td class="py-[16px] w-[25.0%]">
-<a href="/product/میلگرد-آجدار-آریان-فولاد-14-a3-شاخه-12-متری/">
-            میلگرد 14 آریان فولاد آجدار A3 کارخانه
-
-          </a>
-</td>
-<td class="py-[10px] w-[25.0%]">کیلوگرم</td>
-<td class="py-[10px] w-[25.0%]">
-          1405/6/23
-        </td>
-<td class="py-[10px] w-[25.0%]">
-<div class="text-[#35332E] font-Bold product-price text-[18px]" data-price="922727">
-            
-              92,270
-            
-          </div>
-</td>
-<td class="py-[10px]">
-<div class="flex items-center justify-center">
-<div class="text-[16px] w-[50%]">
-<div class="text-[#464e5f]" style="direction: ltr">
-                0.0%
-              </div>
-</div>
-</div>
-</td>
-<!-- chart -->
-<td class="py-[10px]">
-<div class="flex items-center justify-center">
-<div class="text-[18px] text-[#556a7a] table-chart cursor-pointer" data-code="1224" data-id="82606" data-name="میلگرد 14 آریان فولاد آجدار A3 کارخانه">
-
-</div>
-</div>
-</td>
-</tr>
-<tr class="even:bg-[#F8F6F3]">
-<td class="py-[16px] w-[25.0%]">
-<a href="/product/میلگرد-آجدار-آذرفولاد-امین-14-a3-شاخه-12-متری/">
-            میلگرد 14 آذرفولاد امین آجدار A3 کارخانه
-
-          </a>
-</td>
-<td class="py-[10px] w-[25.0%]">کیلوگرم</td>
-<td class="py-[10px] w-[25.0%]">
-          1405/6/23
-        </td>
-<td class="py-[10px] w-[25.0%]">
-<div class="text-[#35332E] font-Bold product-price text-[18px]" data-price="890909">
-            
-              89,090
-            
-          </div>
-</td>
-<td class="py-[10px]">
-<div class="flex items-center justify-center">
-<div class="text-[16px] w-[50%]">
-<div class="text-[#464e5f]" style="direction: ltr">
-                0.0%
-              </div>
-</div>
-</div>
-</td>
-<!-- chart -->
-<td class="py-[10px]">
-<div class="flex items-center justify-center">
-<div class="text-[18px] text-[#556a7a] table-chart cursor-pointer" data-code="1290" data-id="82672" data-name="میلگرد 14 آذرفولاد امین آجدار A3 کارخانه">
-
-</div>
-</div>
-</td>
-</tr>
-</tbody>
+        <div class="table-wrapper"><table class="dataframe custom-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>نام کالا</th>
+      <th>واحد</th>
+      <th>تاریخ بروزرسانی</th>
+      <th>قیمت (تومان)</th>
+      <th>نوسانات</th>
+      <th>نمودار</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>میلگرد 14 نورد کاسپین آجدار A3 کارخانه</td>
+      <td>کیلوگرم</td>
+      <td>1405/6/23</td>
+      <td>88550</td>
+      <td>0.0%</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>میلگرد 14 اروند آجدار A3 کارخانه</td>
+      <td>کیلوگرم</td>
+      <td>1405/6/23</td>
+      <td>81360</td>
+      <td>0.0%</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>میلگرد 14 فولاد نگین اردکان یزد آجدار A3 کارخانه</td>
+      <td>کیلوگرم</td>
+      <td>1405/6/23</td>
+      <td>82090</td>
+      <td>0.0%</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>میلگرد 14 پردیس آجدار A3 کارخانه</td>
+      <td>کیلوگرم</td>
+      <td>1405/6/23</td>
+      <td>89550</td>
+      <td>-0.5%</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>میلگرد 14 ابهر آجدار A3 کارخانه</td>
+      <td>کیلوگرم</td>
+      <td>1405/6/23</td>
+      <td>89550</td>
+      <td>-0.5%</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>میلگرد 14 پرشین فولاد آجدار A3 کارخانه</td>
+      <td>کیلوگرم</td>
+      <td>1405/6/23</td>
+      <td>86910</td>
+      <td>0.0%</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>میلگرد 14 قائم آجدار A3 کارخانه</td>
+      <td>کیلوگرم</td>
+      <td>1405/6/23</td>
+      <td>85450</td>
+      <td>0.0%</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>میلگرد 14 کاوه تیکمه داش آجدار A3 کارخانه</td>
+      <td>کیلوگرم</td>
+      <td>1405/6/23</td>
+      <td>89550</td>
+      <td>+ 0.5%</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>میلگرد 14 کوثر اهواز آجدار A3 کارخانه</td>
+      <td>کیلوگرم</td>
+      <td>1405/6/23</td>
+      <td>84090</td>
+      <td>+ 0.5%</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>میلگرد 14 کاشان آجدار A3 کارخانه</td>
+      <td>کیلوگرم</td>
+      <td>1405/6/23</td>
+      <td>90910</td>
+      <td>0.0%</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>میلگرد 14 جهان فولاد سیرجان آجدار A3 کارخانه</td>
+      <td>کیلوگرم</td>
+      <td>1405/6/23</td>
+      <td>85180</td>
+      <td>0.0%</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>میلگرد 14 هیربد آجدار A3 کارخانه</td>
+      <td>کیلوگرم</td>
+      <td>1405/6/23</td>
+      <td>86180</td>
+      <td>0.0%</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>میلگرد 14 نیشابور آجدار A3 کارخانه</td>
+      <td>کیلوگرم</td>
+      <td>1405/6/23</td>
+      <td>85450</td>
+      <td>-4.1%</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>میلگرد 14 میانه آجدار A3 کارخانه</td>
+      <td>کیلوگرم</td>
+      <td>1405/6/23</td>
+      <td>88180</td>
+      <td>0.0%</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>میلگرد 14 فایکو آجدار A3 کارخانه</td>
+      <td>کیلوگرم</td>
+      <td>1405/6/23</td>
+      <td>86360</td>
+      <td>0.0%</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>میلگرد 14 صبا فولاد زاگرس آجدار A3 کارخانه</td>
+      <td>کیلوگرم</td>
+      <td>1405/6/23</td>
+      <td>84550</td>
+      <td>0.0%</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>میلگرد 14 شاهرود آجدار A3 کارخانه</td>
+      <td>کیلوگرم</td>
+      <td>1405/6/23</td>
+      <td>89090</td>
+      <td>0.0%</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>میلگرد 14 راد همدان آجدار A3 کارخانه</td>
+      <td>کیلوگرم</td>
+      <td>1405/6/23</td>
+      <td>88180</td>
+      <td>0.0%</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>میلگرد 14 ذوب و نورد کرمان آجدار A3 کارخانه</td>
+      <td>کیلوگرم</td>
+      <td>1405/6/23</td>
+      <td>84180</td>
+      <td>0.0%</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>میلگرد 14 ذوب آهن اصفهان آجدار A3 کارخانه</td>
+      <td>کیلوگرم</td>
+      <td>1405/6/23</td>
+      <td>89090</td>
+      <td>0.0%</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>میلگرد 14 درپاد تبریز آجدار A3 کارخانه</td>
+      <td>کیلوگرم</td>
+      <td>1405/6/23</td>
+      <td>89090</td>
+      <td>0.0%</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>میلگرد 14 خلیج فارس آجدار A3 کارخانه</td>
+      <td>کیلوگرم</td>
+      <td>1405/6/23</td>
+      <td>84550</td>
+      <td>0.0%</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>میلگرد 14 حسن رود آجدار A3 کارخانه</td>
+      <td>کیلوگرم</td>
+      <td>1405/6/23</td>
+      <td>89090</td>
+      <td>-0.2%</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>میلگرد 14 حدید سیرجان آجدار A3 کارخانه</td>
+      <td>کیلوگرم</td>
+      <td>1405/6/23</td>
+      <td>87450</td>
+      <td>0.0%</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>میلگرد 14 امیرکبیر آجدار A3 بنگاه تهران</td>
+      <td>کیلوگرم</td>
+      <td>1405/6/23</td>
+      <td>88000</td>
+      <td>0.0%</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>میلگرد 14 نیشابور آجدار A3 بنگاه تهران</td>
+      <td>کیلوگرم</td>
+      <td>1405/6/23</td>
+      <td>88000</td>
+      <td>0.0%</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>میلگرد 14 بافق یزد آجدار A3 کارخانه</td>
+      <td>کیلوگرم</td>
+      <td>1405/6/23</td>
+      <td>89270</td>
+      <td>0.0%</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>میلگرد 14 ابرکوه آجدار A3 کارخانه</td>
+      <td>کیلوگرم</td>
+      <td>1405/6/23</td>
+      <td>85090</td>
+      <td>0.0%</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>میلگرد 14 آناهیتا گیلان آجدار A3 کارخانه</td>
+      <td>کیلوگرم</td>
+      <td>1405/6/23</td>
+      <td>89090</td>
+      <td>0.0%</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>میلگرد 14 شاهین بناب آجدار A3 کارخانه</td>
+      <td>کیلوگرم</td>
+      <td>1405/6/23</td>
+      <td>89090</td>
+      <td>0.0%</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>میلگرد 14 امیرکبیر آجدار A3 کارخانه</td>
+      <td>کیلوگرم</td>
+      <td>1405/6/23</td>
+      <td>86730</td>
+      <td>-0.3%</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>میلگرد 14 ظفر بناب آجدار A3 کارخانه</td>
+      <td>کیلوگرم</td>
+      <td>1405/6/23</td>
+      <td>86360</td>
+      <td>0.0%</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>میلگرد 14 آریان فولاد آجدار A3 کارخانه</td>
+      <td>کیلوگرم</td>
+      <td>1405/6/23</td>
+      <td>92270</td>
+      <td>0.0%</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>میلگرد 14 آذرفولاد امین آجدار A3 کارخانه</td>
+      <td>کیلوگرم</td>
+      <td>1405/6/23</td>
+      <td>89090</td>
+      <td>0.0%</td>
+      <td>-</td>
+    </tr>
+  </tbody>
+</table></div>
+            </div>
+        </section>
+        
+        <section class="card">
+            <div class="card-header">
+                <h2>تیرآهن</h2>
+                <a href="https://ahanonline.com/product-category/%D8%AA%DB%8C%D8%B1%D8%A2%D9%87%D9%86-%D9%88-%D9%87%D8%A7%D8%B4/%D8%AA%DB%8C%D8%B1%D8%A2%D9%87%D9%86/" target="_blank" class="source-link">مشاهده صفحه اصلی ↗</a>
+            </div>
+            <div class="card-body">
+        <div class="table-wrapper"><table class="dataframe custom-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>سایز</th>
+      <th>محل تحویل</th>
+      <th>واحد</th>
+      <th>وزن</th>
+      <th>قیمت (تومان)</th>
+      <th>نوسانات</th>
+      <th>نمودار</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>12</td>
+      <td>بنگاه تهران</td>
+      <td>شاخه</td>
+      <td>125</td>
+      <td>16545450</td>
+      <td>+ 1.1%</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>14</td>
+      <td>بنگاه اصفهان</td>
+      <td>شاخه</td>
+      <td>155</td>
+      <td>16090910</td>
+      <td>-1.7%</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>14</td>
+      <td>کارخانه</td>
+      <td>کیلوگرم</td>
+      <td>155</td>
+      <td>105490</td>
+      <td>-3.3%</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>14</td>
+      <td>بنگاه تهران</td>
+      <td>شاخه</td>
+      <td>155</td>
+      <td>16090910</td>
+      <td>-1.7%</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>16</td>
+      <td>بنگاه اصفهان</td>
+      <td>شاخه</td>
+      <td>190</td>
+      <td>21545450</td>
+      <td>-3.3%</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>16</td>
+      <td>کارخانه</td>
+      <td>کیلوگرم</td>
+      <td>190</td>
+      <td>114580</td>
+      <td>-3.1%</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>16</td>
+      <td>بنگاه تهران</td>
+      <td>شاخه</td>
+      <td>190</td>
+      <td>21545450</td>
+      <td>-3.3%</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>18</td>
+      <td>بنگاه اصفهان</td>
+      <td>شاخه</td>
+      <td>230</td>
+      <td>24272730</td>
+      <td>-1.1%</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>18</td>
+      <td>کارخانه</td>
+      <td>کیلوگرم</td>
+      <td>230</td>
+      <td>105490</td>
+      <td>-1.7%</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>18</td>
+      <td>بنگاه تهران</td>
+      <td>شاخه</td>
+      <td>230</td>
+      <td>24272730</td>
+      <td>-1.1%</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>20</td>
+      <td>بنگاه اصفهان</td>
+      <td>شاخه</td>
+      <td>270</td>
+      <td>36090910</td>
+      <td>+ 0.5%</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>20</td>
+      <td>کارخانه</td>
+      <td>کیلوگرم</td>
+      <td>270</td>
+      <td>132730</td>
+      <td>0.0%</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>20</td>
+      <td>بنگاه تهران</td>
+      <td>شاخه</td>
+      <td>270</td>
+      <td>36090910</td>
+      <td>-4.3%</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>22</td>
+      <td>بنگاه اصفهان</td>
+      <td>شاخه</td>
+      <td>320</td>
+      <td>35000000</td>
+      <td>0.0%</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>22</td>
+      <td>کارخانه</td>
+      <td>کیلوگرم</td>
+      <td>320</td>
+      <td>108180</td>
+      <td>-0.8%</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>22</td>
+      <td>بنگاه تهران</td>
+      <td>شاخه</td>
+      <td>320</td>
+      <td>34272730</td>
+      <td>-2.1%</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>24</td>
+      <td>بنگاه اصفهان</td>
+      <td>شاخه</td>
+      <td>370</td>
+      <td>39727270</td>
+      <td>-1.8%</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>24</td>
+      <td>کارخانه</td>
+      <td>کیلوگرم</td>
+      <td>370</td>
+      <td>108180</td>
+      <td>-0.8%</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>24</td>
+      <td>بنگاه تهران</td>
+      <td>شاخه</td>
+      <td>370</td>
+      <td>39727270</td>
+      <td>-1.8%</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>27</td>
+      <td>بنگاه اصفهان</td>
+      <td>شاخه</td>
+      <td>440</td>
+      <td>47909090</td>
+      <td>-0.6%</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>27</td>
+      <td>کارخانه</td>
+      <td>کیلوگرم</td>
+      <td>440</td>
+      <td>110000</td>
+      <td>-0.8%</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>27</td>
+      <td>بنگاه تهران</td>
+      <td>شاخه</td>
+      <td>440</td>
+      <td>47909090</td>
+      <td>-0.6%</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>30</td>
+      <td>بنگاه اصفهان</td>
+      <td>شاخه</td>
+      <td>510</td>
+      <td>78818180</td>
+      <td>+ 2.0%</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>30</td>
+      <td>کارخانه</td>
+      <td>کیلوگرم</td>
+      <td>510</td>
+      <td>153640</td>
+      <td>+ 1.2%</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>30</td>
+      <td>بنگاه تهران</td>
+      <td>شاخه</td>
+      <td>510</td>
+      <td>78818180</td>
+      <td>+ 2.0%</td>
+      <td>-</td>
+    </tr>
+  </tbody>
+</table></div><div class="table-wrapper"><table class="dataframe custom-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>سایز</th>
+      <th>محل تحویل</th>
+      <th>واحد</th>
+      <th>وزن</th>
+      <th>قیمت (تومان)</th>
+      <th>نوسانات</th>
+      <th>نمودار</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>14</td>
+      <td>بنگاه تهران</td>
+      <td>شاخه</td>
+      <td>135</td>
+      <td>12727270</td>
+      <td>0.0%</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>16</td>
+      <td>بنگاه تهران</td>
+      <td>شاخه</td>
+      <td>170</td>
+      <td>16363640</td>
+      <td>0.0%</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>18</td>
+      <td>بنگاه تهران</td>
+      <td>شاخه</td>
+      <td>205</td>
+      <td>20909090</td>
+      <td>0.0%</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>20</td>
+      <td>بنگاه تهران</td>
+      <td>شاخه</td>
+      <td>250</td>
+      <td>25000000</td>
+      <td>0.0%</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>22</td>
+      <td>بنگاه تهران</td>
+      <td>شاخه</td>
+      <td>310</td>
+      <td>30454550</td>
+      <td>0.0%</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>24</td>
+      <td>بنگاه تهران</td>
+      <td>شاخه</td>
+      <td>360</td>
+      <td>36818180</td>
+      <td>0.0%</td>
+      <td>-</td>
+    </tr>
+  </tbody>
+</table></div><div class="table-wrapper"><table class="dataframe custom-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>سایز</th>
+      <th>محل تحویل</th>
+      <th>واحد</th>
+      <th>وزن</th>
+      <th>قیمت (تومان)</th>
+      <th>نوسانات</th>
+      <th>نمودار</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>24</td>
+      <td>بنگاه تهران</td>
+      <td>شاخه</td>
+      <td>-</td>
+      <td>36818180</td>
+      <td>0.0%</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>22</td>
+      <td>بنگاه تهران</td>
+      <td>شاخه</td>
+      <td>-</td>
+      <td>30454550</td>
+      <td>0.0%</td>
+      <td>-</td>
+    </tr>
+  </tbody>
+</table></div><div class="table-wrapper"><table class="dataframe custom-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>سایز</th>
+      <th>محل تحویل</th>
+      <th>واحد</th>
+      <th>وزن</th>
+      <th>قیمت (تومان)</th>
+      <th>نوسانات</th>
+      <th>نمودار</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>14</td>
+      <td>بنگاه تهران</td>
+      <td>شاخه</td>
+      <td>-</td>
+      <td>12727270</td>
+      <td>0.0%</td>
+      <td>-</td>
+    </tr>
+  </tbody>
+</table></div><div class="table-wrapper"><table class="dataframe custom-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>سایز</th>
+      <th>محل تحویل</th>
+      <th>واحد</th>
+      <th>وزن</th>
+      <th>قیمت (تومان)</th>
+      <th>نوسانات</th>
+      <th>نمودار</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>14</td>
+      <td>بنگاه تهران</td>
+      <td>شاخه</td>
+      <td>135</td>
+      <td>12909090</td>
+      <td>-2.1%</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>16</td>
+      <td>بنگاه تهران</td>
+      <td>شاخه</td>
+      <td>170</td>
+      <td>16363640</td>
+      <td>0.0%</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>18</td>
+      <td>بنگاه تهران</td>
+      <td>شاخه</td>
+      <td>205</td>
+      <td>20909090</td>
+      <td>0.0%</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>20</td>
+      <td>بنگاه تهران</td>
+      <td>شاخه</td>
+      <td>240</td>
+      <td>25000000</td>
+      <td>0.0%</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>22</td>
+      <td>بنگاه تهران</td>
+      <td>شاخه</td>
+      <td>300</td>
+      <td>30454550</td>
+      <td>0.0%</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>24</td>
+      <td>بنگاه تهران</td>
+      <td>شاخه</td>
+      <td>-</td>
+      <td>36818180</td>
+      <td>0.0%</td>
+      <td>-</td>
+    </tr>
+  </tbody>
+</table></div><div class="table-wrapper"><table class="dataframe custom-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>سایز</th>
+      <th>محل تحویل</th>
+      <th>واحد</th>
+      <th>وزن</th>
+      <th>قیمت (تومان)</th>
+      <th>نوسانات</th>
+      <th>نمودار</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>18</td>
+      <td>بنگاه تهران</td>
+      <td>شاخه</td>
+      <td>190</td>
+      <td>20000000</td>
+      <td>0.0%</td>
+      <td>-</td>
+    </tr>
+  </tbody>
+</table></div><div class="table-wrapper"><table class="dataframe custom-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>سایز</th>
+      <th>محل تحویل</th>
+      <th>واحد</th>
+      <th>وزن</th>
+      <th>قیمت (تومان)</th>
+      <th>نوسانات</th>
+      <th>نمودار</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>14</td>
+      <td>بنگاه تهران</td>
+      <td>شاخه</td>
+      <td>120</td>
+      <td>11545450</td>
+      <td>-2.3%</td>
+      <td>-</td>
+    </tr>
+  </tbody>
+</table></div><div class="table-wrapper"><table class="dataframe custom-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>سایز</th>
+      <th>محل تحویل</th>
+      <th>واحد</th>
+      <th>وزن</th>
+      <th>قیمت (تومان)</th>
+      <th>نوسانات</th>
+      <th>نمودار</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>20</td>
+      <td>بنگاه تهران</td>
+      <td>شاخه</td>
+      <td>245</td>
+      <td>25000000</td>
+      <td>-1.8%</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>16</td>
+      <td>بنگاه تهران</td>
+      <td>شاخه</td>
+      <td>172</td>
+      <td>16818180</td>
+      <td>+ 2.8%</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>14</td>
+      <td>بنگاه تهران</td>
+      <td>شاخه</td>
+      <td>135</td>
+      <td>13181820</td>
+      <td>0.0%</td>
+      <td>-</td>
+    </tr>
+  </tbody>
 </table></div>
             </div>
         </section>
@@ -1423,18 +992,45 @@
         </main>
     </div>
 
-    <!-- اسکریپت فیلتر جستجو -->
+    <!-- اسکریپت فیلتر حرفه‌ای سطر به سطر -->
     <script>
         function filterCards() {
             let input = document.getElementById('searchInput').value.toLowerCase();
             let cards = document.getElementsByClassName('card');
             
             for (let i = 0; i < cards.length; i++) {
-                let title = cards[i].querySelector('.card-header h2').innerText.toLowerCase();
-                if (title.includes(input)) {
-                    cards[i].style.display = "";
+                let card = cards[i];
+                let titleText = card.querySelector('.card-header h2').innerText.toLowerCase();
+                let rows = card.querySelectorAll('table tr');
+                
+                let hasVisibleRow = false;
+                let titleMatch = titleText.includes(input); // اگر اسم خود کادر جستجو شد
+
+                // بررسی تک‌تک سطرهای جدول
+                for (let j = 0; j < rows.length; j++) {
+                    let row = rows[j];
+                    
+                    // از مخفی کردن تیترهای جدول (ردیف‌های دارای th) جلوگیری می‌کنیم
+                    if (row.querySelector('th')) {
+                        continue;
+                    }
+                    
+                    let rowText = row.innerText.toLowerCase();
+                    
+                    // اگر کلمه در این سطر بود، یا اینکه کاربر اسم کل کادر را سرچ کرده بود
+                    if (titleMatch || rowText.includes(input)) {
+                        row.style.display = ""; // نمایش سطر
+                        hasVisibleRow = true;
+                    } else {
+                        row.style.display = "none"; // پنهان کردن سطر
+                    }
+                }
+                
+                // اگر حتی یک سطر پیدا شد، کل کادر را نشان بده، در غیر این صورت کل کادر پنهان شود
+                if (titleMatch || hasVisibleRow) {
+                    card.style.display = "";
                 } else {
-                    cards[i].style.display = "none";
+                    card.style.display = "none";
                 }
             }
         }
