@@ -1,605 +1,66 @@
-<!DOCTYPE html>
-<html lang="fa" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مرجع مهندسی تامین و کنترل کیفیت مصالح ساختمان</title>
-    <!-- فونت وزیرمتن برای ظاهر حرفه‌ای و مهندسی -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-    
-    <style>
-        /* ==========================================
-           استایل‌های پایه و هویت بصری (Industrial Theme)
-           ========================================== */
-        :root {
-            --bg-main: #f8fafc;
-            --surface: #ffffff;
-            --primary: #0f172a; /* سرمه‌ای تیره/ذغالی */
-            --primary-light: #1e293b;
-            --accent: #f59e0b; /* زرد/نارنجی ایمنی کارگاهی */
-            --accent-hover: #d97706;
-            --text-main: #334155;
-            --text-muted: #64748b;
-            --border: #e2e8f0;
-            --font: 'Vazirmatn', system-ui, -apple-system, sans-serif;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: var(--font);
-            background-color: var(--bg-main);
-            color: var(--text-main);
-            line-height: 1.6;
-            padding-bottom: 70px; /* فضای دکمه چسبان موبایل */
-        }
-
-        container {
-            width: 100%;
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        /* ==========================================
-           هدر و ناوبری
-           ========================================== */
-        header {
-            background-color: var(--primary);
-            color: #fff;
-            padding: 15px 0;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-
-        .nav-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        .logo {
-            font-size: 1.3rem;
-            font-weight: 800;
-            color: #fff;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .logo span {
-            color: var(--accent);
-        }
-
-        nav ul {
-            display: flex;
-            list-style: none;
-            gap: 20px;
-        }
-
-        nav a {
-            color: #cbd5e1;
-            text-decoration: none;
-            font-size: 0.95rem;
-            transition: 0.2s;
-        }
-
-        nav a:hover {
-            color: var(--accent);
-        }
-
-        /* ==========================================
-           بخش هیرو (Hero Section)
-           ========================================== */
-        .hero {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
-            color: #fff;
-            padding: 60px 0;
-            text-align: center;
-            border-bottom: 4px solid var(--accent);
-        }
-
-        .hero h1 {
-            font-size: 2.2rem;
-            font-weight: 800;
-            margin-bottom: 15px;
-            line-height: 1.3;
-        }
-
-        .hero p {
-            font-size: 1.1rem;
-            color: #cbd5e1;
-            max-width: 700px;
-            margin: 0 auto 30px auto;
-        }
-
-        .cta-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-
-        .btn {
-            display: inline-block;
-            padding: 12px 28px;
-            border-radius: 6px;
-            font-weight: 700;
-            text-decoration: none;
-            font-size: 1rem;
-            cursor: pointer;
-            border: none;
-            transition: 0.2s;
-        }
-
-        .btn-primary {
-            background-color: var(--accent);
-            color: var(--primary);
-        }
-
-        .btn-primary:hover {
-            background-color: var(--accent-hover);
-        }
-
-        .btn-outline {
-            background-color: transparent;
-            color: #fff;
-            border: 2px solid #cbd5e1;
-        }
-
-        .btn-outline:hover {
-            border-color: #fff;
-            background-color: rgba(255,255,255,0.1);
-        }
-
-        /* ==========================================
-           بخش خدمات و ارزش‌ها
-           ========================================== */
-        .section {
-            padding: 50px 0;
-        }
-
-        .section-title {
-            text-align: center;
-            font-size: 1.6rem;
-            color: var(--primary);
-            margin-bottom: 30px;
-            position: relative;
-        }
-
-        .section-title::after {
-            content: '';
-            display: block;
-            width: 50px;
-            height: 3px;
-            background-color: var(--accent);
-            margin: 8px auto 0 auto;
-            border-radius: 2px;
-        }
-
-        .grid-3 {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-        }
-
-        .card {
-            background-color: var(--surface);
-            padding: 25px;
-            border-radius: 8px;
-            border: 1px solid var(--border);
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
-            transition: transform 0.2s;
-        }
-
-        .card:hover {
-            transform: translateY(-4px);
-        }
-
-        .card-icon {
-            font-size: 2rem;
-            margin-bottom: 15px;
-        }
-
-        .card h3 {
-            color: var(--primary);
-            margin-bottom: 10px;
-            font-size: 1.2rem;
-        }
-
-        .card p {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-        }
-
-        /* ==========================================
-           جدول شفافیت قیمت
-           ========================================== */
-        .price-table-wrapper {
-            background-color: var(--surface);
-            border-radius: 8px;
-            border: 1px solid var(--border);
-            overflow-x: auto;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            text-align: right;
-        }
-
-        th, td {
-            padding: 15px 20px;
-            border-bottom: 1px solid var(--border);
-        }
-
-        th {
-            background-color: #f1f5f9;
-            color: var(--primary);
-            font-weight: 700;
-        }
-
-        tr:last-child td {
-            border-bottom: none;
-        }
-
-        .tag-qc {
-            display: inline-block;
-            background-color: #dcfce7;
-            color: #166534;
-            font-size: 0.8rem;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-weight: 600;
-        }
-
-        .btn-sm {
-            padding: 6px 12px;
-            font-size: 0.85rem;
-            border-radius: 4px;
-        }
-
-        /* ==========================================
-           ابزار محاسباتی سریع (Quick Calc)
-           ========================================== */
-        .calc-box {
-            background-color: var(--primary);
-            color: #fff;
-            padding: 30px;
-            border-radius: 8px;
-            margin-top: 20px;
-        }
-
-        .calc-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-top: 15px;
-        }
-
-        .calc-group label {
-            display: block;
-            font-size: 0.9rem;
-            margin-bottom: 5px;
-            color: #cbd5e1;
-        }
-
-        .calc-group input, .calc-group select {
-            width: 100%;
-            padding: 10px;
-            border-radius: 4px;
-            border: 1px solid #475569;
-            background-color: var(--primary-light);
-            color: #fff;
-            font-family: var(--font);
-        }
-
-        .calc-result {
-            margin-top: 20px;
-            padding: 15px;
-            background-color: rgba(255,255,255,0.1);
-            border-radius: 6px;
-            text-align: center;
-            font-weight: 700;
-            color: var(--accent);
-        }
-
-        /* ==========================================
-           فرم استعلام پروژه
-           ========================================== */
-        .form-container {
-            background-color: var(--surface);
-            padding: 30px;
-            border-radius: 8px;
-            border: 1px solid var(--border);
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: 600;
-            font-size: 0.9rem;
-        }
-
-        .form-group input, .form-group textarea {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            font-family: var(--font);
-        }
-
-        .form-group textarea {
-            resize: vertical;
-            height: 100px;
-        }
-
-        /* ==========================================
-           دکمه چسبان موبایل (Sticky Mobile Bar)
-           ========================================== */
-        .mobile-sticky-bar {
-            display: none;
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background-color: var(--primary);
-            padding: 10px 20px;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.15);
-            z-index: 999;
-        }
-
-        .mobile-sticky-bar .btn {
-            width: 100%;
-            text-align: center;
-        }
-
-        /* ==========================================
-           فوتر
-           ========================================== */
-        footer {
-            background-color: var(--primary);
-            color: #94a3b8;
-            text-align: center;
-            padding: 25px 0;
-            font-size: 0.85rem;
-            margin-top: 40px;
-            border-top: 1px solid var(--primary-light);
-        }
-
-        /* پاسخگویی موبایل */
-        @media (max-width: 768px) {
-            nav { display: none; } /* سادگی روی موبایل */
-            .hero h1 { font-size: 1.6rem; }
-            .mobile-sticky-bar { display: block; }
-        }
-    </style>
-</head>
-<body>
-
-    <!-- هدر -->
-    <header>
-        <div class="nav-container">
-            <a href="#" class="logo">
-                🏗️ <span>مرجع لجستیک</span> و تامین
-            </a>
-            <nav>
-                <ul>
-                    <li><a href="#services">خدمات ما</a></li>
-                    <li><a href="#pricing">مظنه مصالح</a></li>
-                    <li><a href="#calc">محاسبه‌گر</a></li>
-                    <li><a href="#order">ثبت استعلام</a></li>
-                </ul>
-            </nav>
+<!-- HTML Structure -->
+<section class="services-section">
+    <div class="services-container">
+        
+        <!-- کارت ۱: تأمین -->
+        <div class="panel active" onclick="setActive(this)">
+            <div class="panel-header">
+                <div class="service-icon">🏗️</div>
+                <h3>تأمین مصالح</h3>
+            </div>
+            <div class="details-view">
+                <p>تأمین بی‌واسطه مصالح استاندارد با حذف واسطه‌ها. ما با شبکه تأمین‌کنندگان معتبر، مصالح را مستقیماً از کارخانه به پروژه شما می‌رسانیم.</p>
+                <button class="cta-btn">استعلام قیمت روز</button>
+            </div>
         </div>
-    </header>
 
-    <!-- بخش هیرو -->
-    <section class="hero">
-        <container>
-            <h1>تامین هوشمند، کنترل کیفیت و تحویل مصالح پای کارگاه</h1>
-            <p>حذف واسطه‌ها، راستی‌آزمایی کیفیت و تناژ بار، و تحویل زمان‌بندی‌شده در پروژه شما.</p>
-            <div class="cta-buttons">
-                <a href="#order" class="btn btn-primary">درخواست استعلام قیمت و بار</a>
-                <a href="#pricing" class="btn btn-outline">مشاهده مظنه روز مصالح</a>
+        <!-- کارت ۲: کنترل کیفیت -->
+        <div class="panel" onclick="setActive(this)">
+            <div class="panel-header">
+                <div class="service-icon">🧪</div>
+                <h3>کنترل کیفیت (QC)</h3>
             </div>
-        </container>
-    </section>
-
-    <!-- بخش ارزش‌ها و خدمات -->
-    <section id="services" class="section">
-        <container>
-            <h2 class="section-title">چگونه به کیفیت و هزینه پروژه شما کمک می‌کنیم؟</h2>
-            <div class="grid-3">
-                <div class="card">
-                    <div class="card-icon">🏬</div>
-                    <h3>تامین دست‌اول و بدون واسطه</h3>
-                    <p>اتصال مستقیم پروژه شما به دیتابیس کارخانه‌ها و بنکداران معتبر کشور با مناسب‌ترین قیمت ممکن.</p>
-                </div>
-                <div class="card">
-                    <div class="card-icon">🔍</div>
-                    <h3>تایید کیفیت و اصالت بار (QC)</h3>
-                    <p>نظارت بر باسکول، چک کردن برگه آزمایشگاه و بازرسی چشمی قبل از تخلیه بار در کارگاه شما.</p>
-                </div>
-                <div class="card">
-                    <div class="card-icon">🚛</div>
-                    <h3>مدیریت تحویل و عدم خواب کارگاه</h3>
-                    <p>برنامه‌ریزی دقیق زمان‌بندی ورود ناوگان مصالح متناسب با ظرفیت دپو و پیشرفت ساخت‌وساز.</p>
-                </div>
+            <div class="details-view">
+                <p>بازرسی فنی و نمونه‌برداری دقیق در محل پروژه. اطمینان از مطابقت مصالح با استانداردهای ملی و ضوابط نظام مهندسی.</p>
+                <button class="cta-btn">درخواست کارشناس</button>
             </div>
-        </container>
-    </section>
+        </div>
 
-    <!-- جدول شفافیت قیمت -->
-    <section id="pricing" class="section" style="background-color: #f1f5f9;">
-        <container>
-            <h2 class="section-title">مظنه و وضعیت تامین مصالح کلیدی</h2>
-            <div class="price-table-wrapper">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>نام کالا / مصالح</th>
-                            <th>مشخصه / عیار</th>
-                            <th>وضعیت بازرسی (QC)</th>
-                            <th>عملیات</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><strong>میلگرد آجدار (A3)</strong></td>
-                            <td>سایزهای ۱۴ تا ۲۲ (استاندارد)</td>
-                            <td><span class="tag-qc">شیت آزمایش + وزن‌کشی</span></td>
-                            <td><a href="#order" class="btn btn-primary btn-sm">استعلام تحویل پای‌کار</a></td>
-                        </tr>
-                        <tr>
-                            <td><strong>بتن آماده</strong></td>
-                            <td>رده‌های C25 تا C40</td>
-                            <td><span class="tag-qc">نمونه‌گیری و افت اسلامپ</span></td>
-                            <td><a href="#order" class="btn btn-primary btn-sm">استعلام تحویل پای‌کار</a></td>
-                        </tr>
-                        <tr>
-                            <td><strong>سیمان تیپ ۲ (فله/پاکت)</strong></td>
-                            <td>تحویل سیلو یا پالت</td>
-                            <td><span class="tag-qc">کنترل تاریخ و اصالت برند</span></td>
-                            <td><a href="#order" class="btn btn-primary btn-sm">استعلام تحویل پای‌کار</a></td>
-                        </tr>
-                        <tr>
-                            <td><strong>شن و ماسه شسته</strong></td>
-                            <td>کفی و کمپرسی (دوبل/ده‌چرخ)</td>
-                            <td><span class="tag-qc">بازرسی باسکول مبدا/مقصد</span></td>
-                            <td><a href="#order" class="btn btn-primary btn-sm">استعلام تحویل پای‌کار</a></td>
-                        </tr>
-                    </tbody>
-                </table>
+        <!-- کارت ۳: مدیریت اجرا -->
+        <div class="panel" onclick="setActive(this)">
+            <div class="panel-header">
+                <div class="service-icon">📊</div>
+                <h3>مدیریت و نظارت</h3>
             </div>
-        </container>
-    </section>
-
-    <!-- ابزار محاسباتی رایگان -->
-    <section id="calc" class="section">
-        <container>
-            <h2 class="section-title">ابزار محاسباتی سریع پروژه</h2>
-            <div class="calc-box">
-                <h3>تخمین سریع تعداد سرویس حمل مصالح</h3>
-                <p style="color: #cbd5e1; font-size: 0.9rem;">حجم خاک‌برداری یا مصالح فله خود را وارد کنید تا نوع ناوگان پیشنهادی را ببینید:</p>
-                
-                <div class="calc-grid">
-                    <div class="calc-group">
-                        <label>حجم تقریبی (مترمکعب):</label>
-                        <input type="number" id="volumeInput" placeholder="مثلا ۱۰۰" oninput="calculateTrucks()">
-                    </div>
-                    <div class="calc-group">
-                        <label>نوع ماده:</label>
-                        <select id="materialType" onchange="calculateTrucks()">
-                            <option value="1.6">خاک و نخاله (وزن مخصوص ۱.۶)</option>
-                            <option value="1.7">شن و ماسه (وزن مخصوص ۱.۷)</option>
-                            <option value="2.4">بتن (وزن مخصوص ۲.۴)</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="calc-result" id="calcResult">
-                    لطفاً متراژ/حجم را وارد کنید.
-                </div>
+            <div class="details-view">
+                <p>مدیریت پیمان و نظارت بر حسن انجام کار. کاهش هزینه‌های پرتی و بهینه‌سازی عملیات اجرایی با رویکرد مهندسی ارزش.</p>
+                <button class="cta-btn">مشاوره رایگان</button>
             </div>
-        </container>
-    </section>
+        </div>
 
-    <!-- فرم استعلام -->
-    <section id="order" class="section">
-        <container>
-            <h2 class="section-title">ثبت درخواست استعلام و مشاوره تامین</h2>
-            <div class="form-container">
-                <form id="inquiryForm" onsubmit="sendToWhatsApp(event)">
-                    <div class="form-group">
-                        <label>نام و نام خانوادگی / نام شرکت:</label>
-                        <input type="text" id="name" placeholder="مثال: مهندس رضایی" required>
-                    </div>
-                    <div class="form-group">
-                        <label>موقعیت پروژه (شهر / منطقه):</label>
-                        <input type="text" id="location" placeholder="مثال: تهران - منطقه ۲" required>
-                    </div>
-                    <div class="form-group">
-                        <label>مصالح یا خدمات مورد نیاز:</label>
-                        <textarea id="details" placeholder="مثال: نیاز به ۵۰ تن میلگرد سایز ۱۶ و ۲۰ سرویس ماسه شسته با کنترل کیفیت پای کار..." required></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primary" style="width: 100%;">ارسال درخواست مستقیم در واتساپ 📱</button>
-                </form>
-            </div>
-        </container>
-    </section>
-
-    <!-- فوتر -->
-    <footer>
-        <container>
-            <p>مرجع مهندسی تامین، لجستیک و کنترل کیفیت صنعت ساختمان © ۱۴۰۳</p>
-            <p style="margin-top: 5px; font-size: 0.8rem; color: #64748b;">ارائه‌دهنده راهکارهای تخصصی خرید و تحویل ایمن مصالح در کارگاه</p>
-        </container>
-    </footer>
-
-    <!-- دکمه چسبان تماس در موبایل -->
-    <div class="mobile-sticky-bar">
-        <a href="#order" class="btn btn-primary">ثبت سریع سفارش / استعلام</a>
     </div>
+</section>
 
-    <!-- اسکریپت‌های جاوااسکریپت داخلی -->
-    <script>
-        // ۱. محاسبه‌گر سریع تعداد سرویس حمل
-        function calculateTrucks() {
-            const volume = parseFloat(document.getElementById('volumeInput').value);
-            const density = parseFloat(document.getElementById('materialType').value);
-            const resultDiv = document.getElementById('calcResult');
+<style>
+    .services-container { display: flex; height: 400px; gap: 15px; margin: 40px 0; }
+    .panel { 
+        flex: 1; cursor: pointer; border-radius: 20px; transition: flex 0.5s ease;
+        background: #10192b; padding: 20px; color: white; display: flex; flex-direction: column; 
+        justify-content: center; align-items: center; border: 1px solid #2a3a5a;
+    }
+    .panel.active { flex: 4; align-items: flex-start; justify-content: flex-start; border-color: #3884ff; }
+    
+    .details-view { display: none; margin-top: 20px; }
+    .panel.active .details-view { display: block; }
+    
+    .panel-header { display: flex; align-items: center; gap: 10px; }
+    .service-icon { font-size: 2rem; }
+    .cta-btn { background: #3884ff; color: white; border: none; padding: 10px 20px; border-radius: 8px; margin-top: 15px; cursor: pointer; }
+</style>
 
-            if (!volume || volume <= 0) {
-                resultDiv.innerHTML = "لطفاً حجم معتبری وارد کنید.";
-                return;
-            }
-
-            const totalWeight = volume * density; // weight in tons
-            const tenWheelerCount = Math.ceil(totalWeight / 15); // ۱۰ چرخ ~ ۱۵ تن
-            const trailerCount = Math.ceil(totalWeight / 24);   // تریلی ~ ۲۴ تن
-
-            resultDiv.innerHTML = `وزن تقریبی: <strong>${totalWeight.toFixed(1)} تن</strong> <br>` +
-                `نیاز به حدوداً <strong>${tenWheelerCount} سرویس ده‌چرخ</strong> یا <strong>${trailerCount} سرویس تریلی</strong>`;
-        }
-
-        // ۲. ارسال فرم استعلام مستقیم به واتساپ شما
-        function sendToWhatsApp(event) {
-            event.preventDefault();
-            
-            // ⚠️ شماره واتساپ خودتان را با کد کشور بنویسید (مثلا 989123456789)
-            const myPhoneNumber = "989120000000"; 
-
-            const name = document.getElementById('name').value;
-            const location = document.getElementById('location').value;
-            const details = document.getElementById('details').value;
-
-            const text = `سلام، درخواست استعلام جدید از سایت:%0A` +
-                         `👤 نام: ${encodeURIComponent(name)}%0A` +
-                         `📍 موقعیت: ${encodeURIComponent(location)}%0A` +
-                         `📝 شرح نیاز: ${encodeURIComponent(details)}`;
-
-            window.open(`https://wa.me/${myPhoneNumber}?text=${text}`, '_blank');
-        }
-    </script>
-</body>
-</html>
+<script>
+    function setActive(el) {
+        document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+        el.classList.add('active');
+    }
+</script>
