@@ -1,4 +1,5 @@
-import os, json, requests, pandas as pd
+import os, json, requests, io
+import pandas as pd
 from bs4 import BeautifulSoup
 import jdatetime
 
@@ -33,16 +34,24 @@ def fetch_tables_from_url(url):
         extracted_tables = []
         
         for table in tables:
-            for tag in table(['script', 'style', 'svg']):
+            # حذف اسکریپت‌ها، استایل‌ها و تصاویر اضافی
+            for tag in table(['script', 'style', 'svg', 'img', 'button']):
                 tag.decompose()
+            
+            # --- حذف هایپرلینک‌ها (لینک‌ها) و نگه داشتن فقط متن کالاها ---
+            for a in table.find_all('a'):
+                a.unwrap()
+                
             try:
-                df = pd.read_html(str(table))[0]
+                # خواندن جدول با کتابخانه پانداز
+                df = pd.read_html(io.StringIO(str(table)))[0]
                 df = df.dropna(how='all').fillna('-')
-                # استایل‌دهی بهتر برای جدول
                 html_table = df.to_html(classes="custom-table", index=False, border=0)
                 extracted_tables.append(html_table)
             except Exception:
+                # در صورت خطا در پانداز، جدول به عنوان HTML ساده وارد می‌شود (بدون لینک)
                 extracted_tables.append(str(table))
+                
         return extracted_tables
     except Exception as e:
         print(f"Error fetching {url}: {e}")
@@ -72,7 +81,6 @@ def generate_html_page(data_list):
         </section>
         """
 
-    # دقت کنید که چون متن زیر یک f-string است، آکولادهای مربوط به CSS و JS به صورت {{ }} نوشته شده‌اند.
     html_template = f"""<!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
@@ -88,10 +96,10 @@ def generate_html_page(data_list):
             --text-main: #1e293b;
             --text-muted: #475569;
             --border-color: #cbd5e1;
-            --table-header: #334155; /* تیره کردن هدر جدول */
+            --table-header: #334155;
             --table-header-text: #ffffff;
             --row-hover: #f1f5f9;
-            --card-header-bg: #1e293b; /* تیره کردن هدر بخش‌ها */
+            --card-header-bg: #1e293b;
         }}
         
         body {{
@@ -100,7 +108,7 @@ def generate_html_page(data_list):
             color: var(--text-main);
             margin: 0;
             padding: 20px;
-            line-height: 2; /* افزایش فاصله سطرها */
+            line-height: 2;
         }}
         
         .container {{
@@ -129,7 +137,6 @@ def generate_html_page(data_list):
             margin-bottom: 20px;
         }}
 
-        /* استایل مربوط به باکس جستجو */
         .search-box {{
             width: 100%;
             max-width: 500px;
@@ -170,11 +177,11 @@ def generate_html_page(data_list):
         .card-header h2 {{
             margin: 0;
             font-size: 1.3rem;
-            color: #ffffff; /* سفید شدن متن هدر کادر */
+            color: #ffffff;
         }}
         
         .source-link {{
-            color: #93c5fd; /* آبی روشن برای دیده شدن روی پس‌زمینه تیره */
+            color: #93c5fd;
             text-decoration: none;
             font-size: 0.9rem;
             font-weight: 500;
@@ -209,7 +216,7 @@ def generate_html_page(data_list):
         }}
         
         th, td {{
-            padding: 16px 18px; /* افزایش فاصله داخلی سلول‌های جدول */
+            padding: 16px 18px;
             border-bottom: 1px solid var(--border-color);
         }}
         
@@ -238,26 +245,53 @@ def generate_html_page(data_list):
             <h1>📊 آخرین قیمت‌های استخراج شده</h1>
             <div class="update-time">به‌روزرسانی: {now_shamsi}</div>
             <br>
-            <!-- کادر جستجو -->
-            <input type="text" id="searchInput" class="search-box" placeholder="جستجو در عناوین (مثلاً میلگرد)..." onkeyup="filterCards()">
+            <!-- فیلد جستجوی پیشرفته -->
+            <input type="text" id="searchInput" class="search-box" placeholder="جستجو در تمام اطلاعات جداول (سایز، برند و...)" onkeyup="filterCards()">
         </header>
         <main id="cardsContainer">
             {sections_html}
         </main>
     </div>
 
-    <!-- اسکریپت فیلتر جستجو -->
+    <!-- اسکریپت فیلتر حرفه‌ای سطر به سطر -->
     <script>
         function filterCards() {{
             let input = document.getElementById('searchInput').value.toLowerCase();
             let cards = document.getElementsByClassName('card');
             
             for (let i = 0; i < cards.length; i++) {{
-                let title = cards[i].querySelector('.card-header h2').innerText.toLowerCase();
-                if (title.includes(input)) {{
-                    cards[i].style.display = "";
+                let card = cards[i];
+                let titleText = card.querySelector('.card-header h2').innerText.toLowerCase();
+                let rows = card.querySelectorAll('table tr');
+                
+                let hasVisibleRow = false;
+                let titleMatch = titleText.includes(input); // اگر اسم خود کادر جستجو شد
+
+                // بررسی تک‌تک سطرهای جدول
+                for (let j = 0; j < rows.length; j++) {{
+                    let row = rows[j];
+                    
+                    // از مخفی کردن تیترهای جدول (ردیف‌های دارای th) جلوگیری می‌کنیم
+                    if (row.querySelector('th')) {{
+                        continue;
+                    }}
+                    
+                    let rowText = row.innerText.toLowerCase();
+                    
+                    // اگر کلمه در این سطر بود، یا اینکه کاربر اسم کل کادر را سرچ کرده بود
+                    if (titleMatch || rowText.includes(input)) {{
+                        row.style.display = ""; // نمایش سطر
+                        hasVisibleRow = true;
+                    }} else {{
+                        row.style.display = "none"; // پنهان کردن سطر
+                    }}
+                }}
+                
+                // اگر حتی یک سطر پیدا شد، کل کادر را نشان بده، در غیر این صورت کل کادر پنهان شود
+                if (titleMatch || hasVisibleRow) {{
+                    card.style.display = "";
                 }} else {{
-                    cards[i].style.display = "none";
+                    card.style.display = "none";
                 }}
             }}
         }}
@@ -283,7 +317,6 @@ def main():
         
     generate_html_page(all_results)
     
-    # ذخیره داده‌های خام برای استفاده‌های احتمالی بعدی (API و ...)
     with open("data/prices.json", "w", encoding="utf-8") as f:
         json.dump(all_results, f, ensure_ascii=False, indent=2)
 
