@@ -1,336 +1,696 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مدیریت منابع استخراج</title>
-    <style>
-        :root {
-            --primary: #2563eb;
-            --primary-hover: #1d4ed8;
-            --bg: #f8fafc;
-            --card: #ffffff;
-            --border: #e2e8f0;
-            --text: #1e293b;
-            --danger: #ef4444;
-            --success: #10b981;
-        }
-        * { box-sizing: border-box; font-family: Tahoma, 'Vazirmatn', sans-serif; }
-        body { background-color: var(--bg); color: var(--text); padding: 25px 15px; margin: 0; }
-        .container { max-width: 900px; margin: 0 auto; }
-        .card { background: var(--card); border-radius: 12px; border: 1px solid var(--border); padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.04); }
-        h2, h3 { margin-top: 0; color: #0f172a; }
-        .form-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 6px; font-weight: bold; font-size: 0.9rem; }
-        input[type="text"], input[type="password"] {
-            width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 0.95rem; outline: none;
-        }
-        input:focus { border-color: var(--primary); }
-        .btn {
-            background-color: var(--primary); color: white; border: none; padding: 10px 18px; border-radius: 8px;
-            cursor: pointer; font-size: 0.95rem; font-weight: bold; transition: background 0.2s;
-        }
-        .btn:hover { background-color: var(--primary-hover); }
-        .btn-success { background-color: var(--success); }
-        .btn-danger { background-color: var(--danger); padding: 5px 10px; font-size: 0.85rem; }
-        .table-responsive { overflow-x: auto; margin-top: 15px; }
-        table { width: 100%; border-collapse: collapse; text-align: right; }
-        th, td { padding: 12px; border-bottom: 1px solid var(--border); }
-        th { background-color: #f1f5f9; }
-        .alert { padding: 12px; border-radius: 8px; margin-bottom: 15px; display: none; }
-        .alert-success { background-color: #dcfce7; color: #15803d; border: 1px solid #bbf7d0; }
-        .alert-danger { background-color: #fee2e2; color: #b91c1c; border: 1px solid #fecaca; }
-        .status-badge { display: inline-block; padding: 3px 8px; border-radius: 6px; font-size: 0.8rem; background: #e2e8f0; }
-        .actions-row { display: flex; gap: 10px; align-items: center; justify-content: space-between; flex-wrap: wrap; }
-    </style>
+  <meta charset="UTF-8">
+  <title>مدیریت منابع استخراج | پنل ادمین</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css">
+  <!-- کتابخانه SheetJS جهت خواندن فایل‌های اکسل در مرورگر -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --danger: #ef4444;
+      --danger-hover: #dc2626;
+      --success: #10b981;
+      --success-hover: #059669;
+      --border: #e2e8f0;
+      --badge-bulk: #8b5cf6;
+    }
+    * { box-sizing: border-box; font-family: Vazirmatn, sans-serif; }
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      margin: 0;
+      padding: 30px 15px;
+      display: flex;
+      justify-content: center;
+    }
+    .container {
+      width: 100%;
+      max-width: 1000px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    .card {
+      background: var(--card-bg);
+      padding: 24px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+    }
+    h2, h3 { margin-top: 0; }
+    h2 { color: var(--primary); font-size: 1.4rem; }
+    h3 { font-size: 1.15rem; margin-bottom: 12px; color: #1e293b; }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 15px;
+    }
+    label { font-size: 0.9rem; font-weight: 500; }
+    input[type="text"], input[type="password"], textarea, input[type="file"] {
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.95rem;
+      outline: none;
+      width: 100%;
+    }
+    input:focus, textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+    }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+    }
+    .grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 15px;
+    }
+    @media (max-width: 768px) {
+      .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    }
+    .btn {
+      padding: 10px 18px;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: background 0.2s, transform 0.1s;
+    }
+    .btn:active { transform: scale(0.98); }
+    .btn-primary { background: var(--primary); color: white; }
+    .btn-primary:hover { background: var(--primary-hover); }
+    .btn-danger { background: var(--danger); color: white; }
+    .btn-danger:hover { background: var(--danger-hover); }
+    .btn-success { background: var(--success); color: white; }
+    .btn-success:hover { background: var(--success-hover); }
+    .btn-secondary { background: #64748b; color: white; }
+    .btn-secondary:hover { background: #475569; }
+    .btn-sm { padding: 5px 10px; font-size: 0.82rem; border-radius: 6px; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+      font-size: 0.9rem;
+    }
+    th, td {
+      border: 1px solid var(--border);
+      padding: 10px 12px;
+      text-align: right;
+    }
+    th { background: #f1f5f9; font-weight: 600; }
+    tr:hover { background: #f8fafc; }
+    .badge {
+      display: inline-block;
+      padding: 3px 8px;
+      font-size: 0.75rem;
+      border-radius: 4px;
+      font-weight: 500;
+    }
+    .badge-manual { background: #e0e7ff; color: #3730a3; }
+    .badge-bulk { background: #ede9fe; color: #5b21b6; }
+    .empty-state {
+      text-align: center;
+      color: var(--text-muted);
+      padding: 25px;
+    }
+    .tab-container {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 15px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 10px;
+    }
+    .tab-btn {
+      padding: 8px 14px;
+      background: #f1f5f9;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 500;
+    }
+    .tab-btn.active {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+    .hint {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+  </style>
 </head>
 <body>
+
 <div class="container">
-    <div class="card">
-        <h2>⚙️ تنظیمات اتصال به گیت‌هاب</h2>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-            <div class="form-group">
-                <label>نام کاربری و ریپازیتوری (مثال: username/repo):</label>
-                <input type="text" id="repoPath" placeholder="username/repo">
-            </div>
-            <div class="form-group">
-                <label>توکن گیت‌هاب (Personal Access Token):</label>
-                <input type="password" id="ghToken" placeholder="ghp_xxxx">
-            </div>
+
+  <!-- کارت تنظیمات مخزن گیت‌هاب -->
+  <div class="card">
+    <h2>⚙️ تنظیمات اتصال به گیت‌هاب</h2>
+    <div class="grid-2">
+      <div class="form-group">
+        <label>نام کاربری و مخزن (مثلاً: username/repo):</label>
+        <input type="text" id="repoInput" placeholder="username/repo">
+      </div>
+      <div class="form-group">
+        <label>توکن دسترسی شخصی (GitHub PAT):</label>
+        <input type="password" id="tokenInput" placeholder="ghp_xxxxxxxxxxxxxx">
+      </div>
+    </div>
+    <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+      <button class="btn btn-primary" onclick="saveConfig()">ذخیره و بارگذاری اطلاعات</button>
+      <button class="btn btn-success" onclick="triggerWorkflow()">⚡ اجرای فوری ربات استخراج</button>
+      <span id="authStatus" style="font-size: 0.85rem;"></span>
+    </div>
+  </div>
+
+  <!-- کارت افزودن تکی منبع (دستی) -->
+  <div class="card">
+    <h3>➕ افزودن دستی یک منبع جدید</h3>
+    <form id="addSingleForm" onsubmit="handleSingleAdd(event)">
+      <div class="grid-3">
+        <div class="form-group">
+          <label>عنوان محصول (مثلاً سیمان یا بلوک):</label>
+          <input type="text" id="manualTitle" required placeholder="سیمان پاکتی">
         </div>
-        <button class="btn" id="saveConfigBtn" onclick="saveConfig()">ذخیره و دریافت اطلاعات</button>
+        <div class="form-group">
+          <label>نام سایت / فروشگاه:</label>
+          <input type="text" id="manualSourceName" required placeholder="ساروج آنلاین">
+        </div>
+        <div class="form-group">
+          <label>لینک صفحه (URL):</label>
+          <input type="text" id="manualUrl" required placeholder="https://example.com/price">
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary">ثبت منبع دستی</button>
+    </form>
+  </div>
+
+  <!-- کارت ورود گروهی منابع (اکسل / متن / پیست) -->
+  <div class="card">
+    <h3>📥 ورود گروهی منابع (اکسل / متنی / کپی لینک‌ها)</h3>
+    <p class="hint" style="font-size: 0.85rem; margin-bottom: 12px;">
+      می‌توانید فایل اکسل (ستون‌های url یا لینک، عنوان، منبع)، فایل متنی (.txt) شامل لینک‌ها در هر سطر، یا متن لینک‌ها را مستقیماً پیست کنید.
+    </p>
+
+    <div class="tab-container">
+      <button class="tab-btn active" type="button" onclick="switchBulkTab('paste')">📋 کپی و پیست مستقیم</button>
+      <button class="tab-btn" type="button" onclick="switchBulkTab('file')">📁 آپلود فایل اکسل / متنی</button>
     </div>
 
-    <div id="alertBox" class="alert"></div>
-
-    <div class="card">
-        <h3>➕ افزودن منبع جدید</h3>
-        <form id="addForm" onsubmit="addSource(event)">
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                <div class="form-group">
-                    <label>عنوان دسته‌بندی:</label>
-                    <input type="text" id="newTitle" required placeholder="مثال: قیمت میلگرد">
-                </div>
-                <div class="form-group">
-                    <label>نام منبع / سایت:</label>
-                    <input type="text" id="newSource" required placeholder="مثال: آهن آنلاین">
-                </div>
-            </div>
-            <div class="form-group">
-                <label>آدرس صفحه هدف (URL):</label>
-                <input type="text" id="newUrl" required dir="ltr" placeholder="https://...">
-            </div>
-            <button type="submit" class="btn btn-success" id="submitBtn">ثبت و ذخیره در گیت‌هاب</button>
-        </form>
+    <!-- تب کپی پیست مستقیم -->
+    <div id="bulkPasteTab">
+      <div class="form-group">
+        <label>لینک‌ها را در هر سطر قرار دهید (اختیاری: فرمت <code>عنوان | منبع | لینک</code> یا فقط لینک ساده):</label>
+        <textarea id="bulkPasteInput" rows="5" placeholder="https://site1.com/prices&#10;https://site2.com/prices&#10;سیمان | فروشگاه الف | https://site3.com/cement"></textarea>
+      </div>
+      <button class="btn btn-primary" onclick="handleBulkPaste()">افزودن لینک‌های پیست‌شده به مخزن</button>
     </div>
 
-    <div class="card">
-        <div class="actions-row">
-            <h3>📋 لیست منابع فعال (<span id="sourceCount">0</span> منبع)</h3>
-            <button class="btn" onclick="triggerWorkflow()" id="runActionBtn">⚡ اجرای فوری ربات استخراج</button>
+    <!-- تب فایل اکسل / تکست -->
+    <div id="bulkFileTab" style="display: none;">
+      <div class="grid-2">
+        <div class="form-group">
+          <label>انتخاب فایل (اکسل .xlsx / .csv یا متنی .txt):</label>
+          <input type="file" id="bulkFileInput" accept=".xlsx, .xls, .csv, .txt">
         </div>
-        <div class="table-responsive">
-            <table>
-                <thead>
-                    <tr>
-                        <th>عنوان</th>
-                        <th>منبع</th>
-                        <th>آدرس لینک</th>
-                        <th>عملیات</th>
-                    </tr>
-                </thead>
-                <tbody id="sourcesTable">
-                    <tr><td colspan="4" style="text-align: center; color: #94a3b8;">هنوز تنظیمی انجام نشده است.</td></tr>
-                </tbody>
-            </table>
+        <div class="form-group">
+          <label>دسته‌بندی پیش‌فرض (در صورت نبود در فایل):</label>
+          <input type="text" id="bulkDefaultCategory" placeholder="مثلاً: منابع متفرقه یا ساختمانی">
         </div>
+      </div>
+      <button class="btn btn-primary" onclick="handleBulkFile()">پردازش و ثبت فایل</button>
     </div>
+  </div>
+
+  <!-- جدول ۱: لیست منابع دستی -->
+  <div class="card">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+      <h3>📌 منابع وارد شده به صورت دستی (<span id="manualCount">0</span>)</h3>
+    </div>
+    <div style="overflow-x: auto;">
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 50px;">ردیف</th>
+            <th>عنوان</th>
+            <th>نام منبع</th>
+            <th>آدرس صفحه (URL)</th>
+            <th style="width: 80px;">عملیات</th>
+          </tr>
+        </thead>
+        <tbody id="manualSourcesTable">
+          <tr><td colspan="5" class="empty-state">درحال بارگذاری...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- جدول ۲: لیست منابع گروهی -->
+  <div class="card">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+      <h3>📦 منابع وارد شده به صورت گروهی (فایل / متنی) (<span id="bulkCount">0</span>)</h3>
+      <button class="btn btn-danger btn-sm" onclick="deleteAllBulkSources()">حذف همه منابع گروهی</button>
+    </div>
+    <div style="overflow-x: auto;">
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 50px;">ردیف</th>
+            <th>عنوان</th>
+            <th>نام منبع</th>
+            <th>آدرس صفحه (URL)</th>
+            <th style="width: 80px;">عملیات</th>
+          </tr>
+        </thead>
+        <tbody id="bulkSourcesTable">
+          <tr><td colspan="5" class="empty-state">موردی یافت نشد</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
 </div>
 
 <script>
-    let currentSha = null;
-    let sourcesList = [];
+  let allSources = [];
+  let fileSha = "";
 
-    // تابع کمکی برای کدگذاری صحیح UTF-8 به Base64
-    function utf8ToBase64(str) {
-        return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, (match, p1) => String.fromCharCode('0x' + p1)));
+  function getRepo() { return localStorage.getItem('gh_repo') || ''; }
+  function getToken() { return localStorage.getItem('gh_token') || ''; }
+
+  window.onload = function() {
+    document.getElementById('repoInput').value = getRepo();
+    document.getElementById('tokenInput').value = getToken();
+    if(getRepo() && getToken()) {
+      fetchSources();
     }
+  };
 
-    // تابع کمکی برای رمزگشایی Base64 به UTF-8
-    function base64ToUtf8(str) {
-        return decodeURIComponent(Array.prototype.map.call(atob(str), c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join(''));
+  function saveConfig() {
+    const repo = document.getElementById('repoInput').value.trim();
+    const token = document.getElementById('tokenInput').value.trim();
+    if(!repo || !token) {
+      alert('لطفاً نام مخزن و توکن را وارد کنید.');
+      return;
     }
+    localStorage.setItem('gh_repo', repo);
+    localStorage.setItem('gh_token', token);
+    fetchSources();
+  }
 
-    window.onload = function() {
-        const savedRepo = localStorage.getItem('gh_repo') || '';
-        const savedToken = localStorage.getItem('gh_token') || '';
-        document.getElementById('repoPath').value = savedRepo;
-        document.getElementById('ghToken').value = savedToken;
-        if (savedRepo && savedToken) {
-            fetchSources();
+  function utf8ToBase64(str) {
+    return btoa(unescape(encodeURIComponent(str)));
+  }
+
+  function base64ToUtf8(str) {
+    return decodeURIComponent(escape(atob(str)));
+  }
+
+  function cleanDomainName(url) {
+    try {
+      const parsed = new URL(url);
+      return parsed.hostname.replace(/^www\./, '');
+    } catch(e) {
+      return 'وب‌سایت';
+    }
+  }
+
+  async function fetchSources() {
+    const status = document.getElementById('authStatus');
+    status.innerText = "⏳ در حال دریافت لیست منابع...";
+    status.style.color = "var(--primary)";
+
+    const repo = getRepo();
+    const token = getToken();
+
+    try {
+      const res = await fetch(`https://api.github.com/repos/${repo}/contents/sources.json`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Accept': 'application/vnd.github.v3+json'
         }
+      });
+
+      if (res.status === 404) {
+        allSources = [];
+        fileSha = "";
+        renderTables();
+        status.innerText = "فایل sources.json یافت نشد (لیست خالی).";
+        status.style.color = "var(--text-muted)";
+        return;
+      }
+
+      if (!res.ok) throw new Error(`خطای سرور: ${res.status}`);
+
+      const data = await res.json();
+      fileSha = data.sha;
+      const content = base64ToUtf8(data.content.replace(/\s/g, ''));
+      allSources = JSON.parse(content);
+
+      renderTables();
+      status.innerText = "✅ متصل شد - لیست به‌روز است.";
+      status.style.color = "var(--success)";
+    } catch (err) {
+      console.error(err);
+      status.innerText = "❌ خطا در دریافت اطلاعات. توکن یا مخزن را بررسی کنید.";
+      status.style.color = "var(--danger)";
+    }
+  }
+
+  function renderTables() {
+    const manualTbody = document.getElementById('manualSourcesTable');
+    const bulkTbody = document.getElementById('bulkSourcesTable');
+
+    manualTbody.innerHTML = '';
+    bulkTbody.innerHTML = '';
+
+    let manualIndex = 1;
+    let bulkIndex = 1;
+
+    allSources.forEach((src, idx) => {
+      const isBulk = (src.type === 'bulk');
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${isBulk ? bulkIndex++ : manualIndex++}</td>
+        <td><strong>${src.title || '-'}</strong></td>
+        <td>${src.source_name || '-'}</td>
+        <td><a href="${src.url}" target="_blank" style="color: var(--primary); text-decoration: none;">${src.url}</a></td>
+        <td>
+          <button class="btn btn-danger btn-sm" onclick="deleteSource(${idx})">حذف</button>
+        </td>
+      `;
+
+      if (isBulk) {
+        bulkTbody.appendChild(tr);
+      } else {
+        manualTbody.appendChild(tr);
+      }
+    });
+
+    document.getElementById('manualCount').innerText = manualIndex - 1;
+    document.getElementById('bulkCount').innerText = bulkIndex - 1;
+
+    if (manualIndex === 1) {
+      manualTbody.innerHTML = `<tr><td colspan="5" class="empty-state">منبع دستی ثبت نشده است.</td></tr>`;
+    }
+    if (bulkIndex === 1) {
+      bulkTbody.innerHTML = `<tr><td colspan="5" class="empty-state">منبع گروهی ثبت نشده است.</td></tr>`;
+    }
+  }
+
+  async function saveToGitHub(newSources, commitMsg) {
+    const repo = getRepo();
+    const token = getToken();
+    const status = document.getElementById('authStatus');
+
+    status.innerText = "⏳ در حال ذخیره تغییرات روی گیت‌هاب...";
+    status.style.color = "var(--primary)";
+
+    const contentStr = JSON.stringify(newSources, null, 2);
+    const body = {
+      message: commitMsg,
+      content: utf8ToBase64(contentStr)
     };
+    if (fileSha) body.sha = fileSha;
 
-    function showAlert(msg, isError = false) {
-        const box = document.getElementById('alertBox');
-        box.style.display = 'block';
-        box.className = 'alert ' + (isError ? 'alert-danger' : 'alert-success');
-        box.innerText = msg;
-        setTimeout(() => { box.style.display = 'none'; }, 8000);
+    try {
+      const res = await fetch(`https://api.github.com/repos/${repo}/contents/sources.json`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+          'Accept': 'application/vnd.github.v3+json'
+        },
+        body: JSON.stringify(body)
+      });
+
+      if (!res.ok) throw new Error('خطا در ذخیره سازی');
+      const data = await res.json();
+      fileSha = data.content.sha;
+      allSources = newSources;
+      renderTables();
+      status.innerText = "✅ تغییرات با موفقیت در گیت‌هاب ذخیره شد.";
+      status.style.color = "var(--success)";
+      return true;
+    } catch (e) {
+      console.error(e);
+      alert('خطا در اتصال یا ذخیره روی گیت‌هاب: ' + e.message);
+      status.innerText = "❌ خطا در ذخیره‌سازی.";
+      status.style.color = "var(--danger)";
+      return false;
+    }
+  }
+
+  // ثبت تکی دستی
+  async function handleSingleAdd(e) {
+    e.preventDefault();
+    const title = document.getElementById('manualTitle').value.trim();
+    const source_name = document.getElementById('manualSourceName').value.trim();
+    const url = document.getElementById('manualUrl').value.trim();
+
+    const newSource = { title, source_name, url, type: 'manual' };
+    const updated = [...allSources, newSource];
+
+    const ok = await saveToGitHub(updated, `Add manual source: ${title}`);
+    if (ok) {
+      document.getElementById('manualTitle').value = '';
+      document.getElementById('manualSourceName').value = '';
+      document.getElementById('manualUrl').value = '';
+    }
+  }
+
+  // حذف یک مورد
+  async function deleteSource(index) {
+    const target = allSources[index];
+    if (!confirm(`آیا از حذف منبع "${target.title || target.url}" اطمینان دارید؟`)) return;
+
+    const updated = allSources.filter((_, idx) => idx !== index);
+    await saveToGitHub(updated, `Delete source: ${target.title || target.url}`);
+  }
+
+  // حذف یکجای منابع گروهی
+  async function deleteAllBulkSources() {
+    const bulkSources = allSources.filter(s => s.type === 'bulk');
+    if (bulkSources.length === 0) {
+      alert('هیچ منبع گروهی برای حذف وجود ندارد.');
+      return;
+    }
+    if (!confirm(`آیا مطمئن هستید که می‌خواهید تمام ${bulkSources.length} منبع گروهی را حذف کنید؟`)) return;
+
+    const updated = allSources.filter(s => s.type !== 'bulk');
+    await saveToGitHub(updated, `Remove all bulk sources (${bulkSources.length} items)`);
+  }
+
+  // تغییر تب‌های ورود گروهی
+  function switchBulkTab(type) {
+    const pasteTab = document.getElementById('bulkPasteTab');
+    const fileTab = document.getElementById('bulkFileTab');
+    const buttons = document.querySelectorAll('.tab-btn');
+
+    if (type === 'paste') {
+      pasteTab.style.display = 'block';
+      fileTab.style.display = 'none';
+      buttons[0].classList.add('active');
+      buttons[1].classList.remove('active');
+    } else {
+      pasteTab.style.display = 'none';
+      fileTab.style.display = 'block';
+      buttons[0].classList.remove('active');
+      buttons[1].classList.add('active');
+    }
+  }
+
+  // ورود گروهی از پیست متن
+  async function handleBulkPaste() {
+    const raw = document.getElementById('bulkPasteInput').value.trim();
+    if (!raw) {
+      alert('لطفاً لینک‌ها را در کادر متنی وارد کنید.');
+      return;
     }
 
-    function cleanRepoInput(raw) {
-        return raw.replace(/^https?:\/\/github\.com\//, '').replace(/\/$/, '').trim();
-    }
+    const lines = raw.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+    const parsed = [];
 
-    function saveConfig() {
-        let repo = cleanRepoInput(document.getElementById('repoPath').value);
-        const token = document.getElementById('ghToken').value.trim();
-
-        if (!repo || !token) {
-            showAlert("لطفاً هم نام ریپازیتوری و هم توکن گیت‌هاب را وارد کنید.", true);
-            return;
-        }
-
-        document.getElementById('repoPath').value = repo;
-        localStorage.setItem('gh_repo', repo);
-        localStorage.setItem('gh_token', token);
-        showAlert("تنظیمات ذخیره شد. در حال برقراری ارتباط با گیت‌هاب...");
-        fetchSources();
-    }
-
-    async function fetchSources() {
-        let repo = localStorage.getItem('gh_repo');
-        const token = localStorage.getItem('gh_token');
-        if (!repo || !token) return;
-
-        repo = cleanRepoInput(repo);
-        const btn = document.getElementById('saveConfigBtn');
-        btn.disabled = true;
-        btn.innerText = "در حال بررسی...";
-
-        try {
-            const res = await fetch(`https://api.github.com/repos/${repo}/contents/sources.json`, {
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Accept': 'application/vnd.github.v3+json'
-                }
-            });
-
-            if (res.status === 404) {
-                // فایل هنوز در گیت‌هاب نیست
-                currentSha = null;
-                sourcesList = [];
-                renderTable();
-                showAlert("اتصال با موفقیت برقرار شد. فایل sources.json هنوز وجود ندارد و با ثبت اولین منبع ایجاد خواهد شد.");
-                return;
-            }
-
-            if (!res.ok) {
-                const errData = await res.json().catch(() => ({}));
-                throw new Error(`خطای ${res.status}: ${errData.message || 'دسترسی غیرمجاز یا ریپازیتوری نامعتبر'}`);
-            }
-
-            const data = await res.json();
-            currentSha = data.sha;
-            const content = base64ToUtf8(data.content.replace(/\s/g, ''));
-            sourcesList = JSON.parse(content);
-            renderTable();
-            showAlert("✅ ارتباط با موفقیت برقرار شد و منابع دریافت گردید.");
-        } catch (err) {
-            showAlert("خطا در اتصال به گیت‌هاب: " + err.message, true);
-        } finally {
-            btn.disabled = false;
-            btn.innerText = "ذخیره و دریافت اطلاعات";
-        }
-    }
-
-    function renderTable() {
-        const tbody = document.getElementById('sourcesTable');
-        document.getElementById('sourceCount').innerText = sourcesList.length;
-        tbody.innerHTML = '';
-
-        if (sourcesList.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; color: #64748b;">هیچ منبعی ثبت نشده است. از فرم بالا منبع جدید اضافه کنید.</td></tr>';
-            return;
-        }
-
-        sourcesList.forEach((item, index) => {
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td><strong>${item.title}</strong></td>
-                <td><span class="status-badge">${item.source_name}</span></td>
-                <td dir="ltr" style="font-size: 0.85rem; max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-                    <a href="${item.url}" target="_blank">${item.url}</a>
-                </td>
-                <td>
-                    <button class="btn btn-danger" onclick="deleteSource(${index})">حذف</button>
-                </td>
-            `;
-            tbody.appendChild(tr);
+    for (const line of lines) {
+      // پشتیبانی از فرمت "عنوان | نام منبع | لینک" یا فقط "لینک"
+      const parts = line.split('|').map(p => p.trim());
+      if (parts.length >= 3) {
+        parsed.push({
+          title: parts[0],
+          source_name: parts[1],
+          url: parts[2],
+          type: 'bulk'
         });
+      } else {
+        const url = parts[0];
+        if (url.startsWith('http')) {
+          const domain = cleanDomainName(url);
+          parsed.push({
+            title: `منبع ${domain}`,
+            source_name: domain,
+            url: url,
+            type: 'bulk'
+          });
+        }
+      }
     }
 
-    async function saveToGitHub(newList, commitMessage) {
-        let repo = cleanRepoInput(localStorage.getItem('gh_repo'));
-        const token = localStorage.getItem('gh_token');
-        const jsonStr = JSON.stringify(newList, null, 2);
-        const encodedContent = utf8ToBase64(jsonStr);
-
-        const bodyPayload = {
-            message: commitMessage,
-            content: encodedContent
-        };
-        if (currentSha) {
-            bodyPayload.sha = currentSha;
-        }
-
-        const res = await fetch(`https://api.github.com/repos/${repo}/contents/sources.json`, {
-            method: 'PUT',
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Accept': 'application/vnd.github.v3+json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(bodyPayload)
-        });
-
-        if (!res.ok) {
-            const errData = await res.json().catch(() => ({}));
-            throw new Error(`خطا در ذخیره (${res.status}): ${errData.message || 'مشکل در نوشتن فایل'}`);
-        }
-
-        const data = await res.json();
-        currentSha = data.content.sha;
-        sourcesList = newList;
-        renderTable();
+    if (parsed.length === 0) {
+      alert('هیچ لینک معتبری یافت نشد. لینک‌ها باید با http:// یا https:// شروع شوند.');
+      return;
     }
 
-    async function addSource(e) {
-        e.preventDefault();
-        const title = document.getElementById('newTitle').value.trim();
-        const source_name = document.getElementById('newSource').value.trim();
-        const url = document.getElementById('newUrl').value.trim();
+    const updated = [...allSources, ...parsed];
+    const ok = await saveToGitHub(updated, `Add ${parsed.length} bulk sources (via paste)`);
+    if (ok) {
+      document.getElementById('bulkPasteInput').value = '';
+      alert(`تعداد ${parsed.length} منبع گروهی با موفقیت اضافه شد.`);
+    }
+  }
 
-        const btn = document.getElementById('submitBtn');
-        btn.innerText = "در حال ذخیره در مخزن...";
-        btn.disabled = true;
+  // ورود گروهی از فایل اکسل یا تکست
+  function handleBulkFile() {
+    const fileInput = document.getElementById('bulkFileInput');
+    const defaultCat = document.getElementById('bulkDefaultCategory').value.trim() || 'منبع گروهی';
+    const file = fileInput.files[0];
 
+    if (!file) {
+      alert('لطفاً یک فایل انتخاب کنید.');
+      return;
+    }
+
+    const fileName = file.name.toLowerCase();
+
+    if (fileName.endsWith('.txt')) {
+      const reader = new FileReader();
+      reader.onload = async function(e) {
+        const text = e.target.result;
+        document.getElementById('bulkPasteInput').value = text;
+        switchBulkTab('paste');
+        await handleBulkPaste();
+      };
+      reader.readAsText(file);
+    } else {
+      // فایل‌های اکسل (.xlsx, .xls, .csv)
+      const reader = new FileReader();
+      reader.onload = async function(e) {
         try {
-            const updated = [...sourcesList, { title, source_name, url }];
-            await saveToGitHub(updated, `Add source: ${title}`);
-            showAlert("✅ منبع جدید ذخیره شد.");
-            document.getElementById('addForm').reset();
-        } catch (err) {
-            showAlert(err.message, true);
-        } finally {
-            btn.innerText = "ثبت و ذخیره در گیت‌هاب";
-            btn.disabled = false;
-        }
-    }
+          const data = new Uint8Array(e.target.result);
+          const workbook = XLSX.read(data, { type: 'array' });
+          const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+          const rows = XLSX.utils.sheet_to_json(firstSheet, { header: 1 });
 
-    async function deleteSource(index) {
-        if (!confirm(`آیا از حذف "${sourcesList[index].title}" مطمئن هستید؟`)) return;
-        try {
-            const updated = sourcesList.filter((_, i) => i !== index);
-            await saveToGitHub(updated, `Delete source: ${sourcesList[index].title}`);
-            showAlert("منبع با موفقیت حذف شد.");
-        } catch (err) {
-            showAlert(err.message, true);
-        }
-    }
+          if (rows.length === 0) {
+            alert('فایل اکسل خالی است.');
+            return;
+          }
 
-    async function triggerWorkflow() {
-        let repo = cleanRepoInput(localStorage.getItem('gh_repo'));
-        const token = localStorage.getItem('gh_token');
-        const btn = document.getElementById('runActionBtn');
-        btn.innerText = "در حال ارسال دستور...";
-        btn.disabled = true;
+          const parsed = [];
+          for (let i = 0; i < rows.length; i++) {
+            const row = rows[i];
+            if (!row || row.length === 0) continue;
 
-        try {
-            const res = await fetch(`https://api.github.com/repos/${repo}/actions/workflows/scraper.yml/dispatches`, {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Accept': 'application/vnd.github.v3+json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ ref: 'main' })
-            });
+            // جستجو برای پیدا کردن سلولی که URL است
+            let foundUrl = '';
+            let foundTitle = '';
+            let foundSource = '';
 
-            if (res.ok) {
-                showAlert("🚀 ربات با موفقیت فعال شد! داده‌ها تا ۱ الی ۲ دقیقه دیگر به‌روز می‌شوند.");
-            } else {
-                const errData = await res.json().catch(() => ({}));
-                throw new Error(errData.message || "اطمینان حاصل کنید که فایل scraper.yml در شاخه main وجود دارد و دسترسی workflow در توکن فعال است.");
+            for (let cell of row) {
+              if (typeof cell === 'string' && (cell.startsWith('http://') || cell.startsWith('https://'))) {
+                foundUrl = cell.trim();
+              }
             }
+
+            if (foundUrl) {
+              const domain = cleanDomainName(foundUrl);
+              // اگر ستون‌های دیگر پر بودند، برای title و source استفاده می‌کنیم
+              const nonUrls = row.filter(c => c && typeof c === 'string' && !c.startsWith('http'));
+              foundTitle = nonUrls[0] ? String(nonUrls[0]).trim() : defaultCat;
+              foundSource = nonUrls[1] ? String(nonUrls[1]).trim() : domain;
+
+              parsed.push({
+                title: foundTitle,
+                source_name: foundSource,
+                url: foundUrl,
+                type: 'bulk'
+              });
+            }
+          }
+
+          if (parsed.length === 0) {
+            alert('هیچ لینکی در فایل اکسل پیدا نشد. مطمئن شوید ستون شامل لینک‌های با https:// یا http:// باشد.');
+            return;
+          }
+
+          const updated = [...allSources, ...parsed];
+          const ok = await saveToGitHub(updated, `Add ${parsed.length} bulk sources (from Excel file: ${file.name})`);
+          if (ok) {
+            fileInput.value = '';
+            alert(`تعداد ${parsed.length} منبع از فایل اکسل با موفقیت استخراج و اضافه شد.`);
+          }
         } catch (err) {
-            showAlert("خطا در اجرای Action: " + err.message, true);
-        } finally {
-            btn.innerText = "⚡ اجرای فوری ربات استخراج";
-            btn.disabled = false;
+          console.error(err);
+          alert('خطا در پردازش فایل اکسل: ' + err.message);
         }
+      };
+      reader.readAsArrayBuffer(file);
     }
+  }
+
+  // اجرای وب‌پایپلاین GitHub Action
+  async function triggerWorkflow() {
+    const repo = getRepo();
+    const token = getToken();
+    const status = document.getElementById('authStatus');
+
+    if (!repo || !token) {
+      alert('ابتدا تنظیمات مخزن و توکن را تکمیل نمایید.');
+      return;
+    }
+
+    if (!confirm('آیا مایل به اجرای ربات استخراج قیمت‌ها بر روی تمام منابع هستید؟')) return;
+
+    status.innerText = "⏳ در حال ارسال دستور اجرای ربات به گیت‌هاب...";
+    try {
+      const res = await fetch(`https://api.github.com/repos/${repo}/actions/workflows/scraper.yml/dispatches`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Accept': 'application/vnd.github.v3+json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ ref: 'main' })
+      });
+
+      if (res.status === 204) {
+        status.innerText = "🚀 ربات با موفقیت فعال شد. پردازش و بروزرسانی قیمت‌ها آغاز شد.";
+        status.style.color = "var(--success)";
+      } else {
+        throw new Error(`پاسخ سرور: ${res.status}`);
+      }
+    } catch (err) {
+      console.error(err);
+      status.innerText = "❌ خطا در اجرای ربات: " + err.message;
+      status.style.color = "var(--danger)";
+    }
+  }
 </script>
+
 </body>
 </html>
