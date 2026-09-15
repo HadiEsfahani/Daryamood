@@ -1,11 +1,9 @@
-import os
-import json
-import requests
-import pandas as pd
+import os, json, requests, pandas as pd
 from bs4 import BeautifulSoup
 import jdatetime
+
+# --- خواندن منابع از فایل جیسون تولید شده توسط پنل ادمین ---
 def load_sources():
-    """خواندن لیست لینک‌ها از فایل sources.json که توسط پنل ادمین آپدیت می‌شود"""
     if os.path.exists("sources.json"):
         with open("sources.json", "r", encoding="utf-8") as f:
             try:
@@ -16,7 +14,6 @@ def load_sources():
     print("خطا: فایل sources.json پیدا نشد.")
     return []
 
-# جایگزینی لیست ثابت با لیستی که از فایل خوانده می‌شود
 SOURCES = load_sources()
 
 HEADERS = {
@@ -30,26 +27,25 @@ def fetch_tables_from_url(url):
         response.encoding = 'utf-8'
         if response.status_code != 200:
             return []
-
-        soup = BeautifulSoup(response.text, "lxml")
-        tables_html = []
         
-        for table in soup.find_all("table"):
-            for tag in table.find_all(["script", "style", "svg"]):
+        soup = BeautifulSoup(response.text, 'lxml')
+        tables = soup.find_all('table')
+        extracted_tables = []
+        
+        for table in tables:
+            for tag in table(['script', 'style', 'svg']):
                 tag.decompose()
-            
             try:
-                dfs = pd.read_html(str(table))
-                if dfs and not dfs[0].empty:
-                    df = dfs[0].dropna(how='all').fillna('-')
-                    clean_html = df.to_html(classes="custom-table", index=False, border=0)
-                    tables_html.append(clean_html)
+                df = pd.read_html(str(table))[0]
+                df = df.dropna(how='all').fillna('-')
+                # استایل‌دهی بهتر برای جدول
+                html_table = df.to_html(classes="custom-table", index=False, border=0)
+                extracted_tables.append(html_table)
             except Exception:
-                tables_html.append(str(table))
-                
-        return tables_html
+                extracted_tables.append(str(table))
+        return extracted_tables
     except Exception as e:
-        print(f"Error scraping {url}: {e}")
+        print(f"Error fetching {url}: {e}")
         return []
 
 def generate_html_page(data_list):
@@ -65,18 +61,18 @@ def generate_html_page(data_list):
             </div>
             <div class="card-body">
         """
-        
         if item["tables"]:
             for tbl in item["tables"]:
                 sections_html += f'<div class="table-wrapper">{tbl}</div>'
         else:
             sections_html += '<p class="no-data">اطلاعات جدول در دسترس نیست.</p>'
-            
+        
         sections_html += """
             </div>
         </section>
         """
 
+    # دقت کنید که چون متن زیر یک f-string است، آکولادهای مربوط به CSS و JS به صورت {{ }} نوشته شده‌اند.
     html_template = f"""<!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
@@ -86,110 +82,153 @@ def generate_html_page(data_list):
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
     <style>
         :root {{
-            --bg-color: #f1f5f9;
+            --bg-color: #f8fafc;
             --card-bg: #ffffff;
             --primary: #2563eb;
-            --text-main: #0f172a;
-            --text-muted: #64748b;
-            --border-color: #e2e8f0;
-            --table-header: #f8fafc;
+            --text-main: #1e293b;
+            --text-muted: #475569;
+            --border-color: #cbd5e1;
+            --table-header: #334155; /* تیره کردن هدر جدول */
+            --table-header-text: #ffffff;
+            --row-hover: #f1f5f9;
+            --card-header-bg: #1e293b; /* تیره کردن هدر بخش‌ها */
         }}
-        * {{
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Vazirmatn', sans-serif;
-        }}
+        
         body {{
+            font-family: 'Vazirmatn', sans-serif;
             background-color: var(--bg-color);
             color: var(--text-main);
-            padding: 24px 16px;
+            margin: 0;
+            padding: 20px;
+            line-height: 2; /* افزایش فاصله سطرها */
         }}
+        
         .container {{
             max-width: 1200px;
             margin: 0 auto;
         }}
+        
         header {{
-            background: var(--card-bg);
-            padding: 20px 24px;
-            border-radius: 12px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-            margin-bottom: 24px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 12px;
+            text-align: center;
+            margin-bottom: 30px;
         }}
+        
         h1 {{
-            font-size: 1.3rem;
-            font-weight: 800;
+            font-size: 1.8rem;
+            color: var(--text-main);
+            margin-bottom: 10px;
         }}
+        
         .update-time {{
-            font-size: 0.85rem;
-            background: #e0f2fe;
-            color: #0369a1;
-            padding: 6px 12px;
+            display: inline-block;
+            background-color: #e2e8f0;
+            padding: 5px 15px;
             border-radius: 20px;
-            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 20px;
         }}
+
+        /* استایل مربوط به باکس جستجو */
+        .search-box {{
+            width: 100%;
+            max-width: 500px;
+            padding: 14px 20px;
+            font-size: 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            margin-bottom: 30px;
+            font-family: 'Vazirmatn', sans-serif;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+        }}
+        
+        .search-box:focus {{
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+        }}
+        
         .card {{
             background: var(--card-bg);
             border-radius: 12px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-            margin-bottom: 24px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
             overflow: hidden;
             border: 1px solid var(--border-color);
         }}
+        
         .card-header {{
-            padding: 16px 20px;
-            border-bottom: 1px solid var(--border-color);
+            background-color: var(--card-header-bg);
+            padding: 15px 25px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background-color: #fafafa;
+            border-bottom: 1px solid var(--border-color);
         }}
+        
         .card-header h2 {{
-            font-size: 1.1rem;
-            color: #1e293b;
+            margin: 0;
+            font-size: 1.3rem;
+            color: #ffffff; /* سفید شدن متن هدر کادر */
         }}
+        
         .source-link {{
-            font-size: 0.85rem;
-            color: var(--primary);
+            color: #93c5fd; /* آبی روشن برای دیده شدن روی پس‌زمینه تیره */
             text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.2s;
         }}
+        
+        .source-link:hover {{
+            color: #bfdbfe;
+        }}
+        
         .card-body {{
-            padding: 16px 20px;
+            padding: 25px;
         }}
+        
         .table-wrapper {{
             overflow-x: auto;
-            margin-bottom: 16px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
         }}
+        
         .table-wrapper:last-child {{
             margin-bottom: 0;
         }}
+        
         table, .custom-table {{
             width: 100%;
             border-collapse: collapse;
-            font-size: 0.88rem;
             text-align: right;
-        }}
-        th, td {{
-            padding: 10px 14px;
-            border-bottom: 1px solid var(--border-color);
+            font-size: 1rem;
             white-space: nowrap;
         }}
+        
+        th, td {{
+            padding: 16px 18px; /* افزایش فاصله داخلی سلول‌های جدول */
+            border-bottom: 1px solid var(--border-color);
+        }}
+        
         th {{
             background-color: var(--table-header);
-            color: #334155;
-            font-weight: 700;
+            color: var(--table-header-text);
+            font-weight: 600;
         }}
-        tr:hover {{
-            background-color: #f8fafc;
+        
+        tr:hover td {{
+            background-color: var(--row-hover);
         }}
+        
         .no-data {{
+            text-align: center;
             color: var(--text-muted);
-            font-size: 0.9rem;
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 8px;
         }}
     </style>
 </head>
@@ -198,31 +237,53 @@ def generate_html_page(data_list):
         <header>
             <h1>📊 آخرین قیمت‌های استخراج شده</h1>
             <div class="update-time">به‌روزرسانی: {now_shamsi}</div>
+            <br>
+            <!-- کادر جستجو -->
+            <input type="text" id="searchInput" class="search-box" placeholder="جستجو در عناوین (مثلاً میلگرد)..." onkeyup="filterCards()">
         </header>
-        <main>
+        <main id="cardsContainer">
             {sections_html}
         </main>
     </div>
+
+    <!-- اسکریپت فیلتر جستجو -->
+    <script>
+        function filterCards() {{
+            let input = document.getElementById('searchInput').value.toLowerCase();
+            let cards = document.getElementsByClassName('card');
+            
+            for (let i = 0; i < cards.length; i++) {{
+                let title = cards[i].querySelector('.card-header h2').innerText.toLowerCase();
+                if (title.includes(input)) {{
+                    cards[i].style.display = "";
+                }} else {{
+                    cards[i].style.display = "none";
+                }}
+            }}
+        }}
+    </script>
 </body>
-</html>
-"""
+</html>"""
+
     with open("index.html", "w", encoding="utf-8") as f:
         f.write(html_template)
 
 def main():
-    os.makedirs("data", exist_ok=True)
+    if not os.path.exists("data"):
+        os.makedirs("data")
+        
     all_results = []
-    
     for source in SOURCES:
-        tables = fetch_tables_from_url(source['url'])
+        tables = fetch_tables_from_url(source["url"])
         all_results.append({
             "title": source["title"],
             "url": source["url"],
             "tables": tables
         })
-
+        
     generate_html_page(all_results)
     
+    # ذخیره داده‌های خام برای استفاده‌های احتمالی بعدی (API و ...)
     with open("data/prices.json", "w", encoding="utf-8") as f:
         json.dump(all_results, f, ensure_ascii=False, indent=2)
 
