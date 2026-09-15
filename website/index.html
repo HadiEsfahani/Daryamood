@@ -189,35 +189,69 @@
             border-radius: 2px;
         }
 
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background-color: var(--surface);
+            padding: 25px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            transition: transform 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+        }
+
+        .card-icon {
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+
+        .card h3 {
+            color: var(--primary);
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
         /* ==========================================
-           کارت‌های بازشونده خدمات (Accordion)
+           کارت‌های بازشونده خدمات (Accordion Services)
            ========================================== */
-        .accordion {
+        .accordion-services {
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 0.75rem;
         }
 
         @media (min-width: 992px) {
-            .accordion {
+            .accordion-services {
                 flex-direction: row;
-                height: 400px;
+                height: 260px;
             }
         }
 
         .service-panel {
             position: relative;
-            background-color: var(--surface);
-            border: 1px solid var(--border);
+            background-color: var(--primary);
+            border: 1px solid var(--primary-light);
             border-radius: 10px;
             cursor: pointer;
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
             transition: flex 0.45s cubic-bezier(0.16, 1, 0.3, 1),
-                        box-shadow 0.3s ease,
-                        border-color 0.3s ease;
+                        border-color 0.3s ease,
+                        background-color 0.3s ease;
         }
 
         @media (min-width: 992px) {
@@ -225,98 +259,125 @@
                 flex: 1;
             }
             .service-panel.active {
-                flex: 2.6;
+                flex: 3.4;
                 cursor: default;
                 border-color: var(--accent);
-                box-shadow: 0 18px 35px rgba(15,23,42,0.15);
+                box-shadow: 0 16px 34px rgba(0,0,0,0.25);
             }
         }
 
-        .service-panel:not(.active):hover {
-            border-color: var(--accent);
-        }
-
         .service-panel-content {
-            padding: 25px;
+            position: relative;
+            z-index: 2;
+            padding: 1.1rem 1.3rem;
             height: 100%;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            justify-content: center;
+            gap: 0.85rem;
         }
 
-        .service-header {
+        .service-panel.active .service-panel-content {
+            justify-content: flex-start;
+            padding: 1.3rem 1.5rem;
+        }
+
+        .service-panel-header {
             display: flex;
             align-items: center;
-            gap: 14px;
+            gap: 0.7rem;
         }
 
-        .service-panel:not(.active) .service-header {
+        .service-panel:not(.active) .service-panel-header {
             flex-direction: column;
             align-items: center;
             text-align: center;
-            gap: 10px;
+            gap: 0.5rem;
         }
 
         .service-icon-badge {
-            width: 52px;
-            height: 52px;
-            border-radius: 12px;
-            background-color: rgba(245, 158, 11, 0.12);
-            border: 1px solid rgba(245, 158, 11, 0.35);
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background-color: rgba(245, 158, 11, 0.15);
+            border: 1px solid rgba(245, 158, 11, 0.4);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.6rem;
+            font-size: 1.2rem;
             flex-shrink: 0;
         }
 
-        .service-title {
-            font-size: 1.1rem;
+        .service-panel h3 {
+            color: #fff;
+            font-size: 1rem;
             font-weight: 700;
-            color: var(--primary);
-        }
-
-        .service-tag {
-            display: none;
-            margin-right: auto;
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: var(--accent-hover);
-            background-color: rgba(245, 158, 11, 0.12);
-            padding: 3px 10px;
-            border-radius: 20px;
-        }
-
-        .service-panel.active .service-tag {
-            display: inline-block;
+            margin: 0;
         }
 
         .service-details {
             display: none;
             flex-direction: column;
-            gap: 15px;
-            margin-top: 18px;
+            gap: 0.9rem;
+            overflow-y: auto;
         }
 
         .service-panel.active .service-details {
             display: flex;
         }
 
-        .service-goal {
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: var(--accent-hover);
+        .service-details p {
+            color: #cbd5e1;
+            font-size: 0.88rem;
+            line-height: 1.7;
         }
 
-        .service-goal span {
-            color: var(--text-muted);
-            font-weight: 500;
+        .service-cta-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.55rem;
         }
 
-        .service-desc {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-            line-height: 1.85;
+        .service-cta,
+        .service-cta-alt {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            background-color: var(--accent);
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 0.82rem;
+            padding: 0.55rem 1rem;
+            border-radius: 6px;
+            text-decoration: none;
+            transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+        }
+
+        .service-cta:hover {
+            background-color: var(--accent-hover);
+            color: #fff;
+        }
+
+        .service-cta-alt {
+            background-color: transparent;
+            color: #fff;
+            border: 1px solid rgba(245, 158, 11, 0.5);
+        }
+
+        .service-cta-alt:hover {
+            background-color: rgba(245, 158, 11, 0.15);
+            border-color: var(--accent);
+        }
+
+        @media (max-width: 991px) {
+            .service-panel:not(.active) .service-panel-content {
+                padding: 0.9rem 1.2rem;
+            }
+            .service-panel:not(.active) .service-panel-header {
+                flex-direction: row;
+                text-align: right;
+            }
         }
 
         /* ==========================================
@@ -524,56 +585,57 @@
     <section id="services" class="section">
         <container>
             <h2 class="section-title">چگونه به کیفیت و هزینه پروژه شما کمک می‌کنیم؟</h2>
-            <div class="accordion" id="servicesAccordion">
-
-                <!-- کارت ۱: تامین دست‌اول -->
+            <div class="accordion-services" id="servicesAccordion">
                 <div class="service-panel active">
                     <div class="service-panel-content">
-                        <div class="service-header">
+                        <div class="service-panel-header">
                             <div class="service-icon-badge">🏬</div>
-                            <h3 class="service-title">تامین دست‌اول و بدون واسطه</h3>
-                            <span class="service-tag">تامین مصالح</span>
+                            <h3>تامین دست‌اول و بدون واسطه</h3>
                         </div>
                         <div class="service-details">
-                            <div class="service-goal"><span>هدف اصلی:</span> مناسب‌ترین قیمت ممکن</div>
-                            <p class="service-desc">اتصال مستقیم پروژه شما به دیتابیس کارخانه‌ها و بنکداران معتبر کشور، بدون واسطه و با مناسب‌ترین قیمت ممکن.</p>
-                            <a href="#pricing" class="btn btn-primary btn-sm">مشاهده مظنه مصالح</a>
+                            <p>اتصال مستقیم پروژه شما به دیتابیس کارخانه‌ها و بنکداران معتبر کشور با مناسب‌ترین قیمت ممکن.</p>
+                            <div class="service-cta-row">
+                                <a href="#order" class="service-cta">ثبت درخواست استعلام</a>
+                                <a href="#pricing" class="service-cta-alt">مشاهده مظنه مصالح</a>
+                                <a href="#calc" class="service-cta-alt">محاسبه‌گر تناژ</a>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- کارت ۲: کنترل کیفیت -->
                 <div class="service-panel">
                     <div class="service-panel-content">
-                        <div class="service-header">
+                        <div class="service-panel-header">
                             <div class="service-icon-badge">🔍</div>
-                            <h3 class="service-title">تایید کیفیت و اصالت بار (QC)</h3>
-                            <span class="service-tag">بازرسی و کنترل کیفیت</span>
+                            <h3>تایید کیفیت و اصالت بار (QC)</h3>
                         </div>
                         <div class="service-details">
-                            <div class="service-goal"><span>هدف اصلی:</span> تضمین کیفیت اجرا</div>
-                            <p class="service-desc">نظارت بر باسکول، چک کردن برگه آزمایشگاه و بازرسی چشمی قبل از تخلیه بار در کارگاه شما.</p>
-                            <a href="#order" class="btn btn-primary btn-sm">درخواست بازرسی بار</a>
+                            <p>نظارت بر باسکول، چک کردن برگه آزمایشگاه و بازرسی چشمی قبل از تخلیه بار در کارگاه شما.</p>
+                            <div class="service-cta-row">
+                                <a href="#order" class="service-cta">درخواست بازرسی بار</a>
+                                <a href="#pricing" class="service-cta-alt">جدول وضعیت بازرسی</a>
+                                <a href="#calc" class="service-cta-alt">محاسبه وزن بار</a>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- کارت ۳: مدیریت تحویل -->
                 <div class="service-panel">
                     <div class="service-panel-content">
-                        <div class="service-header">
+                        <div class="service-panel-header">
                             <div class="service-icon-badge">🚛</div>
-                            <h3 class="service-title">مدیریت تحویل و عدم خواب کارگاه</h3>
-                            <span class="service-tag">لجستیک و تحویل</span>
+                            <h3>مدیریت تحویل و عدم خواب کارگاه</h3>
                         </div>
                         <div class="service-details">
-                            <div class="service-goal"><span>هدف اصلی:</span> پیشرفت بدون توقف کارگاه</div>
-                            <p class="service-desc">برنامه‌ریزی دقیق زمان‌بندی ورود ناوگان مصالح متناسب با ظرفیت دپو و پیشرفت ساخت‌وساز.</p>
-                            <a href="#calc" class="btn btn-primary btn-sm">محاسبه تعداد سرویس</a>
+                            <p>برنامه‌ریزی دقیق زمان‌بندی ورود ناوگان مصالح متناسب با ظرفیت دپو و پیشرفت ساخت‌وساز.</p>
+                            <div class="service-cta-row">
+                                <a href="#calc" class="service-cta">محاسبه تعداد سرویس</a>
+                                <a href="#order" class="service-cta-alt">ثبت زمان‌بندی تحویل</a>
+                                <a href="#pricing" class="service-cta-alt">مشاهده مظنه مصالح</a>
+                            </div>
                         </div>
                     </div>
                 </div>
-
             </div>
         </container>
     </section>
@@ -692,8 +754,8 @@
 
     <!-- اسکریپت‌های جاوااسکریپت داخلی -->
     <script>
-        // ۰. رفتار بازشونده کارت‌های خدمات (Accordion)
-        const servicePanels = document.querySelectorAll('#servicesAccordion .service-panel');
+        // ۰. باز/بسته شدن کارت‌های خدمات (Accordion)
+        const servicePanels = document.querySelectorAll('.service-panel');
         servicePanels.forEach(panel => {
             panel.addEventListener('click', (e) => {
                 if (e.target.closest('a') || e.target.closest('button')) return;
