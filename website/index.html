@@ -299,6 +299,12 @@
     .cta-secondary:hover {
       background: rgba(56, 132, 255, 0.16);
     }
+    .qc-services-btn {
+      min-height: 58px;
+      font-size: 1rem;
+      padding: 1.05rem 1.25rem;
+    }
+
     .cta-tertiary {
       background: transparent;
       border: 1px solid var(--border-color);
@@ -490,7 +496,7 @@
           <div class="details-view">
             <div class="goal-strip"><span class="goal-label">هدف اصلی:</span> کاهش هزینه‌های ساختمان و صنعت</div>
             <p class="description">
-              تأمین مستقیم مصالح، تجهیزات و ابزار مورد نیاز پروژه‌های ساختمانی و صنعتی با هدف کاهش هزینه تمام‌شده. هر مشاوره فنی و هر محصولی که در حوزه صنعت ساختمان نیاز داشته باشید، از طریق این مجموعه قابل تأمین است.
+              کاهش هزینه‌های حمل و سفارش ابزار و مصالح، همراه با مشاوره و پشتیبانی تیم متخصص از تصمیم‌گیری برای خرید تا اجرا.
             </p>
 
             <div class="cta-row">
@@ -499,18 +505,6 @@
               </button>
               <a href="https://daryamood.com/" target="_blank" class="cta-btn cta-secondary">
                 ورود به فروشگاه
-              </a>
-              <a href="https://logistics.yourdomain.com" target="_blank" class="cta-btn cta-secondary">
-                ورود به پلتفرم لجستیک
-              </a>
-              <button class="cta-btn cta-tertiary" onclick="openRepresentationModal('تأمین مصالح و ابزار')">
-                همکاری/عاملیت فروش
-              </button>
-            </div>
-
-            <div class="articles-link-container">
-              <a href="https://daryamood.com//articles" target="_blank" class="articles-btn">
-                آموزش‌ها و مقالات &larr;
               </a>
             </div>
           </div>
@@ -545,17 +539,16 @@
                 دریافت مشاوره سریع و رایگان
               </button>
               <a href="https://energy.yourdomain.com" target="_blank" class="cta-btn cta-secondary">
-                ورود به وب‌سایت تخصصی
+                خدمات و محصولات
               </a>
-              <button class="cta-btn cta-tertiary" onclick="openCollabModal('بهینه‌سازی مصرف انرژی')">
-                همکاری با ما
-              </button>
+              <a href="#training" class="cta-btn cta-tertiary">
+                مرکز آموزش
+              </a>
             </div>
-
             <div class="articles-link-container">
-              <a href="https://daryamood.com/blog/" target="_blank" class="articles-btn">
-                آموزش‌ها و مقالات &larr;
-              </a>
+              <button class="articles-btn" type="button" onclick="openCollabModal('بهینه‌سازی مصرف انرژی')">
+                همکاری با ما &larr;
+              </button>
             </div>
           </div>
         </div>
@@ -588,17 +581,8 @@
               <button class="cta-btn cta-primary" onclick="openQuickConsultModal('کنترل کیفیت اجرا')">
                 دریافت مشاوره سریع و رایگان
               </button>
-              <a href="https://qc-lab.yourdomain.com" target="_blank" class="cta-btn cta-secondary">
-                ورود به خدمات تخصصی
-              </a>
-              <button class="cta-btn cta-tertiary" onclick="openCollabModal('کنترل کیفیت اجرا')">
-                همکاری با ما
-              </button>
-            </div>
-
-            <div class="articles-link-container">
-              <a href="https://qc-lab.yourdomain.com/articles" target="_blank" class="articles-btn">
-                آموزش‌ها و مقالات &larr;
+              <a href="https://qc-lab.yourdomain.com" target="_blank" class="cta-btn cta-secondary qc-services-btn">
+                لیست خدمات کنترل کیفیت
               </a>
             </div>
           </div>
@@ -625,38 +609,7 @@
       </div>
     </div>
   </div>
-
-  <!-- Representation Request Modal -->
-  <div class="modal-overlay" id="representationModal">
-    <div class="modal">
-      <h3>درخواست اعطای نمایندگی</h3>
-      <p class="modal-sub">اطلاعات خود را وارد کنید تا کارشناسان ما درخواست نمایندگی شما را بررسی کنند.</p>
-      <div class="form-group">
-        <label>نام و نام خانوادگی</label>
-        <input type="text" id="repName" placeholder="نام شما" />
-      </div>
-      <div class="form-group">
-        <label>ایمیل</label>
-        <input type="email" id="repEmail" placeholder="example@email.com" />
-      </div>
-      <div class="form-group">
-        <label>شماره تماس</label>
-        <input type="tel" id="repPhone" placeholder="09xxxxxxxxx" />
-      </div>
-      <div class="form-group">
-        <label>شهر / منطقه فعالیت</label>
-        <input type="text" id="repLocation" placeholder="شهر یا منطقه" />
-      </div>
-      <div class="form-group">
-        <label>توضیحات درخواست نمایندگی</label>
-        <textarea rows="3" id="repField" placeholder="سابقه فعالیت، ظرفیت و توضیحات خود را بنویسید..."></textarea>
-      </div>
-      <div class="modal-actions">
-        <button class="btn-secondary" onclick="closeRepresentationModal()">انصراف</button>
-        <button class="btn-submit" onclick="submitRepresentation()">ارسال درخواست</button>
-      </div>
-    </div>
-  </div>
+</div>
 
   <!-- Collaboration Request Modal -->
   <div class="modal-overlay" id="collabModal">
@@ -787,45 +740,6 @@
       }
     }
 
-    const representationModal = document.getElementById('representationModal');
-
-    function openRepresentationModal(serviceName) {
-      representationModal.dataset.service = serviceName || 'تأمین مصالح و ابزار';
-      representationModal.classList.add('open');
-    }
-
-    function closeRepresentationModal() {
-      representationModal.classList.remove('open');
-    }
-
-    async function submitRepresentation() {
-      const name = document.getElementById('repName').value.trim();
-      const email = document.getElementById('repEmail').value.trim();
-      const phone = document.getElementById('repPhone').value.trim();
-      const location = document.getElementById('repLocation').value.trim();
-      const field = document.getElementById('repField').value.trim();
-      const service = representationModal.dataset.service || 'تأمین مصالح و ابزار';
-
-      if (!name || !email || !phone || !location || !field) {
-        alert("لطفاً همه فیلدها را پر کنید.");
-        return;
-      }
-
-      try {
-        await saveToSupabase('representation_requests', {
-          name, email, phone, location, field, service
-        });
-        alert("درخواست اعطای نمایندگی شما با موفقیت ثبت شد.");
-        closeRepresentationModal();
-        ['repName','repEmail','repPhone','repLocation','repField'].forEach(id => {
-          document.getElementById(id).value = '';
-        });
-      } catch (error) {
-        console.error(error);
-        alert("ثبت درخواست انجام نشد. تنظیمات Supabase را بررسی کنید.");
-      }
-    }
-
     document.querySelectorAll('.modal-overlay').forEach(overlay => {
       overlay.addEventListener('click', (e) => {
         if (e.target === overlay) overlay.classList.remove('open');
@@ -847,17 +761,6 @@
         name text not null,
         email text not null,
         phone text not null,
-        field text not null,
-        service text
-      );
-
-      create table representation_requests (
-        id bigint generated by default as identity primary key,
-        created_at timestamptz default now(),
-        name text not null,
-        email text not null,
-        phone text not null,
-        location text not null,
         field text not null,
         service text
       );
