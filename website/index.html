@@ -11,16 +11,20 @@
 
   <style>
     :root {
-      --bg-dark: #0a0f1a;
-      --card-bg: #10192b;
-      --card-bg-hover: #142239;
-      --border-color: #1e2c45;
-      --border-active: rgba(56, 132, 255, 0.55);
-      --text-main: #eef2f8;
-      --text-muted: #93a1b8;
-      --brand-blue: #3884ff;
-      --brand-blue-deep: #1d5fd6;
-      --brand-blue-glow: rgba(56, 132, 255, 0.28);
+      --bg-dark: #141d33;
+      --card-bg: #1d2b47;
+      --card-bg-hover: #263756;
+      --border-color: #34496f;
+      --border-active: rgba(74, 152, 255, 0.65);
+      --text-main: #f6f8fc;
+      --text-muted: #a4b2c9;
+      --brand-blue: #4a98ff;
+      --brand-blue-deep: #2260d9;
+      --brand-blue-glow: rgba(74, 152, 255, 0.32);
+      --accent: #eb9a3f;
+      --accent-deep: #c4700f;
+      --accent-light: #ffb75e;
+      --accent-glow: rgba(235, 154, 63, 0.4);
       --font-family: 'Vazirmatn', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       --font-mono: 'JetBrains Mono', monospace;
     }
@@ -39,8 +43,8 @@
 
     body {
       background:
-        radial-gradient(circle at 15% 0%, rgba(56,132,255,0.10), transparent 45%),
-        radial-gradient(circle at 100% 100%, rgba(56,132,255,0.06), transparent 40%),
+        radial-gradient(circle at 15% 0%, rgba(74,152,255,0.12), transparent 45%),
+        radial-gradient(circle at 100% 100%, rgba(235,154,63,0.07), transparent 40%),
         var(--bg-dark);
       color: var(--text-main);
       font-family: var(--font-family);
@@ -120,9 +124,15 @@
       overflow: hidden;
       display: flex;
       flex-direction: column;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.35);
       transition: flex 0.45s cubic-bezier(0.16, 1, 0.3, 1),
                   background 0.3s ease,
-                  border-color 0.3s ease;
+                  border-color 0.3s ease,
+                  box-shadow 0.3s ease;
+    }
+    .panel:not(.active):hover {
+      background: var(--card-bg-hover);
+      border-color: rgba(74, 152, 255, 0.4);
     }
 
     @media (min-width: 992px) {
@@ -133,7 +143,7 @@
         flex: 4.5;
         cursor: default;
         border-color: var(--border-active);
-        box-shadow: 0 20px 45px rgba(0,0,0,0.45);
+        box-shadow: 0 20px 50px rgba(0,0,0,0.5);
       }
     }
 
@@ -191,8 +201,8 @@
       width: 46px;
       height: 46px;
       border-radius: 12px;
-      background: rgba(56, 132, 255, 0.12);
-      border: 1px solid rgba(56, 132, 255, 0.35);
+      background: rgba(74, 152, 255, 0.14);
+      border: 1px solid rgba(74, 152, 255, 0.4);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -209,7 +219,7 @@
     .category-tag {
       font-size: 0.75rem;
       color: var(--brand-blue);
-      background: rgba(56, 132, 255, 0.12);
+      background: rgba(74, 152, 255, 0.14);
       padding: 3px 10px;
       border-radius: 20px;
       margin-left: auto;
@@ -266,22 +276,23 @@
     .cta-btn {
       flex: 1;
       text-align: center;
-      padding: 0.95rem 1.1rem;
-      border-radius: 10px;
+      padding: 1.05rem 1.2rem;
+      border-radius: 11px;
       font-weight: 700;
-      font-size: 0.92rem;
+      font-size: 1.02rem;
       cursor: pointer;
       border: none;
       text-decoration: none;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 0.45rem;
-      transition: transform 0.15s ease, box-shadow 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+      gap: 0.5rem;
+      transition: transform 0.15s ease, box-shadow 0.2s ease, background 0.2s ease, border-color 0.2s ease, filter 0.2s ease;
       font-family: inherit;
     }
-    .cta-btn:hover {
-      transform: translateY(-2px);
+    .cta-btn:active {
+      transform: translateY(0);
+      filter: brightness(0.95);
     }
     .cta-primary {
       background: linear-gradient(135deg, var(--brand-blue), var(--brand-blue-deep));
@@ -289,30 +300,55 @@
       box-shadow: 0 10px 26px rgba(29, 95, 214, 0.45);
     }
     .cta-primary:hover {
-      box-shadow: 0 14px 32px rgba(29, 95, 214, 0.6);
+      transform: translateY(-2px);
+      box-shadow: 0 14px 34px rgba(29, 95, 214, 0.6);
     }
     .cta-secondary {
-      background: rgba(56, 132, 255, 0.08);
-      border: 1px solid rgba(56, 132, 255, 0.45);
+      background: rgba(255, 255, 255, 0.1);
+      border: 1.5px solid rgba(255, 255, 255, 0.38);
       color: #fff;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.1);
     }
     .cta-secondary:hover {
-      background: rgba(56, 132, 255, 0.16);
+      transform: translateY(-2px);
+      background: rgba(255, 255, 255, 0.18);
+      border-color: rgba(255, 255, 255, 0.6);
     }
     .qc-services-btn {
       min-height: 58px;
-      font-size: 1rem;
-      padding: 1.05rem 1.25rem;
+      font-size: 1.05rem;
+      padding: 1.1rem 1.3rem;
     }
 
     .cta-tertiary {
-      background: transparent;
-      border: 1px solid var(--border-color);
-      color: var(--text-main);
+      background: rgba(74, 152, 255, 0.08);
+      border: 1.5px solid rgba(74, 152, 255, 0.45);
+      color: var(--brand-blue);
     }
     .cta-tertiary:hover {
-      border-color: var(--brand-blue);
-      color: var(--brand-blue);
+      transform: translateY(-2px);
+      background: rgba(74, 152, 255, 0.18);
+      border-color: rgba(74, 152, 255, 0.75);
+      color: #fff;
+    }
+
+    /* Store entry — the primary revenue action, given its own weight */
+    .cta-store {
+      flex: 1.4;
+      background: linear-gradient(135deg, var(--accent-light), var(--accent), var(--accent-deep));
+      border: none;
+      color: #241203;
+      font-weight: 800;
+      font-size: 1.1rem;
+      padding: 1.15rem 1.4rem;
+      box-shadow: 0 12px 30px var(--accent-glow), inset 0 1px 0 rgba(255,255,255,0.35);
+    }
+    .cta-store:hover {
+      transform: translateY(-2px) scale(1.015);
+      box-shadow: 0 16px 38px rgba(235, 154, 63, 0.55), inset 0 1px 0 rgba(255,255,255,0.4);
+    }
+    .cta-store svg {
+      flex-shrink: 0;
     }
 
     /* Bottom Link: Training & Articles */
@@ -327,19 +363,22 @@
       display: inline-flex;
       align-items: center;
       gap: 0.5rem;
-      background: rgba(56, 132, 255, 0.10);
-      border: 1px solid rgba(56, 132, 255, 0.5);
+      background: rgba(74, 152, 255, 0.12);
+      border: 1.5px solid rgba(74, 152, 255, 0.55);
       color: #fff;
       font-weight: 700;
-      font-size: 0.88rem;
-      padding: 0.7rem 1.2rem;
+      font-size: 0.95rem;
+      padding: 0.8rem 1.35rem;
       border-radius: 10px;
       text-decoration: none;
-      transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease, border-color 0.2s ease;
     }
     .articles-btn:hover {
       background: var(--brand-blue);
-      box-shadow: 0 10px 24px rgba(56, 132, 255, 0.4);
+      border-color: var(--brand-blue);
+      box-shadow: 0 10px 26px rgba(74, 152, 255, 0.45);
       transform: translateX(-3px);
     }
 
@@ -391,11 +430,11 @@
     }
     .form-group input, .form-group textarea {
       background: #0a1120;
-      border: 1px solid var(--border-color);
+      border: 1.5px solid var(--border-color);
       color: #fff;
-      padding: 0.6rem 0.7rem;
-      border-radius: 8px;
-      font-size: 0.9rem;
+      padding: 0.7rem 0.8rem;
+      border-radius: 9px;
+      font-size: 0.95rem;
       font-family: inherit;
     }
     .form-group input:focus, .form-group textarea:focus {
@@ -411,28 +450,35 @@
     }
     .btn-secondary {
       background: transparent;
-      border: 1px solid var(--border-color);
+      border: 1.5px solid var(--border-color);
       color: #fff;
-      padding: 0.55rem 1rem;
-      border-radius: 8px;
+      padding: 0.65rem 1.15rem;
+      border-radius: 9px;
       cursor: pointer;
       font-family: inherit;
-      font-size: 0.9rem;
+      font-size: 0.95rem;
+      font-weight: 600;
+      transition: border-color 0.2s ease, color 0.2s ease;
+    }
+    .btn-secondary:hover {
+      border-color: var(--text-muted);
     }
     .btn-submit {
       background: linear-gradient(135deg, var(--brand-blue), var(--brand-blue-deep));
       color: #fff;
       font-weight: 700;
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       border: none;
-      padding: 0.6rem 1.2rem;
-      border-radius: 8px;
+      padding: 0.7rem 1.4rem;
+      border-radius: 9px;
       cursor: pointer;
       font-family: inherit;
-      box-shadow: 0 8px 20px rgba(29, 95, 214, 0.4);
+      box-shadow: 0 8px 22px rgba(29, 95, 214, 0.45);
+      transition: transform 0.15s ease, box-shadow 0.2s ease;
     }
     .btn-submit:hover {
-      opacity: 0.92;
+      transform: translateY(-1px);
+      box-shadow: 0 10px 26px rgba(29, 95, 214, 0.6);
     }
 
     .quick-options {
@@ -444,19 +490,19 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      min-height: 52px;
-      padding: 0.7rem;
+      min-height: 54px;
+      padding: 0.75rem;
       border-radius: 10px;
-      background: rgba(56,132,255,0.08);
-      border: 1px solid var(--border-color);
+      background: rgba(74,152,255,0.1);
+      border: 1.5px solid var(--border-color);
       color: #fff;
       text-decoration: none;
-      font: 600 0.88rem var(--font-family);
+      font: 700 0.95rem var(--font-family);
       transition: 0.2s ease;
     }
     .quick-option:hover {
       border-color: var(--brand-blue);
-      background: rgba(56,132,255,0.16);
+      background: rgba(74,152,255,0.2);
       transform: translateY(-1px);
     }
     .modal.is-compact { max-width: 420px; }
@@ -503,7 +549,10 @@
               <button class="cta-btn cta-primary" onclick="openQuickConsultModal('تأمین مصالح و ابزار')">
                 دریافت مشاوره رایگان
               </button>
-              <a href="https://daryamood.com/" target="_blank" class="cta-btn cta-secondary">
+              <a href="https://daryamood.com/" target="_blank" class="cta-btn cta-store">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M3 9.5 4.6 4h14.8L21 9.5M3 9.5v9.7A1.8 1.8 0 0 0 4.8 21h14.4a1.8 1.8 0 0 0 1.8-1.8V9.5M3 9.5h18M9 13.2a3 3 0 0 0 6 0" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
                 ورود به فروشگاه
               </a>
             </div>
