@@ -470,6 +470,10 @@
             <label>لینک عکس / کاور کارشناس (اختیاری)</label>
             <input type="text" class="f-expert-photo" value="${escapeAttr(card.expert_photo || '')}" placeholder="https://example.com/photo.jpg" />
           </div>
+          <div class="field-sm">
+            <label>لینک عکس پس‌زمینه کارت (کم‌رنگ / اختیاری)</label>
+            <input type="text" class="f-bg-image" value="${escapeAttr(card.bg_image_url || '')}" placeholder="https://example.com/background.jpg" />
+          </div>
         </div>
         <div class="field-sm" style="margin-top:0.9rem;">
           <label>رزومه کوتاه کارشناس (یک یا چند خط)</label>
@@ -536,6 +540,7 @@
         expert_phone: itemEl.querySelector('.f-expert-phone').value.trim() || null,
         expert_social: itemEl.querySelector('.f-expert-social').value.trim() || null,
         expert_photo: itemEl.querySelector('.f-expert-photo').value.trim() || null,
+        bg_image_url: itemEl.querySelector('.f-bg-image').value.trim() || null,
         bullets: bullets
       };
     }
