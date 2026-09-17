@@ -458,6 +458,14 @@
             <label>عنوان / سمت کارشناس</label>
             <input type="text" class="f-expert-title" value="${escapeAttr(card.expert_title || '')}" />
           </div>
+          <div class="field-sm">
+            <label>شماره تماس کارشناس</label>
+            <input type="tel" class="f-expert-phone" value="${escapeAttr(card.expert_phone || '')}" placeholder="09xxxxxxxxx" />
+          </div>
+          <div class="field-sm">
+            <label>لینک شبکه اجتماعی کارشناس</label>
+            <input type="text" class="f-expert-social" value="${escapeAttr(card.expert_social || '')}" placeholder="https://t.me/username" />
+          </div>
         </div>
         <div class="field-sm" style="margin-top:0.9rem;">
           <label>رزومه کوتاه کارشناس (یک یا چند خط)</label>
@@ -521,6 +529,8 @@
         expert_name: itemEl.querySelector('.f-expert-name').value.trim() || null,
         expert_title: itemEl.querySelector('.f-expert-title').value.trim() || null,
         expert_bio: itemEl.querySelector('.f-expert-bio').value.trim() || null,
+        expert_phone: itemEl.querySelector('.f-expert-phone').value.trim() || null,
+        expert_social: itemEl.querySelector('.f-expert-social').value.trim() || null,
         bullets: bullets
       };
     }
