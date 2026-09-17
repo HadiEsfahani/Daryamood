@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>پنل مدیریت | DARYAMOOD</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-dark: #141d33;
+    --card-bg: #1d2b47;
+    --card-bg-hover: #263756;
+    --border-color: #34496f;
+    --text-main: #f6f8fc;
+    --text-muted: #a4b2c9;
+    --brand-blue: #4a98ff;
+    --brand-blue-deep: #2260d9;
+    --accent: #eb9a3f;
+    --accent-deep: #c4700f;
+    --danger: #e5484d;
+    --danger-deep: #b3282c;
+    --font-family: 'Vazirmatn', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg-dark);
+    color: var(--text-main);
+    font-family: var(--font-family);
+    direction: rtl;
+    min-height: 100vh;
+  }
+  a { color: inherit; }
+
+  /* ---------- Login screen ---------- */
+  .login-wrap {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+  }
+  .login-box {
+    width: 100%;
+    max-width: 380px;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 2rem 1.75rem;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+  }
+  .login-box h1 {
+    font-size: 1.15rem;
+    margin: 0 0 0.3rem;
+  }
+  .login-box p.sub {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    margin: 0 0 1.5rem;
+  }
+  .field { margin-bottom: 1rem; }
+  .field label {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 0.4rem;
+  }
+  .field input {
+    width: 100%;
+    background: #0a1120;
+    border: 1.5px solid var(--border-color);
+    color: #fff;
+    padding: 0.7rem 0.85rem;
+    border-radius: 9px;
+    font-size: 0.95rem;
+    font-family: inherit;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    border: none;
+    border-radius: 9px;
+    padding: 0.75rem 1.2rem;
+    font-weight: 700;
+    font-size: 0.92rem;
+    font-family: inherit;
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.2s ease, filter 0.15s ease;
+  }
+  .btn:active { transform: translateY(0); filter: brightness(0.95); }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--brand-blue), var(--brand-blue-deep));
+    color: #fff;
+    width: 100%;
+    box-shadow: 0 10px 24px rgba(34, 96, 217, 0.4);
+  }
+  .btn-primary:hover { transform: translateY(-1px); }
+  .btn-outline {
+    background: rgba(255,255,255,0.06);
+    border: 1.5px solid var(--border-color);
+    color: #fff;
+  }
+  .btn-outline:hover { background: rgba(255,255,255,0.12); }
+  .btn-danger {
+    background: rgba(229,72,77,0.12);
+    border: 1.5px solid rgba(229,72,77,0.5);
+    color: #ff9497;
+  }
+  .btn-danger:hover { background: rgba(229,72,77,0.22); }
+  .btn-add {
+    background: rgba(235,154,63,0.12);
+    border: 1.5px solid rgba(235,154,63,0.5);
+    color: var(--accent);
+  }
+  .btn-add:hover { background: rgba(235,154,63,0.22); }
+  .btn-small { padding: 0.45rem 0.8rem; font-size: 0.82rem; }
+  .error-msg {
+    color: #ff9497;
+    font-size: 0.85rem;
+    margin-top: 0.8rem;
+    display: none;
+  }
+
+  /* ---------- Admin shell ---------- */
+  .admin-wrap { display: none; max-width: 1000px; margin: 0 auto; padding: 1.5rem 1.25rem 4rem; }
+  .admin-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-bottom: 1.2rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+  }
+  .admin-header h1 { font-size: 1.2rem; margin: 0; }
+  .admin-header .sub { color: var(--text-muted); font-size: 0.8rem; margin-top: 0.2rem; }
+
+  .tabs { display: flex; gap: 0.6rem; margin-bottom: 1.5rem; }
+  .tab-btn {
+    flex: 1;
+    padding: 0.9rem;
+    border-radius: 11px;
+    border: 1.5px solid var(--border-color);
+    background: var(--card-bg);
+    color: var(--text-muted);
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: 0.2s ease;
+  }
+  .tab-btn.active {
+    color: #fff;
+    border-color: var(--brand-blue);
+    background: rgba(74,152,255,0.12);
+  }
+
+  .section-panel { display: none; }
+  .section-panel.active { display: block; }
+
+  .card-item {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    padding: 1.3rem;
+    margin-bottom: 1.1rem;
+  }
+  .card-item-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.8rem;
+    margin-bottom: 1rem;
+  }
+  .card-item-head .badge {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    background: rgba(255,255,255,0.06);
+    border-radius: 20px;
+    padding: 2px 10px;
+  }
+
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.9rem;
+  }
+  @media (max-width: 640px) {
+    .grid-2 { grid-template-columns: 1fr; }
+  }
+  .field-sm label {
+    display: block;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    margin-bottom: 0.35rem;
+  }
+  .field-sm input, .field-sm textarea {
+    width: 100%;
+    background: #0a1120;
+    border: 1.5px solid var(--border-color);
+    color: #fff;
+    padding: 0.6rem 0.75rem;
+    border-radius: 8px;
+    font-size: 0.88rem;
+    font-family: inherit;
+    resize: vertical;
+  }
+
+  .bullets-box { margin-top: 1rem; }
+  .bullets-box > label {
+    display: block;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+  }
+  .bullet-row {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+  .bullet-row input {
+    flex: 1;
+    background: #0a1120;
+    border: 1.5px solid var(--border-color);
+    color: #fff;
+    padding: 0.55rem 0.7rem;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-family: inherit;
+  }
+  .bullet-remove {
+    background: rgba(229,72,77,0.12);
+    border: 1.5px solid rgba(229,72,77,0.4);
+    color: #ff9497;
+    border-radius: 8px;
+    width: 34px;
+    flex-shrink: 0;
+    cursor: pointer;
+    font-size: 1rem;
+  }
+
+  .card-item-footer {
+    display: flex;
+    gap: 0.6rem;
+    margin-top: 1.1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-color);
+  }
+
+  .add-card-btn {
+    width: 100%;
+    padding: 1rem;
+    margin-top: 0.5rem;
+  }
+
+  .empty-hint {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    text-align: center;
+    padding: 2rem 1rem;
+  }
+
+  .toast {
+    position: fixed;
+    bottom: 1.5rem;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    color: #fff;
+    padding: 0.8rem 1.3rem;
+    border-radius: 10px;
+    font-size: 0.88rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: 0.25s ease;
+    z-index: 999;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  .toast.error { border-color: rgba(229,72,77,0.6); color: #ff9497; }
+</style>
+</head>
+<body>
+
+  <!-- Login -->
+  <div class="login-wrap" id="loginWrap">
+    <div class="login-box">
+      <h1>ورود به پنل مدیریت</h1>
+      <p class="sub">با حساب مدیریتی Supabase خود وارد شوید.</p>
+      <div class="field">
+        <label>ایمیل</label>
+        <input type="email" id="loginEmail" placeholder="admin@example.com" autocomplete="username" />
+      </div>
+      <div class="field">
+        <label>رمز عبور</label>
+        <input type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password" />
+      </div>
+      <button class="btn btn-primary" id="loginBtn" onclick="handleLogin()">ورود</button>
+      <div class="error-msg" id="loginError"></div>
+    </div>
+  </div>
+
+  <!-- Admin -->
+  <div class="admin-wrap" id="adminWrap">
+    <div class="admin-header">
+      <div>
+        <h1>پنل مدیریت کارت‌های داخلی</h1>
+        <div class="sub" id="loggedInAs"></div>
+      </div>
+      <button class="btn btn-outline btn-small" onclick="handleLogout()">خروج</button>
+    </div>
+
+    <div class="tabs">
+      <button class="tab-btn active" id="tabEnergyBtn" onclick="switchTab('energy')">بهینه‌سازی مصرف انرژی</button>
+      <button class="tab-btn" id="tabQualityBtn" onclick="switchTab('quality')">کنترل کیفیت</button>
+    </div>
+
+    <div class="section-panel active" id="panel-energy">
+      <div id="list-energy"></div>
+      <button class="btn btn-add add-card-btn" onclick="addCard('energy')">+ افزودن کارت جدید</button>
+    </div>
+
+    <div class="section-panel" id="panel-quality">
+      <div id="list-quality"></div>
+      <button class="btn btn-add add-card-btn" onclick="addCard('quality')">+ افزودن کارت جدید</button>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    /* ===== Supabase configuration — this project's values (see README.md) ===== */
+    const SUPABASE_URL = 'https://zxweroyalcsrdejgirmr.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp4d2Vyb3lhbGNzcmRlamdpcm1yIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkxNTA4NzAsImV4cCI6MjEwNDcyNjg3MH0.6x8NI9EREqIMN911BLOMLjsdJ8AA7bqlH1cmqPrIjaY';
+
+    const supa = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    const loginWrap = document.getElementById('loginWrap');
+    const adminWrap = document.getElementById('adminWrap');
+    const loginError = document.getElementById('loginError');
+
+    let currentTab = 'energy';
+    const cache = { energy: [], quality: [] };
+
+    function showToast(msg, isError) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.className = 'toast show' + (isError ? ' error' : '');
+      setTimeout(() => { t.classList.remove('show'); }, 2600);
+    }
+
+    async function handleLogin() {
+      loginError.style.display = 'none';
+      const email = document.getElementById('loginEmail').value.trim();
+      const password = document.getElementById('loginPassword').value;
+      if (!email || !password) {
+        loginError.textContent = 'ایمیل و رمز عبور را وارد کنید.';
+        loginError.style.display = 'block';
+        return;
+      }
+      const { error } = await supa.auth.signInWithPassword({ email, password });
+      if (error) {
+        loginError.textContent = 'ورود ناموفق بود: ' + error.message;
+        loginError.style.display = 'block';
+        return;
+      }
+      await enterAdmin();
+    }
+
+    async function handleLogout() {
+      await supa.auth.signOut();
+      adminWrap.style.display = 'none';
+      loginWrap.style.display = 'flex';
+    }
+
+    async function enterAdmin() {
+      const { data: { session } } = await supa.auth.getSession();
+      if (!session) return;
+      document.getElementById('loggedInAs').textContent = session.user.email;
+      loginWrap.style.display = 'none';
+      adminWrap.style.display = 'block';
+      await loadSection('energy');
+      await loadSection('quality');
+    }
+
+    function switchTab(section) {
+      currentTab = section;
+      document.getElementById('tabEnergyBtn').classList.toggle('active', section === 'energy');
+      document.getElementById('tabQualityBtn').classList.toggle('active', section === 'quality');
+      document.getElementById('panel-energy').classList.toggle('active', section === 'energy');
+      document.getElementById('panel-quality').classList.toggle('active', section === 'quality');
+    }
+
+    async function loadSection(section) {
+      const listEl = document.getElementById('list-' + section);
+      listEl.innerHTML = '<div class="empty-hint">در حال بارگذاری...</div>';
+      const { data, error } = await supa
+        .from('inner_cards')
+        .select('*')
+        .eq('section', section)
+        .order('position', { ascending: true });
+      if (error) {
+        listEl.innerHTML = '<div class="empty-hint">خطا در دریافت اطلاعات: ' + error.message + '</div>';
+        return;
+      }
+      cache[section] = data || [];
+      renderSection(section);
+    }
+
+    function renderSection(section) {
+      const listEl = document.getElementById('list-' + section);
+      const items = cache[section];
+      if (!items.length) {
+        listEl.innerHTML = '<div class="empty-hint">هنوز کارتی اضافه نشده است.</div>';
+        return;
+      }
+      listEl.innerHTML = '';
+      items.forEach(card => listEl.appendChild(renderCardItem(section, card)));
+    }
+
+    function renderCardItem(section, card) {
+      const bullets = Array.isArray(card.bullets) ? card.bullets : [];
+      const wrap = document.createElement('div');
+      wrap.className = 'card-item';
+      wrap.dataset.id = card.id;
+
+      wrap.innerHTML = `
+        <div class="card-item-head">
+          <span class="badge">ترتیب نمایش: ${escapeAttr(card.position ?? 0)}</span>
+        </div>
+        <div class="grid-2">
+          <div class="field-sm">
+            <label>عنوان کارت (محصول / خدمت)</label>
+            <input type="text" class="f-title" value="${escapeAttr(card.title || '')}" />
+          </div>
+          <div class="field-sm">
+            <label>برچسب دسته‌بندی (اختیاری)</label>
+            <input type="text" class="f-tag" value="${escapeAttr(card.category_tag || '')}" />
+          </div>
+          <div class="field-sm">
+            <label>ترتیب نمایش (عدد کوچک‌تر = زودتر)</label>
+            <input type="number" class="f-position" value="${escapeAttr(card.position ?? 0)}" />
+          </div>
+          <div class="field-sm">
+            <label>استان‌های تحت پوشش (با ویرگول جدا کنید)</label>
+            <input type="text" class="f-provinces" value="${escapeAttr(card.provinces || '')}" placeholder="تهران, اصفهان, فارس" />
+          </div>
+          <div class="field-sm">
+            <label>نام کارشناس</label>
+            <input type="text" class="f-expert-name" value="${escapeAttr(card.expert_name || '')}" />
+          </div>
+          <div class="field-sm">
+            <label>عنوان / سمت کارشناس</label>
+            <input type="text" class="f-expert-title" value="${escapeAttr(card.expert_title || '')}" />
+          </div>
+        </div>
+        <div class="field-sm" style="margin-top:0.9rem;">
+          <label>رزومه کوتاه کارشناس (یک یا چند خط)</label>
+          <textarea class="f-expert-bio" rows="2">${escapeHtml(card.expert_bio || '')}</textarea>
+        </div>
+
+        <div class="bullets-box">
+          <label>موارد فهرست (bulletin)</label>
+          <div class="bullet-list-edit"></div>
+          <button type="button" class="btn btn-outline btn-small" onclick="addBulletRow(this)">+ افزودن مورد</button>
+        </div>
+
+        <div class="card-item-footer">
+          <button class="btn btn-primary btn-small" onclick="saveCard('${section}', this)">ذخیره تغییرات</button>
+          <button class="btn btn-danger btn-small" onclick="deleteCard('${section}', this)">حذف کارت</button>
+        </div>
+      `;
+
+      const bulletListEl = wrap.querySelector('.bullet-list-edit');
+      if (bullets.length) {
+        bullets.forEach(b => bulletListEl.appendChild(makeBulletRow(b)));
+      } else {
+        bulletListEl.appendChild(makeBulletRow(''));
+      }
+
+      return wrap;
+    }
+
+    function makeBulletRow(value) {
+      const row = document.createElement('div');
+      row.className = 'bullet-row';
+      row.innerHTML =
+        '<input type="text" value="' + escapeAttr(value || '') + '" placeholder="متن این مورد..." />' +
+        '<button type="button" class="bullet-remove" onclick="this.parentElement.remove()">×</button>';
+      return row;
+    }
+
+    function addBulletRow(btn) {
+      const box = btn.previousElementSibling;
+      box.appendChild(makeBulletRow(''));
+    }
+
+    function escapeHtml(str) {
+      const div = document.createElement('div');
+      div.textContent = str === null || str === undefined ? '' : String(str);
+      return div.innerHTML;
+    }
+    function escapeAttr(str) {
+      return escapeHtml(str).replace(/"/g, '&quot;');
+    }
+
+    function collectCardData(itemEl) {
+      const bullets = Array.from(itemEl.querySelectorAll('.bullet-row input'))
+        .map(i => i.value.trim())
+        .filter(Boolean);
+      return {
+        title: itemEl.querySelector('.f-title').value.trim(),
+        category_tag: itemEl.querySelector('.f-tag').value.trim() || null,
+        position: parseInt(itemEl.querySelector('.f-position').value, 10) || 0,
+        provinces: itemEl.querySelector('.f-provinces').value.trim() || null,
+        expert_name: itemEl.querySelector('.f-expert-name').value.trim() || null,
+        expert_title: itemEl.querySelector('.f-expert-title').value.trim() || null,
+        expert_bio: itemEl.querySelector('.f-expert-bio').value.trim() || null,
+        bullets: bullets
+      };
+    }
+
+    async function saveCard(section, btn) {
+      const itemEl = btn.closest('.card-item');
+      const id = itemEl.dataset.id;
+      const payload = collectCardData(itemEl);
+      const { error } = await supa.from('inner_cards').update(payload).eq('id', id);
+      if (error) {
+        showToast('ذخیره نشد: ' + error.message, true);
+        return;
+      }
+      showToast('ذخیره شد.');
+      await loadSection(section);
+    }
+
+    async function deleteCard(section, btn) {
+      const itemEl = btn.closest('.card-item');
+      const id = itemEl.dataset.id;
+      if (!confirm('این کارت برای همیشه حذف شود؟')) return;
+      const { error } = await supa.from('inner_cards').delete().eq('id', id);
+      if (error) {
+        showToast('حذف نشد: ' + error.message, true);
+        return;
+      }
+      showToast('کارت حذف شد.');
+      await loadSection(section);
+    }
+
+    async function addCard(section) {
+      const items = cache[section];
+      const nextPosition = items.length ? Math.max(...items.map(c => c.position || 0)) + 1 : 1;
+      const { error } = await supa.from('inner_cards').insert([{
+        section,
+        title: 'کارت جدید',
+        position: nextPosition,
+        bullets: []
+      }]);
+      if (error) {
+        showToast('افزودن کارت ناموفق بود: ' + error.message, true);
+        return;
+      }
+      showToast('کارت جدید اضافه شد.');
+      await loadSection(section);
+    }
+
+    // On load, check for an existing session (keeps the admin logged in on refresh)
+    (async () => {
+      const { data: { session } } = await supa.auth.getSession();
+      if (session) {
+        await enterAdmin();
+      }
+    })();
+
+    document.getElementById('loginPassword').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') handleLogin();
+    });
+  </script>
+</body>
+</html>
