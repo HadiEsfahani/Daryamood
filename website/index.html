@@ -632,27 +632,50 @@
       border-radius: 20px;
     }
 
-    /* Expert info block shown inside the quick-consult modal */
-    .expert-info {
-      background: rgba(255,255,255,0.05);
-      border: 1px solid var(--border-color);
-      border-radius: 10px;
-      padding: 0.85rem 1rem;
-      margin-bottom: 1rem;
-      font-size: 0.85rem;
+    /* Dedicated expert-contact modal */
+    .expert-modal {
+      text-align: center;
+    }
+    .expert-photo {
+      width: 88px;
+      height: 88px;
+      border-radius: 50%;
+      margin: 0 auto 1rem;
+      background-size: cover;
+      background-position: center;
+      background-color: rgba(255,255,255,0.06);
+      border: 2px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
       color: var(--text-muted);
-      line-height: 1.8;
+      flex-shrink: 0;
     }
-    .expert-info strong {
-      display: block;
+    .expert-modal-name {
+      font-size: 1.05rem;
+      font-weight: 800;
       color: #fff;
-      font-size: 1rem;
-      margin-bottom: 0.1rem;
+      margin: 0 0 0.15rem;
     }
-    .expert-title-line {
+    .expert-modal-title {
       color: var(--brand-blue);
       font-weight: 600;
-      margin-bottom: 0.35rem;
+      font-size: 0.85rem;
+      margin-bottom: 0.6rem;
+    }
+    .expert-modal-bio {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      line-height: 1.8;
+      margin: 0 0 1.3rem;
+    }
+    .expert-contact-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+    .expert-contact-buttons .cta-btn {
+      width: 100%;
     }
   </style>
 </head>
@@ -800,16 +823,7 @@
   <div class="modal-overlay" id="quickConsultModal">
     <div class="modal is-compact">
       <h3>مشاوره سریع و رایگان</h3>
-      <div class="expert-info" id="quickExpertInfo" style="display:none;">
-        <strong id="quickExpertName"></strong>
-        <div class="expert-title-line" id="quickExpertTitle"></div>
-        <p id="quickExpertBio" style="margin:0;"></p>
-      </div>
       <p class="modal-sub">روش ارتباطی موردنظر خود را انتخاب کنید.</p>
-      <div class="quick-options" id="quickExpertOptions" style="display:none;">
-        <a class="quick-option" id="quickExpertPhone" href="#">تماس مستقیم با کارشناس</a>
-        <a class="quick-option" id="quickExpertSocial" href="#" target="_blank" rel="noopener">شبکه اجتماعی کارشناس</a>
-      </div>
       <div class="quick-options">
         <a class="quick-option" id="quickInstagram" href="#" target="_blank" rel="noopener">اینستاگرام</a>
         <a class="quick-option" id="quickTelegram" href="#" target="_blank" rel="noopener">تلگرام</a>
@@ -823,6 +837,33 @@
     </div>
   </div>
 </div>
+
+  <!-- Expert Contact Modal (used from inner cards) -->
+  <div class="modal-overlay" id="expertContactModal">
+    <div class="modal is-compact expert-modal">
+      <div class="expert-photo" id="expertPhoto"></div>
+      <h3 class="expert-modal-name" id="expertModalName"></h3>
+      <div class="expert-modal-title" id="expertModalTitle"></div>
+      <p class="expert-modal-bio" id="expertModalBio"></p>
+      <div class="expert-contact-buttons">
+        <a class="cta-btn cta-primary" id="expertCallBtn" href="#">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M6.6 10.8c1.4 2.8 3.8 5.2 6.6 6.6l2.2-2.2c.3-.3.7-.4 1.1-.3 1.2.4 2.5.6 3.8.6.6 0 1 .4 1 1v3.6c0 .6-.4 1-1 1C10.6 21.1 2.9 13.4 2.9 3.7c0-.6.4-1 1-1h3.6c.6 0 1 .4 1 1 0 1.3.2 2.6.6 3.8.1.4 0 .8-.3 1.1L6.6 10.8z" fill="currentColor"/>
+          </svg>
+          تماس تلفنی
+        </a>
+        <a class="cta-btn cta-secondary" id="expertSocialBtn" href="#" target="_blank" rel="noopener">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M18 8a3 3 0 1 0-2.83-4H15a3 3 0 0 0 .09 1.74L8.9 9.11a3 3 0 1 0 0 5.78l6.19 3.37A3 3 0 1 0 16 16.5c0-.16-.01-.32-.04-.47L9.9 12.7a3 3 0 0 0 0-1.4l6.06-3.33c.31.19.65.34 1.02.42.16.04.32.06.48.06z" fill="currentColor"/>
+          </svg>
+          شبکه اجتماعی
+        </a>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-secondary" onclick="closeExpertContactModal()">بستن</button>
+      </div>
+    </div>
+  </div>
 
   <!-- Collaboration Request Modal -->
   <div class="modal-overlay" id="collabModal">
@@ -903,44 +944,64 @@
 
     const quickModal = document.getElementById('quickConsultModal');
 
-    function openQuickConsultModal(serviceName, expert) {
+    function openQuickConsultModal(serviceName) {
       quickModal.dataset.service = serviceName || '';
       document.getElementById('quickInstagram').href = CONTACT_LINKS.instagram;
       document.getElementById('quickTelegram').href = CONTACT_LINKS.telegram;
       document.getElementById('quickWhatsApp').href = CONTACT_LINKS.whatsapp;
       document.getElementById('quickLinkedIn').href = CONTACT_LINKS.linkedin;
       document.getElementById('quickPhone').href = 'tel:' + CONTACT_LINKS.phone.replace(/[^\d+]/g, '');
-
-      const expertBox = document.getElementById('quickExpertInfo');
-      if (expert && (expert.name || expert.title || expert.bio)) {
-        document.getElementById('quickExpertName').textContent = expert.name || '';
-        document.getElementById('quickExpertTitle').textContent = expert.title || '';
-        document.getElementById('quickExpertBio').textContent = expert.bio || '';
-        expertBox.style.display = 'block';
-      } else {
-        expertBox.style.display = 'none';
-      }
-
-      const expertOptions = document.getElementById('quickExpertOptions');
-      const expertPhoneEl = document.getElementById('quickExpertPhone');
-      const expertSocialEl = document.getElementById('quickExpertSocial');
-      const hasExpertPhone = !!(expert && expert.phone);
-      const hasExpertSocial = !!(expert && expert.social);
-      if (hasExpertPhone || hasExpertSocial) {
-        expertPhoneEl.style.display = hasExpertPhone ? '' : 'none';
-        expertSocialEl.style.display = hasExpertSocial ? '' : 'none';
-        if (hasExpertPhone) expertPhoneEl.href = 'tel:' + String(expert.phone).replace(/[^\d+]/g, '');
-        if (hasExpertSocial) expertSocialEl.href = expert.social;
-        expertOptions.style.display = 'flex';
-      } else {
-        expertOptions.style.display = 'none';
-      }
-
       quickModal.classList.add('open');
     }
 
     function closeQuickConsultModal() {
       quickModal.classList.remove('open');
+    }
+
+    /* Dedicated expert-contact modal, opened only from inner cards */
+    const expertModal = document.getElementById('expertContactModal');
+
+    function defaultExpertIconSvg() {
+      return '<svg width="34" height="34" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">' +
+        '<circle cx="12" cy="8" r="3.4" stroke="currentColor" stroke-width="1.6"/>' +
+        '<path d="M4.5 20c1.4-3.6 4.4-5.5 7.5-5.5s6.1 1.9 7.5 5.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>';
+    }
+
+    function openExpertContactModal(expert) {
+      const photoEl = document.getElementById('expertPhoto');
+      if (expert.photo) {
+        photoEl.style.backgroundImage = "url('" + expert.photo + "')";
+        photoEl.innerHTML = '';
+      } else {
+        photoEl.style.backgroundImage = '';
+        photoEl.innerHTML = defaultExpertIconSvg();
+      }
+
+      document.getElementById('expertModalName').textContent = expert.name || 'کارشناس مربوطه';
+      document.getElementById('expertModalTitle').textContent = expert.title || '';
+      document.getElementById('expertModalBio').textContent = expert.bio || '';
+
+      const callBtn = document.getElementById('expertCallBtn');
+      if (expert.phone) {
+        callBtn.style.display = '';
+        callBtn.href = 'tel:' + String(expert.phone).replace(/[^\d+]/g, '');
+      } else {
+        callBtn.style.display = 'none';
+      }
+
+      const socialBtn = document.getElementById('expertSocialBtn');
+      if (expert.social) {
+        socialBtn.style.display = '';
+        socialBtn.href = expert.social;
+      } else {
+        socialBtn.style.display = 'none';
+      }
+
+      expertModal.classList.add('open');
+    }
+
+    function closeExpertContactModal() {
+      expertModal.classList.remove('open');
     }
 
     const modal = document.getElementById('collabModal');
@@ -1032,12 +1093,13 @@
 
       panel.querySelector('.inner-expert-btn').addEventListener('click', (e) => {
         e.stopPropagation();
-        openQuickConsultModal(card.title, {
+        openExpertContactModal({
           name: card.expert_name,
           title: card.expert_title,
           bio: card.expert_bio,
           phone: card.expert_phone,
-          social: card.expert_social
+          social: card.expert_social,
+          photo: card.expert_photo
         });
       });
       panel.querySelector('.inner-request-btn').addEventListener('click', (e) => {
