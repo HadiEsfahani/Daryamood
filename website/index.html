@@ -159,7 +159,7 @@
       background-size: cover;
       background-position: center;
       opacity: 0;
-      transition: opacity 0.6s ease;
+      transition: opacity 0.5s ease;
       z-index: 1;
     }
     .panel-bg::after {
@@ -176,7 +176,7 @@
       background-size: cover;
       background-position: center;
       opacity: 0.16;
-      transition: opacity 0.65s ease;
+      transition: opacity 0.4s ease;
       z-index: 1;
     }
     .inner-panel-bg::after {
@@ -603,6 +603,42 @@
     @media (min-width: 992px) {
       .inner-rows .accordion {
         height: 440px;
+      }
+    }
+    /* Quality-control section: 5 narrower, ~15% shorter cards per row (desktop only) */
+    @media (min-width: 992px) {
+      .inner-rows.cols-5 .accordion {
+        height: 374px; /* 440px * 0.85 */
+        gap: 0.75rem;
+      }
+      .inner-rows.cols-5 .panel-content {
+        padding: 1.1rem 1rem 1.1rem 1.2rem;
+      }
+      .inner-rows.cols-5 .service-icon-badge {
+        width: 38px;
+        height: 38px;
+      }
+      .inner-rows.cols-5 .project-title {
+        font-size: 1.02rem;
+        line-height: 1.55;
+      }
+      .inner-rows.cols-5 .details-view {
+        gap: 0.9rem;
+        margin-top: 0.9rem;
+      }
+      .inner-rows.cols-5 .bullet-list {
+        gap: 0.4rem;
+      }
+      .inner-rows.cols-5 .bullet-list li {
+        font-size: 0.82rem;
+        line-height: 1.6;
+      }
+      .inner-rows.cols-5 .province-strip {
+        font-size: 0.72rem;
+      }
+      .inner-rows.cols-5 .cta-btn {
+        padding: 0.7rem 0.6rem;
+        font-size: 0.88rem;
       }
     }
     .inner-empty-state {
@@ -1073,6 +1109,9 @@
       return div.innerHTML;
     }
 
+    // How many inner cards sit in each row, per section
+    const INNER_CARDS_PER_ROW = { energy: 3, quality: 5 };
+
     function chunkArray(arr, size) {
       const out = [];
       for (let i = 0; i < arr.length; i += size) out.push(arr.slice(i, i + size));
@@ -1151,13 +1190,15 @@
       return panel;
     }
 
-    function renderInnerRows(cards) {
+    function renderInnerRows(cards, perRow) {
+      perRow = perRow || 3;
+      innerRowsContainer.classList.toggle('cols-5', perRow === 5);
       innerRowsContainer.innerHTML = '';
       if (!cards.length) {
         innerRowsContainer.innerHTML = '<div class="inner-empty-state">هنوز کارتی برای این بخش ثبت نشده است.</div>';
         return;
       }
-      chunkArray(cards, 3).forEach(rowCards => {
+      chunkArray(cards, perRow).forEach(rowCards => {
         const row = document.createElement('div');
         row.className = 'accordion';
         rowCards.forEach((card, idx) => {
@@ -1177,12 +1218,13 @@
 
     async function openInnerCards(section) {
       innerOverlayTitle.textContent = INNER_SECTION_LABELS[section] || '';
+      innerRowsContainer.classList.toggle('cols-5', (INNER_CARDS_PER_ROW[section] || 3) === 5);
       innerRowsContainer.innerHTML = '<div class="inner-empty-state">در حال بارگذاری...</div>';
       innerOverlay.classList.add('open');
       document.body.style.overflow = 'hidden';
       try {
         const cards = await fetchInnerCards(section);
-        renderInnerRows(cards);
+        renderInnerRows(cards, INNER_CARDS_PER_ROW[section] || 3);
       } catch (err) {
         console.error(err);
         innerRowsContainer.innerHTML = '<div class="inner-empty-state">در دریافت اطلاعات خطایی رخ داد. اتصال Supabase را بررسی کنید.</div>';
